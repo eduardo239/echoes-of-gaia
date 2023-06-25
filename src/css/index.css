@@ -1,0 +1,14 @@
+body {
+    background-color: #222222;
+    color: #fefefe;
+}
+
+a {
+    color: #fe143c;
+    text-decoration: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
