@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { heroes } from "../server";
 import { useContext } from "react";
 import { PlayerContext } from "../hook/PlayerContext";
@@ -8,7 +8,7 @@ const SelectCharacter = () => {
   const { character, setCharacter } = useContext(PlayerContext);
 
   const selectCharacter = (item) => {
-    setCharacter(item);
+    setCharacter({ ...item, inventory: { totalItems: 4, items: [] } });
   };
 
   return (
@@ -31,14 +31,6 @@ const SelectCharacter = () => {
           <p>A lista está vazia.</p>
         )}
       </div>
-      <p>Personagem escolhido</p>
-      {!!character && (
-        <div className="d-flex justify-content-start">
-          <div className="card">
-            <img className="character-avatar" src={character.avatar} alt="" />
-          </div>
-        </div>
-      )}
 
       <button className="btn btn-info" onClick={() => navigate("/")}>
         Back

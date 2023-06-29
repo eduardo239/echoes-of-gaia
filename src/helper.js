@@ -1,38 +1,47 @@
+import { enemies, bosses, items } from "./server";
+
 export function rollDice() {
   var sides = 6;
   var randomNumber = Math.floor(Math.random() * sides) + 1;
   return randomNumber;
 }
 
-// generate
+export function generateRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function checkActualPlace(item) {
+  if (item === "potion") {
+    return "Este item é uma poção.";
+  } else if (item === "boss") {
+    return "Este item é um chefão.";
+  } else if (item === "enemy") {
+    return "Este item é uma enemy.";
+  } else if (item === "treasure") {
+    return "Este item é uma treasure.";
+  } else if (item === "nothing") {
+    return "Este item é nada.";
+  } else {
+    return "Tipo de item inválido.";
+  }
+}
+
 export function generateRandomItem() {
-  const itemTypes = ["enemy", "boss", "potion", "treasure", "nothing"];
+  // const itemTypes = ["enemy", "boss", "potion", "treasure", "nothing"];
+  const itemTypes = ["enemy"];
   const randomIndex = Math.floor(Math.random() * itemTypes.length);
   const randomItemType = itemTypes[randomIndex];
 
   switch (randomItemType) {
     case "enemy":
-      return {
-        type: "enemy",
-        name: "Goblin",
-        level: 3,
-        health: 50,
-        damage: 10,
-      };
+      const enemy = getRandomItem(enemies);
+      return enemy;
     case "boss":
-      return {
-        type: "boss",
-        name: "Dragon",
-        level: 10,
-        health: 500,
-        damage: 50,
-      };
+      const boss = getRandomItem(bosses);
+      return boss;
     case "potion":
-      return {
-        type: "potion",
-        name: "Health Potion",
-        healing: 50,
-      };
+      const item = getRandomItem(items);
+      return item;
     case "treasure":
       return {
         type: "treasure",
@@ -59,3 +68,8 @@ export const generateRandomItemAndPlaceItems = (customNumberOfItems) => {
 
   return items;
 };
+
+export function getRandomItem(list) {
+  const randomIndex = Math.floor(Math.random() * list.length);
+  return list[randomIndex];
+}
