@@ -2,8 +2,9 @@ export const heroes = [
   {
     name: "Laura Lori",
     class: "Mage",
-    level: 0,
-    strength: 10,
+    level: 1,
+    exp: 0,
+    strength: 20,
     intelligence: 2,
     weapon: "Staff",
     health: 100,
@@ -14,8 +15,9 @@ export const heroes = [
   {
     name: "Mike",
     class: "Warrior",
-    level: 0,
-    strength: 4,
+    level: 1,
+    exp: 0,
+    strength: 40,
     intelligence: 10,
     weapon: "Sword",
     health: 100,
@@ -28,37 +30,41 @@ export const heroes = [
 export const enemies = [
   {
     name: "Goblin",
+    class: "Normal",
     type: "enemy",
     level: 3,
-    health: 250,
-    damage: 10,
+    health: 50,
+    strength: 10,
     avatar:
       "../assets/nikesniper_nikesniper_br_goblin_with_horn_hight_detail_rpg_styl_b6043689-f1eb-4e9f-8fa2-d8ea080f5f57A.png",
   },
   {
     name: "Skeleton",
+    class: "Normal",
     type: "enemy",
     level: 4,
-    health: 260,
-    damage: 12,
+    health: 60,
+    strength: 12,
     avatar:
       "../assets/nikesniper_nikesniper_br_goblin_with_horn_hight_detail_rpg_styl_b6043689-f1eb-4e9f-8fa2-d8ea080f5f57A.png",
   },
   {
     name: "Orc",
+    class: "Normal",
     type: "enemy",
     level: 5,
-    health: 280,
-    damage: 15,
+    health: 80,
+    strength: 15,
     avatar:
       "../assets/nikesniper_nikesniper_br_goblin_with_horn_hight_detail_rpg_styl_b6043689-f1eb-4e9f-8fa2-d8ea080f5f57B.png",
   },
   {
     name: "Spider",
+    class: "Normal",
     type: "enemy",
     level: 2,
-    health: 420,
-    damage: 8,
+    health: 95,
+    strength: 8,
     avatar:
       "../assets/nikesniper_rpg_Undead_enemy_d55bcb31-8225-4573-bd65-9b6d9a32f27cA.png",
   },

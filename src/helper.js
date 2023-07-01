@@ -10,22 +10,6 @@ export function generateRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function checkActualPlace(item) {
-  if (item === "potion") {
-    return "Este item é uma poção.";
-  } else if (item === "boss") {
-    return "Este item é um chefão.";
-  } else if (item === "enemy") {
-    return "Este item é uma enemy.";
-  } else if (item === "treasure") {
-    return "Este item é uma treasure.";
-  } else if (item === "nothing") {
-    return "Este item é nada.";
-  } else {
-    return "Tipo de item inválido.";
-  }
-}
-
 export function generateRandomItem() {
   // const itemTypes = ["enemy", "boss", "potion", "treasure", "nothing"];
   const itemTypes = ["enemy"];

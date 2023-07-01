@@ -8,7 +8,7 @@ function App() {
   // const { count, incrementCount, decrementCount } = useContext(PlayerContext);
 
   return (
-    <div className="p-3 mb-2 bg-dark text-white">
+    <div className="p-3">
       <h1>Echoes of Gaia</h1>
       <Routes>
         <Route exact path="/" element={<Home />} />
