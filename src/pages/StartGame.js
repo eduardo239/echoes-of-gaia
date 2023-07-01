@@ -88,15 +88,21 @@ const StartGame = () => {
       setEnemy({ ...enemy, health: enemy.health - damage });
       setTurn(1);
     } else {
-      const enemyDamage = generateRandomNumber(
-        enemy.strength,
-        enemy.strength + 10
-      );
-      setTimeout(() => {
-        // provoca um dano ao herói, após um delay
-        setCharacter({ ...character, health: character.health - enemyDamage });
-        setTurn(0);
-      }, 500);
+      if (enemy.health > 0) {
+        const enemyDamage = generateRandomNumber(
+          enemy.strength,
+          enemy.strength + 10
+        );
+        setTimeout(() => {
+          // provoca um dano ao herói, após um delay
+          setCharacter({
+            ...character,
+            health: character.health - enemyDamage,
+          });
+          setTurn(0);
+        }, 500);
+      } else {
+      }
     }
 
     if (enemy && enemy.health < 1) {
@@ -144,7 +150,9 @@ const StartGame = () => {
   };
 
   useEffect(() => {
-    if (isFighting && turn && turn === 1) hit();
+    if (isFighting && turn && turn === 1) {
+      hit();
+    }
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -272,7 +280,7 @@ const StartGame = () => {
 
       <div
         data-bs-theme="dark"
-        className="modal fade"
+        className="modal modal-lg fade"
         id="inventoryModal"
         tabIndex="-1"
         aria-labelledby="inventoryModal"
@@ -318,7 +326,7 @@ const StartGame = () => {
       {/* shop */}
       <div
         data-bs-theme="dark"
-        className="modal fade"
+        className="modal modal-lg fade"
         id="shopModal"
         tabIndex="-1"
         aria-labelledby="shopModal"

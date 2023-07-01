@@ -15,8 +15,7 @@ const Card = ({ description = "", item }) => {
         setCharacter({ ...character, health: character.maxHealth });
       }
     } else if (item.type === "poison") {
-      //
-      return;
+      setCharacter({ ...character, strength: character.strength + item.value });
     }
     // remove o item da lista
     const updatedList = inventory.filter((x) => x.id !== item.id);
@@ -30,20 +29,32 @@ const Card = ({ description = "", item }) => {
   };
 
   return (
-    <div className="card" style={{ width: "10rem" }}>
+    <div className="card" style={{ width: "11rem" }}>
       <img src={item?.avatar} className="card-img-top" alt={description} />
-      <div className="card-body">
-        <h5 className="card-title">{item?.name}</h5>
-        <p className="card-text">Text item 1</p>
-        <p className="card-text">Text item 2</p>
-        <div className="d-grid gap-2">
-          <button className="btn btn-warning" onClick={useItem}>
-            Use
-          </button>
+      <div className="card-body" style={{ height: "100%" }}>
+        <div className="d-flex flex-column">
+          <p className="card-title">
+            <b>{item?.name}</b>
+          </p>
 
-          <button className="btn btn-warning" onClick={buyItem}>
-            Buy
-          </button>
+          <div style={{ flex: 1 }}>
+            <code>
+              <small>{item?.id}</small>
+            </code>
+            <p className="card-text mb-0">Price: {item?.price}</p>
+            <p className="card-text mb-0">Value: {item?.value}</p>
+            <p className="card-text mb-2">Type: {item?.type}</p>
+          </div>
+
+          <div className="d-flex gap-2">
+            <button className="btn btn-warning" onClick={useItem}>
+              Use
+            </button>
+
+            <button className="btn btn-warning" onClick={buyItem}>
+              Buy
+            </button>
+          </div>
         </div>
       </div>
     </div>
