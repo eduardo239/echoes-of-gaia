@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import {
   generateRandomItemAndPlaceItems,
   generateRandomNumber,
@@ -8,6 +9,7 @@ import {
 import { PlayerContext } from "../hook/PlayerContext";
 import { useNavigate } from "react-router-dom";
 import { items } from "../server";
+import Card from "../components/Card";
 
 const StartGame = () => {
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ const StartGame = () => {
   const [enemy, setEnemy] = useState(null);
   // gerar um novo mapa
   const [places, setPlaces] = useState(null);
-  //
+  // game
   const [dice, setDice] = useState(0);
   // ui
   const [message, setMessage] = useState("");
@@ -111,10 +113,11 @@ const StartGame = () => {
   };
   const getItem = () => {
     const item = getRandomItem(items);
+    item.id = uuidv4();
     setInventory([...inventory, item]);
   };
 
-  function getExp(level) {
+  function getExp() {
     const y = 1.65;
     const x = Math.pow(character.level, y);
     setCharacter({ ...character, exp: character.exp + x });
@@ -131,6 +134,7 @@ const StartGame = () => {
     getItem();
     // finaliza o turno de batalha
     setIsFighting(false);
+    setTurn(null);
     setTimeout(() => setMessage(""), 1000);
     return;
   };
@@ -166,6 +170,7 @@ const StartGame = () => {
               <p className="card-text mb-1">HP: {character.health}</p>
               <p className="card-text mb-1">MP: {character.mana}</p>
               <p className="card-text mb-1">XP: {character.exp}</p>
+              <p className="card-text mb-1">ST: {character.strength}</p>
               <p className="card-text mb-1">IT: {inventory.length}</p>
               {isFighting && (
                 <div className="d-grid gap-2">
@@ -177,7 +182,12 @@ const StartGame = () => {
                   >
                     {turn === 1 ? "Enemy Turn" : "Fight"}
                   </button>
-                  <button type="button" className="btn btn-warning">
+                  <button
+                    type="button"
+                    className="btn btn-warning"
+                    data-bs-toggle="modal"
+                    data-bs-target="#inventoryModal"
+                  >
                     Inventory
                   </button>
                 </div>
@@ -206,13 +216,35 @@ const StartGame = () => {
       )}
 
       {!!character && (
-        <button
-          disabled={isFighting}
-          className="btn btn-info mb-3"
-          onClick={rollTheDice}
-        >
-          Roll The Dice {dice}
-        </button>
+        <div className="d-inline-flex gap-3">
+          <button
+            disabled={isFighting}
+            className="btn btn-info mb-3"
+            onClick={rollTheDice}
+          >
+            Roll The Dice {dice}
+          </button>
+
+          <button
+            disabled={isFighting}
+            type="button"
+            className="btn btn-info mb-3"
+            data-bs-toggle="modal"
+            data-bs-target="#shopModal"
+          >
+            Shop
+          </button>
+
+          <button
+            disabled={isFighting}
+            type="button"
+            className="btn btn-info mb-3"
+            data-bs-toggle="modal"
+            data-bs-target="#inventoryModal"
+          >
+            Inventory
+          </button>
+        </div>
       )}
 
       {!!message && (
@@ -237,6 +269,97 @@ const StartGame = () => {
       ) : (
         <p>Empty list.</p>
       )}
+
+      <div
+        data-bs-theme="dark"
+        className="modal fade"
+        id="inventoryModal"
+        tabIndex="-1"
+        aria-labelledby="inventoryModal"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="inventoryModal">
+                Inventory
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <div className="d-flex flex-wrap gap-3 mb-3">
+                {!!character &&
+                  inventory &&
+                  inventory.map((item, index) => (
+                    <Card item={item} key={index} />
+                  ))}
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" className="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* shop */}
+      <div
+        data-bs-theme="dark"
+        className="modal fade"
+        id="shopModal"
+        tabIndex="-1"
+        aria-labelledby="shopModal"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="shopModal">
+                Shop
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <div className="d-flex flex-wrap gap-3 mb-3">
+                {!!character &&
+                  items &&
+                  items.map((item, index) => <Card item={item} key={index} />)}
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" className="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/*  */}
     </div>
   );
 };

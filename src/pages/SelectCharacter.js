@@ -5,7 +5,7 @@ import { PlayerContext } from "../hook/PlayerContext";
 
 const SelectCharacter = () => {
   const navigate = useNavigate();
-  const { character, setCharacter } = useContext(PlayerContext);
+  const { setCharacter } = useContext(PlayerContext);
 
   const selectCharacter = (item) => {
     setCharacter({ ...item, inventory: { totalItems: 4, items: [] } });
