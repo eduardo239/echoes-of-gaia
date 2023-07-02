@@ -10,7 +10,9 @@ export const heroes = [
     weapon: "Staff",
     health: 100,
     maxHealth: 100,
-    mana: 50,
+    mana: 10,
+    maxMana: 150,
+    gold: 0,
     avatar:
       "./assets/nikesniper_nikesniper_br_japanese_girl_cute_cyberpunk_realistic_a5b3ed53-025d-4230-a4e7-426f008b7f89D.png",
   },
@@ -25,7 +27,9 @@ export const heroes = [
     weapon: "Sword",
     health: 120,
     maxHealth: 120,
-    mana: 50,
+    mana: 0,
+    maxMana: 50,
+    gold: 0,
     avatar:
       "../assets/nikesniper_nikesniper_br_cyberpunk_wallpaper_219_half_human_hal_866469f2-c168-40e4-bc3a-4e2a3550d535C.png",
   },
@@ -102,7 +106,7 @@ export const items = [
     name: "Mana Potion",
     value: 45,
     price: 45,
-    type: "heal",
+    type: "mana",
     avatar:
       "../assets/nikesniper_nikesniper_br_magic_potion_blue_liquid_6a02c25b-1cf7-4f02-bbce-8dcdbcf18580A.png",
   },
@@ -125,7 +129,7 @@ export const treasures = [
     price: 100,
     type: "gold",
     avatar:
-      "../assets/nikesniper_nikesniper_br_Health_Potion_Magic_Tonic_4d2a55bd-cb5e-46bc-ae06-9d402502d74bA.png",
+      "../assets/nikesniper_bag_full_of_gold_coins_high_details_rpg_style_v_5.2_bff090ff-3efd-4a80-a367-a4718a1f0137B.png",
   },
   {
     id: "4cf5f41c-c2cb-4255-a5b6-de3e4b9e882c",
@@ -134,7 +138,7 @@ export const treasures = [
     price: 0,
     type: "gem",
     avatar:
-      "../assets/nikesniper_nikesniper_br_poison_potin_green_liquid_53000ba0-7d7e-45df-bf59-5fca9831f346B.png",
+      "../assets/nikesniper_bag_full_of_gold_coins_high_details_rpg_style_v_5.2_bff090ff-3efd-4a80-a367-a4718a1f0137B.png",
   },
 ];
 

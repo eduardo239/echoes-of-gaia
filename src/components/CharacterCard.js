@@ -28,6 +28,9 @@ const CharacterCard = ({ character, children }) => {
           Experience: {character?.exp ? character.exp : "???"}
         </p>
         <p className="card-description">Strength: {character?.strength}</p>
+        <p className="card-description">
+          Gold: {character?.gold ? character.gold : 0}
+        </p>
       </div>
 
       {children}

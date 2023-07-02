@@ -1,11 +1,10 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { PlayerContext } from "../hook/PlayerContext";
 
 const Card = ({ type = null, item }) => {
-  const { character, setCharacter, inventory, setInventory } =
+  const { character, setCharacter, inventory, setInventory, gift, setGift } =
     useContext(PlayerContext);
-  const [collectedTreasure, setCollectedTreasure] = useState(false);
 
   const useItem = () => {
     if (item.type === "heal") {
@@ -15,8 +14,19 @@ const Card = ({ type = null, item }) => {
       } else {
         setCharacter({ ...character, health: character.maxHealth });
       }
+    } else if (item.type === "mana") {
+      // valida a quantidade máxima de vida, para não ultrapassar o limite
+      if (character.mana + item.value < character.maxMana) {
+        setCharacter({ ...character, mana: character.mana + item.value });
+      } else {
+        setCharacter({ ...character, mana: character.maxMana });
+      }
     } else if (item.type === "poison") {
       setCharacter({ ...character, strength: character.strength + item.value });
+    } else if (item.type === "gold") {
+      setCharacter({ ...character, gold: character.gold + item.value });
+    } else if (item.type === "gem") {
+      setCharacter({ ...character, gold: character.gold + item.value });
     }
     // remove o item da lista
     const updatedList = inventory.filter((x) => x.id !== item.id);
@@ -24,14 +34,19 @@ const Card = ({ type = null, item }) => {
   };
 
   const buyItem = () => {
-    const purchasedItem = { ...item };
-    purchasedItem.id = uuidv4();
-    setInventory([...inventory, purchasedItem]);
+    if (character.gold > item.price) {
+      const purchasedItem = { ...item };
+      purchasedItem.id = uuidv4();
+      setInventory([...inventory, purchasedItem]);
+      setCharacter({ ...character, gold: character.gold - item.price });
+    } else {
+      console.log("Insufficient gold");
+    }
   };
 
   const getGiftItem = () => {
     setInventory([...inventory, item]);
-    setCollectedTreasure(true);
+    setGift([]);
   };
 
   return (
@@ -41,11 +56,11 @@ const Card = ({ type = null, item }) => {
         <h2 className="card-title mb-2">
           <b>{item?.name}</b>
         </h2>
-
-        <p className="card-description">Price: {item?.price}</p>
-        <p className="card-description">Value: {item?.value}</p>
-        <p className="card-description">Type: {item?.type}</p>
-
+        <div className="card-description">
+          <p>Price: {item?.price}</p>
+          <p>Value: {item?.value}</p>
+          <p>Type: {item?.type}</p>
+        </div>
         <div className="d-flex gap-2 mt-3">
           {type === "use" && (
             <button className="card-button" onClick={useItem}>
@@ -58,13 +73,7 @@ const Card = ({ type = null, item }) => {
             </button>
           )}
           {type === "get" && (
-            <button
-              disabled={collectedTreasure}
-              className={
-                collectedTreasure ? "card-button disabled" : "card-button"
-              }
-              onClick={getGiftItem}
-            >
+            <button className="card-button" onClick={getGiftItem}>
               GET
             </button>
           )}

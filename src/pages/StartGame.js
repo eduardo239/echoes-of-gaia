@@ -18,7 +18,8 @@ import StartGamePlaceItems from "../components/StartGamePlaceItems";
 const StartGame = () => {
   const navigate = useNavigate();
   // hero, hero_inventory
-  const { character, setCharacter, inventory } = useContext(PlayerContext);
+  const { character, setCharacter, inventory, gift, setGift } =
+    useContext(PlayerContext);
   // inimigo de batalha
   const [enemy, setEnemy] = useState(null);
   // gerar um novo mapa
@@ -31,14 +32,11 @@ const StartGame = () => {
   const [characterActualPlace, setCharacterActualPlace] = useState(0);
   const [isFighting, setIsFighting] = useState(false);
   const [turn, setTurn] = useState(null);
-  const [gift, setGift] = useState([]);
 
   // dados
   const rollTheDice = () => {
     // reset da mensagem
     setMessage("");
-    // reset do tesouro
-    setGift([]);
 
     const result = rollDice();
     setDice(result);
@@ -207,6 +205,7 @@ const StartGame = () => {
             </div>
           )}
         </div>
+
         <div className="col-sm-6">
           {!!character && (
             <StartGameOptions

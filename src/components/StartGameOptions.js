@@ -1,4 +1,9 @@
-const StartGameOptions = ({ isFighting, rollTheDice, dice, gift = null }) => {
+import { useContext } from "react";
+import { PlayerContext } from "../hook/PlayerContext";
+
+const StartGameOptions = ({ isFighting, rollTheDice, dice }) => {
+  const { gift } = useContext(PlayerContext);
+
   return (
     <div className="d-inline-flex gap-3">
       <button
