@@ -11,4 +11,14 @@ a {
 ul {
     margin: 0;
     padding: 0;
+    list-style-type: none;
 }
+
+.text-alert {
+    color: #FF4136;
+}
+
+.none {
+    display: none;
+}
+

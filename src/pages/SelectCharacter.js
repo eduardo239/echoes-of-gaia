@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { heroes } from "../server";
 import { useContext } from "react";
 import { PlayerContext } from "../hook/PlayerContext";
+import CharacterCard from "../components/CharacterCard";
 
 const SelectCharacter = () => {
   const navigate = useNavigate();
@@ -17,15 +18,16 @@ const SelectCharacter = () => {
       <div className="d-flex justify-content-start">
         {heroes.length > 0 ? (
           heroes.map((item, index) => (
-            <div className="card" key={index}>
-              <img className="character-avatar" src={item.avatar} alt="" />
-              <button
-                onClick={() => selectCharacter(item)}
-                className="btn btn-info"
-              >
-                {item.name}
-              </button>
-            </div>
+            <CharacterCard character={item} key={index}>
+              <div className="d-flex gap-2">
+                <button
+                  className="btn btn-warning"
+                  onClick={() => selectCharacter(item)}
+                >
+                  Select
+                </button>
+              </div>
+            </CharacterCard>
           ))
         ) : (
           <p>A lista está vazia.</p>

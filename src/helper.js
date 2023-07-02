@@ -12,7 +12,7 @@ export function generateRandomNumber(min, max) {
 
 export function generateRandomItem() {
   // const itemTypes = ["enemy", "boss", "potion", "treasure", "nothing"];
-  const itemTypes = ["enemy"];
+  const itemTypes = ["treasure"];
   const randomIndex = Math.floor(Math.random() * itemTypes.length);
   const randomItemType = itemTypes[randomIndex];
 
@@ -30,6 +30,9 @@ export function generateRandomItem() {
       return {
         type: "treasure",
         name: "Chest",
+        value: 50,
+        price: 350,
+
         rewards: ["Gold", "Gem"],
       };
     default:

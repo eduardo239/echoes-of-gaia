@@ -117,6 +117,27 @@ export const items = [
   },
 ];
 
+export const treasures = [
+  {
+    id: "82a0344c-ae51-44fb-887e-f704f80e3de6",
+    name: "Gold",
+    value: 100,
+    price: 100,
+    type: "gold",
+    avatar:
+      "../assets/nikesniper_nikesniper_br_Health_Potion_Magic_Tonic_4d2a55bd-cb5e-46bc-ae06-9d402502d74bA.png",
+  },
+  {
+    id: "4cf5f41c-c2cb-4255-a5b6-de3e4b9e882c",
+    name: "Gem",
+    value: 200,
+    price: 0,
+    type: "gem",
+    avatar:
+      "../assets/nikesniper_nikesniper_br_poison_potin_green_liquid_53000ba0-7d7e-45df-bf59-5fca9831f346B.png",
+  },
+];
+
 export const bosses = [
   {
     id: "cfa22ba6-0c30-4dac-9bde-c1eb58154408",

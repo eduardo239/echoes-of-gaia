@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { PlayerContext } from "../hook/PlayerContext";
 
-const Card = ({ description = "", item }) => {
+const Card = ({ type = null, item }) => {
   const { character, setCharacter, inventory, setInventory } =
     useContext(PlayerContext);
+  const [collectedTreasure, setCollectedTreasure] = useState(false);
 
   const useItem = () => {
     if (item.type === "heal") {
@@ -28,34 +29,50 @@ const Card = ({ description = "", item }) => {
     setInventory([...inventory, purchasedItem]);
   };
 
+  const getGiftItem = () => {
+    setInventory([...inventory, item]);
+    setCollectedTreasure(true);
+  };
+
   return (
-    <div className="card" style={{ width: "11rem" }}>
-      <img src={item?.avatar} className="card-img-top" alt={description} />
-      <div className="card-body" style={{ height: "100%" }}>
-        <div className="d-flex flex-column">
-          <p className="card-title">
-            <b>{item?.name}</b>
-          </p>
+    <div className="rpg-card">
+      <img src={item?.avatar} alt={item?.description} className="card-image" />
+      <div className="card-content">
+        <h2 className="card-title mb-2">
+          <b>{item?.name}</b>
+        </h2>
 
-          <div style={{ flex: 1 }}>
-            <code>
-              <small>{item?.id}</small>
-            </code>
-            <p className="card-text mb-0">Price: {item?.price}</p>
-            <p className="card-text mb-0">Value: {item?.value}</p>
-            <p className="card-text mb-2">Type: {item?.type}</p>
-          </div>
+        <p className="card-description">Price: {item?.price}</p>
+        <p className="card-description">Value: {item?.value}</p>
+        <p className="card-description">Type: {item?.type}</p>
 
-          <div className="d-flex gap-2">
-            <button className="btn btn-warning" onClick={useItem}>
-              Use
+        <div className="d-flex gap-2 mt-3">
+          {type === "use" && (
+            <button className="card-button" onClick={useItem}>
+              USE
             </button>
-
-            <button className="btn btn-warning" onClick={buyItem}>
-              Buy
+          )}
+          {type === "buy" && (
+            <button className="card-button" onClick={buyItem}>
+              BUY
             </button>
-          </div>
+          )}
+          {type === "get" && (
+            <button
+              disabled={collectedTreasure}
+              className={
+                collectedTreasure ? "card-button disabled" : "card-button"
+              }
+              onClick={getGiftItem}
+            >
+              GET
+            </button>
+          )}
         </div>
+
+        <code>
+          <small>{item?.id}</small>
+        </code>
       </div>
     </div>
   );

@@ -8,14 +8,17 @@ import {
 } from "../helper";
 import { PlayerContext } from "../hook/PlayerContext";
 import { useNavigate } from "react-router-dom";
-import { items } from "../server";
-import Card from "../components/Card";
+import { items, treasures } from "../server";
+import CharacterCard from "../components/CharacterCard";
+import ModalItems from "../components/ModalItems";
+import CharacterCardFightOptions from "../components/CharacterCardFightOptions";
+import StartGameOptions from "../components/StartGameOptions";
+import StartGamePlaceItems from "../components/StartGamePlaceItems";
 
 const StartGame = () => {
   const navigate = useNavigate();
   // hero, hero_inventory
-  const { character, setCharacter, inventory, setInventory } =
-    useContext(PlayerContext);
+  const { character, setCharacter, inventory } = useContext(PlayerContext);
   // inimigo de batalha
   const [enemy, setEnemy] = useState(null);
   // gerar um novo mapa
@@ -28,11 +31,14 @@ const StartGame = () => {
   const [characterActualPlace, setCharacterActualPlace] = useState(0);
   const [isFighting, setIsFighting] = useState(false);
   const [turn, setTurn] = useState(null);
+  const [gift, setGift] = useState([]);
 
   // dados
   const rollTheDice = () => {
     // reset da mensagem
     setMessage("");
+    // reset do tesouro
+    setGift([]);
 
     const result = rollDice();
     setDice(result);
@@ -66,7 +72,7 @@ const StartGame = () => {
     } else if (placeType === "treasure") {
       // adicionar um tesouro ao inventário do herói
       setMessage("Foi encontrado um tesouro");
-      setInventory({ x: 1 });
+      getTreasure();
       return;
     } else if (placeType === "nothing") {
       // local vazio, nada acontece
@@ -82,7 +88,7 @@ const StartGame = () => {
     if (turn === 0) {
       const damage = generateRandomNumber(
         character.strength,
-        character.strength + 45
+        character.strength + 50
       );
       // provoca um dano ao inimigo
       setEnemy({ ...enemy, health: enemy.health - damage });
@@ -117,10 +123,19 @@ const StartGame = () => {
     const gold = generateRandomNumber(10, 20);
     setCharacter({ ...character, gold: character.gold + gold });
   };
+
+  const getTreasure = () => {
+    const item = getRandomItem(treasures);
+    const giftTreasure = { ...item };
+    giftTreasure.id = uuidv4();
+    setGift([...gift, giftTreasure]);
+  };
+
   const getItem = () => {
     const item = getRandomItem(items);
-    item.id = uuidv4();
-    setInventory([...inventory, item]);
+    const giftItem = { ...item };
+    giftItem.id = uuidv4();
+    setGift([...gift, giftItem]);
   };
 
   function getExp() {
@@ -159,6 +174,7 @@ const StartGame = () => {
   }, [turn, isFighting]);
 
   useEffect(() => {
+    // gera um novo mapa com locais gerados aleatoriamente
     const place = generateRandomItemAndPlaceItems(1000);
     setPlaces(place);
     return () => {
@@ -167,207 +183,72 @@ const StartGame = () => {
   }, []);
 
   return (
-    <div>
-      <h3>Game</h3>
+    <div className="container ">
+      <div className="row">
+        {message && <code>{message}</code>}
+        <div className="col-sm-6">
+          {!character && (
+            <button
+              className="btn btn-info mb-3"
+              onClick={() => navigate("/select-character")}
+            >
+              Back
+            </button>
+          )}
 
-      {!!character && (
-        <div className="d-flex justify-content-start  mb-3 ">
-          <div className="card rounded-0 me-3">
-            <img className="character-avatar" src={character.avatar} alt="" />
-            <div className="card-body">
-              <p className="card-text mb-1">HP: {character.health}</p>
-              <p className="card-text mb-1">MP: {character.mana}</p>
-              <p className="card-text mb-1">XP: {character.exp}</p>
-              <p className="card-text mb-1">ST: {character.strength}</p>
-              <p className="card-text mb-1">IT: {inventory.length}</p>
-              {isFighting && (
-                <div className="d-grid gap-2">
-                  <button
-                    disabled={turn === 1}
-                    type="button"
-                    className="btn btn-warning"
-                    onClick={hit}
-                  >
-                    {turn === 1 ? "Enemy Turn" : "Fight"}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-warning"
-                    data-bs-toggle="modal"
-                    data-bs-target="#inventoryModal"
-                  >
-                    Inventory
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-          {isFighting && (
-            <div className="card rounded-0">
-              <img className="character-avatar" src={enemy.avatar} alt="" />
-              <div className="card-body">
-                <h5 className="card-title">Card title</h5>
-                <p className="card-text mb-1">HP: {enemy.health}</p>
-              </div>
+          {!!character && (
+            <div className="d-flex justify-content-start mb-3">
+              <CharacterCard character={character}>
+                {isFighting && (
+                  <CharacterCardFightOptions turn={turn} hit={hit} />
+                )}
+              </CharacterCard>
+              {isFighting && <CharacterCard character={enemy}></CharacterCard>}
             </div>
           )}
         </div>
-      )}
+        <div className="col-sm-6">
+          {!!character && (
+            <StartGameOptions
+              dice={dice}
+              rollTheDice={rollTheDice}
+              isFighting={isFighting}
+              gift={gift}
+            />
+          )}
 
-      {!character && (
-        <button
-          className="btn btn-info mb-3"
-          onClick={() => navigate("/select-character")}
-        >
-          Back
-        </button>
-      )}
+          <StartGamePlaceItems
+            characterActualPlace={characterActualPlace}
+            places={places}
+          />
 
-      {!!character && (
-        <div className="d-inline-flex gap-3">
-          <button
-            disabled={isFighting}
-            className="btn btn-info mb-3"
-            onClick={rollTheDice}
-          >
-            Roll The Dice {dice}
-          </button>
+          {/* inventory */}
+          <ModalItems
+            id="inventoryModal"
+            type="use"
+            title="Inventory"
+            character={character}
+            items={inventory}
+          />
+          {/* shop */}
+          <ModalItems
+            id="shopModal"
+            type="buy"
+            title="Shop"
+            character={character}
+            items={items}
+          />
+          {/* winner */}
 
-          <button
-            disabled={isFighting}
-            type="button"
-            className="btn btn-info mb-3"
-            data-bs-toggle="modal"
-            data-bs-target="#shopModal"
-          >
-            Shop
-          </button>
-
-          <button
-            disabled={isFighting}
-            type="button"
-            className="btn btn-info mb-3"
-            data-bs-toggle="modal"
-            data-bs-target="#inventoryModal"
-          >
-            Inventory
-          </button>
-        </div>
-      )}
-
-      {!!message && (
-        <p className="alert alert-light" role="alert">
-          {message}
-        </p>
-      )}
-
-      {!!places && places.length > 0 ? (
-        places.map((item, index) => (
-          <div
-            key={index}
-            className={
-              index === characterActualPlace
-                ? "alert alert-success mb-0"
-                : "alert alert-light mb-0"
-            }
-          >
-            {index + 1} - {item.name}
-          </div>
-        ))
-      ) : (
-        <p>Empty list.</p>
-      )}
-
-      <div
-        data-bs-theme="dark"
-        className="modal modal-lg fade"
-        id="inventoryModal"
-        tabIndex="-1"
-        aria-labelledby="inventoryModal"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="inventoryModal">
-                Inventory
-              </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              <div className="d-flex flex-wrap gap-3 mb-3">
-                {!!character &&
-                  inventory &&
-                  inventory.map((item, index) => (
-                    <Card item={item} key={index} />
-                  ))}
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" className="btn btn-primary">
-                Save changes
-              </button>
-            </div>
-          </div>
+          <ModalItems
+            id="giftModal"
+            type="get"
+            title="Winner"
+            character={character}
+            items={gift}
+          />
         </div>
       </div>
-      {/* shop */}
-      <div
-        data-bs-theme="dark"
-        className="modal modal-lg fade"
-        id="shopModal"
-        tabIndex="-1"
-        aria-labelledby="shopModal"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="shopModal">
-                Shop
-              </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              <div className="d-flex flex-wrap gap-3 mb-3">
-                {!!character &&
-                  items &&
-                  items.map((item, index) => <Card item={item} key={index} />)}
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" className="btn btn-primary">
-                Save changes
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/*  */}
     </div>
   );
 };
