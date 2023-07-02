@@ -1,4 +1,4 @@
-import Card from "./Card";
+import CardItem from "./CardItem";
 
 const ModalItems = ({
   type = null,
@@ -30,11 +30,11 @@ const ModalItems = ({
             ></button>
           </div>
           <div className="modal-body">
-            <div className="d-flex justify-content-center  flex-wrap mb-3">
+            <div className="d-flex flex-wrap justify-content-center gap-3 my-3">
               {!!character &&
                 items &&
                 items.map((item, index) => (
-                  <Card type={type} item={item} key={index} />
+                  <CardItem type={type} item={item} key={index} />
                 ))}
             </div>
           </div>

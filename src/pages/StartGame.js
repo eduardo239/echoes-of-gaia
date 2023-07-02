@@ -32,6 +32,7 @@ const StartGame = () => {
   const [characterActualPlace, setCharacterActualPlace] = useState(0);
   const [isFighting, setIsFighting] = useState(false);
   const [turn, setTurn] = useState(null);
+  // toast mensagem
 
   // dados
   const rollTheDice = () => {

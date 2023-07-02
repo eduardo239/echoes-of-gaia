@@ -1,16 +1,12 @@
+import Button from "react-bootstrap/Button";
+
 const CharacterCardFightOptions = ({ turn, hit }) => {
   return (
-    <div className="d-flex gap-2">
-      <button disabled={turn === 1} className="btn btn-warning" onClick={hit}>
+    <div className="d-grid gap-2">
+      <Button disabled={turn === 1} size="sm" onClick={hit}>
         {turn === 1 ? "Enemy Turn" : "Fight"}
-      </button>
-      <button
-        className="btn btn-warning"
-        data-bs-toggle="modal"
-        data-bs-target="#inventoryModal"
-      >
-        Inventory
-      </button>
+      </Button>
+      <Button size="sm">Inventory</Button>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { heroes } from "../server";
 import { useContext } from "react";
 import { PlayerContext } from "../hook/PlayerContext";
 import CharacterCard from "../components/CharacterCard";
+import Button from "react-bootstrap/Button";
 
 const SelectCharacter = () => {
   const navigate = useNavigate();
@@ -15,31 +16,21 @@ const SelectCharacter = () => {
   return (
     <div>
       <h1>SelectCharacter</h1>
-      <div className="d-flex justify-content-start">
+      <div className="d-flex gap-3 justify-content-start">
         {heroes.length > 0 ? (
           heroes.map((item, index) => (
             <CharacterCard character={item} key={index}>
-              <div className="d-flex gap-2">
-                <button
-                  className="btn btn-warning"
-                  onClick={() => selectCharacter(item)}
-                >
-                  Select
-                </button>
-              </div>
+              <Button onClick={() => selectCharacter(item)}>Select</Button>
             </CharacterCard>
           ))
         ) : (
           <p>A lista está vazia.</p>
         )}
       </div>
-
-      <button className="btn btn-info" onClick={() => navigate("/")}>
-        Back
-      </button>
-      <button className="btn btn-info" onClick={() => navigate("/start-game")}>
-        Start Game
-      </button>
+      <div className="d-flex justify-content-center gap-3 my-3">
+        <Button onClick={() => navigate("/")}>Back</Button>
+        <Button onClick={() => navigate("/start-game")}>Start Game</Button>
+      </div>
     </div>
   );
 };

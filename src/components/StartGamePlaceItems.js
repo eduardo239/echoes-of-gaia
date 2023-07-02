@@ -1,25 +1,27 @@
+import ListGroup from "react-bootstrap/ListGroup";
+
 const StartGamePlaceItems = ({ places, characterActualPlace }) => {
   return (
-    <ul className="list-of-positions">
+    <ListGroup className="list-of-positions">
       {!!places && places.length > 0 ? (
         places.map((item, index) => (
-          <li
+          <ListGroup.Item
             key={index}
             className={
               index === characterActualPlace
                 ? "active"
-                : index < characterActualPlace + 1
+                : index < characterActualPlace - 1
                 ? "none"
                 : ""
             }
           >
             {index + 1} - {item.name}
-          </li>
+          </ListGroup.Item>
         ))
       ) : (
         <p>Empty list.</p>
       )}
-    </ul>
+    </ListGroup>
   );
 };
 

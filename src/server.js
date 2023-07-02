@@ -138,7 +138,7 @@ export const treasures = [
     price: 0,
     type: "gem",
     avatar:
-      "../assets/nikesniper_bag_full_of_gold_coins_high_details_rpg_style_v_5.2_bff090ff-3efd-4a80-a367-a4718a1f0137B.png",
+      "../assets/nikesniper_rpg_game_bag_of_gold_high_details_fd7535b7-40be-4506-8481-a1cad3b13d91B.png",
   },
 ];
 

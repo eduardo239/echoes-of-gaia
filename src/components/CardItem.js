@@ -1,8 +1,11 @@
 import { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { PlayerContext } from "../hook/PlayerContext";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
 
-const Card = ({ type = null, item }) => {
+const CardItem = ({ type = null, item }) => {
   const { character, setCharacter, inventory, setInventory, gift, setGift } =
     useContext(PlayerContext);
 
@@ -40,51 +43,51 @@ const Card = ({ type = null, item }) => {
       setInventory([...inventory, purchasedItem]);
       setCharacter({ ...character, gold: character.gold - item.price });
     } else {
-      console.log("Insufficient gold");
+      alert("Insufficient gold");
     }
   };
 
   const getGiftItem = () => {
-    setInventory([...inventory, item]);
-    setGift([]);
+    const updatedList = gift.filter((x) => x.id !== item.id);
+    setInventory([...inventory, gift[0]]);
+    setGift(updatedList);
   };
 
   return (
-    <div className="rpg-card">
-      <img src={item?.avatar} alt={item?.description} className="card-image" />
-      <div className="card-content">
-        <h2 className="card-title mb-2">
-          <b>{item?.name}</b>
-        </h2>
-        <div className="card-description">
-          <p>Price: {item?.price}</p>
-          <p>Value: {item?.value}</p>
-          <p>Type: {item?.type}</p>
-        </div>
-        <div className="d-flex gap-2 mt-3">
-          {type === "use" && (
-            <button className="card-button" onClick={useItem}>
-              USE
-            </button>
-          )}
-          {type === "buy" && (
-            <button className="card-button" onClick={buyItem}>
-              BUY
-            </button>
-          )}
-          {type === "get" && (
-            <button className="card-button" onClick={getGiftItem}>
-              GET
-            </button>
-          )}
-        </div>
-
+    <Card style={{ width: "11rem" }}>
+      <Card.Img variant="top" src={item?.avatar} />
+      <Card.Body>
+        <Card.Title>{item?.name}</Card.Title>
+        <Card.Text>Some quick example text to build.</Card.Text>
+      </Card.Body>
+      <ListGroup className="list-group-flush">
+        <ListGroup.Item>Price: {item?.price}</ListGroup.Item>
+        <ListGroup.Item>Value: {item?.value}</ListGroup.Item>
+        <ListGroup.Item>Type: {item?.type}</ListGroup.Item>
+      </ListGroup>
+      <Card.Body className="d-grid gap-2">
+        {type === "use" && (
+          <Button size="sm" onClick={useItem}>
+            USE
+          </Button>
+        )}
+        {type === "buy" && (
+          <Button size="sm" onClick={buyItem}>
+            BUY
+          </Button>
+        )}
+        {type === "get" && (
+          <Button size="sm" onClick={getGiftItem}>
+            GET
+          </Button>
+        )}
+        <br />
         <code>
           <small>{item?.id}</small>
         </code>
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
 };
 
-export default Card;
+export default CardItem;
