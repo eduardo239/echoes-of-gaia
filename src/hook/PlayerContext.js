@@ -3,9 +3,11 @@ import React, { createContext, useState } from "react";
 const PlayerContext = createContext();
 
 function PlayerContextProvider({ children }) {
+  const [gift, setGift] = useState([]);
+
+  // new
   const [character, setCharacter] = useState(null);
   const [inventory, setInventory] = useState([]);
-  const [gift, setGift] = useState([]);
 
   return (
     <PlayerContext.Provider

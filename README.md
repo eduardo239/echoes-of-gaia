@@ -1,70 +1,185 @@
-# Getting Started with Create React App
+enemy {
+nome, hp, mp, level, Tipo, imagem
+}
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+hero {
+nome, classe, level, experiência, força, inteligência,
+hp, mp, maxHP, maxMP, ouro, imagem, arma, inventário
+}
 
-## Available Scripts
+boss {
+nome, classe, level, força, inteligência, hp, mp, avatar
+}
 
-In the project directory, you can run:
+item {
+nome, valor, preço, tipo, imagem
+}
 
-### `npm start`
+TipoDeInimigo {
+comum, fantasma, rocha, dragão, demon, undead,
+}
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+TipoDeLocal {
+nada, inimigo, chefe, item
+}
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+TipoHero {
+guerreiro, mago, feiticeira, arqueiro
+}
 
-### `npm test`
+<!-- contexto -->
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+hero, setHero
+enemy, setEnemy
+gift, setGift
+boss, setBoss
+inventory, setInventory
 
-### `npm run build`
+<!-- system -->
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+hero_list [ ]
+enemy_list [ ]
+stack_list [ ]
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+generate_random_places(range){
+for x in (range)
+selecionar um item de uma lista [TipoDeLocal]
+// cria uma lista com vários locais no mapa
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    if(item || inimigo)
+        generate_random_number(1, 3)
+        generate_random(inimigo)
+        generate_random(item)
 
-### `npm run eject`
+}
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+roll_the_dice() {
+generate_random_number(1, 6)
+}
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+check_actual_place(place) {
+if place === nada
+if place === inimigo
+start_battle()
+if place === item
+get_random_item()
+if place === chefe
+start_boss_battle()
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+}
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+start_battle()
+generate_random_number(0,1)
+if 0 == hero
+enable.hero_buttons
+if 1 == enemy
+disable.hero_buttons
+hit()
 
-## Learn More
+hit()
+if 1
+generate_random_number(n, m)
+hero.hp -= value
+if 0
+choose_enemy(index)
+generate_random_number(n, m)
+enemy[index].hp -= value
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+use_effect()
+if hero.hp == 0
+game_over()
+[ hero ]
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<!-- html -->
 
-### Code Splitting
+div.hero # atacar, inventário
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+div.map.enemy # click
+div.map.item
+div.boss
+div.nada
 
-### Analyzing the Bundle Size
+<!-- mapa locais -->
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+[
 
-### Making a Progressive Web App
+- [nada]
+- [inimigo, inimigo]
+- [nada]
+- [item, item, item]
+- [boss]
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+]
 
-### Advanced Configuration
+<!-- itens -->
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+poção de cura pequeno {
+nome = Small Heal Potion
+cod = SM,
+tipo = cura
+valor = 90
+preço = 45
+}
+poção de cura médio {
+nome = Medium Heal Potion
+cod = MD,
+tipo = cura
+valor = 120
+preço = 60
+}
+poção de cura grande {
+nome = Big Heal Potion
+cod = BG,
+tipo = cura
+valor = 240
+preço = 120
+}
 
-### Deployment
+<!--  -->
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+poção de mana pequeno {
+nome = Small Mana Potion
+cod = SM,
+tipo = mana
+valor = 60
+preço = 30
+}
+poção de mana médio {
+nome = Medium Mana Potion
+cod = MD,
+tipo = mana
+valor = 80
+preço = 40
+}
+poção de mana grande {
+nome = Big Mana Potion
+cod = BG,
+tipo = mana
+valor = 120
+preço = 60
+}
 
-### `npm run build` fails to minify
+<!--  -->
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+sacola de ouro pequeno {
+nome = Small Gold Bag
+preço = 0
+tipo = ouro
+valor = 50
+}
+
+sacola de ouro pequeno {
+nome = Medium Gold Bag
+preço = 0
+tipo = ouro
+valor = 150
+}
+
+sacola de ouro pequeno {
+nome = Big Gold Bag
+preço = 0
+tipo = ouro
+valor = 400
+}
+
+<!--  -->
