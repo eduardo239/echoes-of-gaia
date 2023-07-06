@@ -34,5 +34,7 @@ li {
 }
 
 .row > div {
-    outline: 1px solid #fe143c;
+    outline: 1px solid #353535;
+    margin-bottom: 3px;
+    margin-left: 3px;
 }

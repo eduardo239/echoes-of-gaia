@@ -9,3 +9,4 @@ export const ELIXIR = "Elixir";
 export const MANA = "Mana";
 
 export const NOTHING = "Nothing";
+export const EMPTY = "Empty";

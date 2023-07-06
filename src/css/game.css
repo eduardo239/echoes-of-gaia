@@ -8,9 +8,16 @@
 }
 .map-location.active {
   background-color: #0603ac;
-  
+}
+.map-turn{
+  margin: 0;
 }
 
+.container-map {
+  display: block;
+  max-height: 351px;
+  overflow-y: scroll;
+}
 
 /* card */
 .app-card-title {
@@ -24,8 +31,7 @@
   color: #ececec;
   border-radius: 0px;
   padding: 0px;
-  margin-bottom: 20px;
-  width: 220px;
+  width: 150px;
 }
 
 .app-card p {

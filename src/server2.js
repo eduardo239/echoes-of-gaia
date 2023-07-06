@@ -1,6 +1,6 @@
 export const heroes = [
   {
-    id: "5231e313-4865-43fb-8abf-1cbef7eb811",
+    id: "5231e313-4865-43fb-8abf-1cbesf7eb811",
     name: "Mari Mia",
     type: "Warrior",
     level: 1,
@@ -16,7 +16,7 @@ export const heroes = [
     image: "./assets/japanese.png",
   },
   {
-    id: "5231e313-4865-43fb-8abf-1cb1f7eb811",
+    id: "5231e313-4865-43fb-8abf-1cab1f7eb811",
     name: "Prix Lix",
     type: "Sorceress",
     level: 1,
@@ -32,7 +32,7 @@ export const heroes = [
     image: "./assets/red_rid.png",
   },
   {
-    id: "5231e313-4865-43fb-8abf-1be1feb811",
+    id: "5231e313-4865-43fb-8abf-1be1faeb811",
     name: "Amy Iris",
     type: "Mage",
     level: 1,
@@ -50,30 +50,30 @@ export const heroes = [
 ];
 export const enemies = [
   {
-    id: "86501949-bba4-44bf-a7c9-405965e75b7",
-    name: "Goblin",
+    id: "86511949-bba4-44bf-a7c9-405r965e75b7",
+    name: "Goblinet",
     class: "Normal",
-    type: "enemy",
+    type: "Enemy",
     level: 2,
     hp: 40,
     strength: 4,
     image: "../assets/goblin1.png",
   },
   {
-    id: "86501949-bba4-44bf-a7c9-4055965e7b7",
-    name: "Goblin",
+    id: "86501319-bba4-44bf-a7c9-4055d965e7b7",
+    name: "Goblinight",
     class: "Normal",
-    type: "enemy",
+    type: "Enemy",
     level: 1,
     hp: 30,
     strength: 3,
     image: "../assets/goblin2.png",
   },
   {
-    id: "86501949-bba4-44bf-a7c9-055965e75b7",
-    name: "Goblin",
+    id: "84401949-bba4-44bf-a7c9-05s5965e75b7",
+    name: "Goblinho",
     class: "Normal",
-    type: "enemy",
+    type: "Enemy",
     level: 3,
     hp: 50,
     strength: 5,
@@ -87,7 +87,7 @@ export const items = [
     name: "Healing Potion",
     value: 80,
     price: 50,
-    type: "cure",
+    type: "Item",
     image: "../assets/red.png",
   },
   {
@@ -95,7 +95,7 @@ export const items = [
     name: "Mana Potion",
     value: 50,
     price: 35,
-    type: "cure",
+    type: "Item",
     image: "../assets/blue.png",
   },
   {
@@ -103,7 +103,7 @@ export const items = [
     name: "Poison Potion",
     value: 40,
     price: 5,
-    type: "cure",
+    type: "Item",
     image: "../assets/green.png",
   },
   {
@@ -111,7 +111,7 @@ export const items = [
     name: "Elixir Potion",
     value: 200,
     price: 200,
-    type: "cure",
+    type: "Item",
     image: "../assets/white.png",
   },
 ];
@@ -122,9 +122,11 @@ export const bosses = [
     name: "Evil Dragon",
     strength: 55,
     intelligence: 14,
-    type: "dragon",
+    type: "Boss",
     level: 40,
     hp: 1000,
     image: "../assets/dragon.png",
   },
 ];
+
+export const empty = [{ name: "Empty", type: "Empty" }];

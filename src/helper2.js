@@ -1,5 +1,18 @@
-import { BOSS, ENEMY, ITEM, NOTHING } from "./constants";
-import { bosses, enemies, items, heroes } from "./server2";
+import { ENEMY, ITEM, EMPTY } from "./constants";
+import { bosses, enemies, items, empty } from "./server2";
+
+export function randomlyCombineArrays(array1, array2) {
+  var newArray = array1.concat(array2); // Combina as duas arrays em uma nova array
+  var result = [];
+
+  while (newArray.length > 0) {
+    var randomIndex = Math.floor(Math.random() * newArray.length); // Gera um índice aleatório
+    var randomItem = newArray.splice(randomIndex, 1)[0]; // Remove e obtém o item aleatório
+    result.push(randomItem); // Adiciona o item aleatório na nova array
+  }
+
+  return result;
+}
 
 export function chooseRandomItem(list = []) {
   const randomIndex = Math.floor(Math.random() * list.length);
@@ -7,10 +20,11 @@ export function chooseRandomItem(list = []) {
 }
 
 export const generateRandomMap = () => {
-  const types = [NOTHING, ENEMY, ITEM, BOSS];
+  //const types = [EMPTY, ENEMY, ENEMY, ITEM];
+  const types = [ITEM, ENEMY];
   const map = [];
 
-  for (let index = 0; index < 35; index++) {
+  for (let index = 0; index < 120; index++) {
     const randomNumber = Math.floor(Math.random() * types.length);
     const randomObject = types[randomNumber];
 
@@ -21,16 +35,12 @@ export const generateRandomMap = () => {
         const enemy = chooseRandomItem(enemies);
         multipleEnemies.push(enemy);
       }
-
       map.push(multipleEnemies);
     } else if (randomObject === ITEM) {
       const item = chooseRandomItem(items);
       map.push([item]);
-    } else if (randomObject === BOSS) {
-      const boss = chooseRandomItem(bosses);
-      map.push([boss]);
-    } else {
-      map.push([{ name: "Nothing", type: "empty" }]);
+    } else if (randomObject === EMPTY) {
+      map.push([empty[0]]);
     }
   }
   map[0] = [{ name: "Start", type: "start" }];
@@ -38,3 +48,7 @@ export const generateRandomMap = () => {
   map[map.length - 1] = [boss];
   return map;
 };
+
+export function generateRandomNumber(min, max) {
+  return Math.random() * (max - min) + min;
+}
