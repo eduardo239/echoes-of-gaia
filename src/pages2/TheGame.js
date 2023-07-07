@@ -1,38 +1,31 @@
 /* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import {
-  generateRandomItemAndPlaceItems,
-  generateRandomNumber,
-  getRandomItem,
-  rollDice,
-} from "../helper";
+import { generateRandomNumber } from "../helper";
 import { PlayerContext } from "../hook/PlayerContext";
-import { useNavigate } from "react-router-dom";
 import { heroes, enemies, items, bosses } from "../server2";
-import CharacterCard from "../components/CharacterCard";
-import ModalItems from "../components/ModalItems";
-import CharacterCardFightOptions from "../components/CharacterCardFightOptions";
-import StartGameOptions from "../components/StartGameOptions";
-import StartGamePlaceItems from "../components/StartGamePlaceItems";
-import { generateRandomMap, randomlyCombineArrays } from "../helper2";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
+import {
+  rearrangeList,
+  generateRandomMap,
+  randomlyCombineArrays,
+  chooseRandomItem,
+} from "../helper2";
+//
 import Col from "react-bootstrap/Col";
-
-// modal
-import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
 import Modal from "react-bootstrap/Modal";
-import { BOSS, EMPTY, ENEMY, ITEM, NOTHING } from "../constants";
+import Button from "react-bootstrap/Button";
 import HeroList from "../components2/HeroList";
 import EnemyList from "../components2/EnemyList";
+import Container from "react-bootstrap/Container";
 import InventoryList from "../components2/InventoryList";
+import { BOSS, EMPTY, ENEMY, HERO, ITEM } from "../constants";
+import GameStats from "../components2/GameStats";
 
 const TheGame = () => {
-  const { character, setCharacter, inventory, setInventory } =
-    useContext(PlayerContext);
+  const { inventory, setInventory } = useContext(PlayerContext);
 
-  // lists
+  //
   const [heroList, setHeroList] = useState([]);
   const [enemyList, setEnemyList] = useState([]);
   //
@@ -40,20 +33,74 @@ const TheGame = () => {
   //
   const [gameMap, setGameMap] = useState([]);
   const [heroLocation, setHeroLocation] = useState(0);
-  const [queue, setQueue] = useState([]);
   const [dice, setDice] = useState(0);
-  // enable/disabled
-  const [heroPlaying, setHeroPlaying] = useState(true);
+  //
+  const [turn, setTurn] = useState(null);
+  const [queue, setQueue] = useState([]);
+  const [isFighting, setIsFighting] = useState(false);
+  const [isHeroAttacking, setIsHeroAttacking] = useState(false);
+  //
 
   // modal
   const [modalShop, setModalShop] = useState(false);
   const handleModalShopClose = () => setModalShop(false);
   const handleModalShopShow = () => setModalShop(true);
-
+  //
   const [modalItem, setModalItem] = useState(false);
   const handleModalItemClose = () => setModalItem(false);
   const handleModalItemShow = () => setModalItem(true);
+  //
 
+  useEffect(() => {
+    if (queue && queue.length > 0) {
+      if (queue[0].type === ENEMY) {
+        setTurn(1);
+        enemyAttack();
+      } else if (queue[0].type === HERO) {
+        setTurn(0);
+      }
+    }
+    return () => {};
+  }, [queue, turn]);
+
+  const attack = () => {
+    setIsHeroAttacking(true);
+  };
+  const enemyAttack = () => {
+    setIsHeroAttacking(false);
+    const dmg = generateRandomNumber(20, 40);
+    const hero = chooseRandomItem(heroList);
+    // TODO: buscar um herói aleatório
+    setTimeout(() => {
+      console.log("inimigo atacando");
+    }, 500);
+    heroList[0].hp -= dmg;
+    const newHeroList = heroList;
+    setHeroList(newHeroList);
+    // fim do turno
+    console.log(queue[1].type);
+    if (queue[1].type === HERO) setTurn(0);
+    else setTurn(1);
+    setQueue(rearrangeList(queue));
+  };
+
+  const hit = (enemy) => {
+    for (let i = 0; i < enemyList.length; i++) {
+      if (enemyList[i].id === enemy.id) {
+        const dmg = generateRandomNumber(20, 40);
+        enemyList[i].hp -= dmg;
+        const newEnemyList = enemyList;
+        setEnemyList(newEnemyList);
+      }
+    }
+    // fim do turno
+    console.log(queue[1].type);
+    if (queue[1].type === HERO) setTurn(0);
+    else setTurn(1);
+    setQueue(rearrangeList(queue));
+  };
+  const magic = () => {};
+  const restart = () => {};
   const play = () => {
     const randomNumber = generateRandomNumber(1, 6);
     const newLocal = randomNumber + heroLocation;
@@ -63,7 +110,6 @@ const TheGame = () => {
   const walkTo = (newLocal) => {
     const isLastLocation = newLocal >= gameMap.length - 1;
     if (isLastLocation) {
-      setHeroPlaying(false);
       setHeroLocation(gameMap.length - 1);
       checkActualLocal(gameMap.length - 1);
     } else {
@@ -86,8 +132,13 @@ const TheGame = () => {
           newEnemy.id = uuidv4();
           newEnemyList.push(newEnemy);
         }
+        // inicia a lista
         setEnemyList(newEnemyList);
-        startFight(heroes, newEnemyList);
+        const battleOrderList = randomlyCombineArrays(heroes, newEnemyList);
+        setQueue(battleOrderList);
+        // inicia a luta
+
+        setIsFighting(true);
         break;
       case ITEM:
         setGifts(localData);
@@ -97,20 +148,12 @@ const TheGame = () => {
         setEnemyList(localData);
         break;
       case EMPTY:
-        console.log("Empty ok");
+        //
         break;
       default:
         break;
     }
   };
-  const startFight = (_heroes, _enemyList) => {
-    // gera a ordem aleatória dos turnos de batalha
-    const versusList = randomlyCombineArrays(_heroes, _enemyList);
-    setQueue(versusList);
-  };
-  const hit = () => {};
-  const magic = () => {};
-  const restart = () => {};
   const use = (item) => {
     // remove o item do inventário
     const updatedInventory = inventory.filter((x) => x.id !== item.id);
@@ -148,35 +191,7 @@ const TheGame = () => {
             HP: <span id="hp">{hero.hp}</span>
           </p>
           <div className="buttons">
-            <button className="button" onClick={hit}>
-              Attack
-            </button>
-            <button className="button" onClick={magic}>
-              Magic
-            </button>
-          </div>
-          <p>
-            Level: <span>1</span>
-          </p>
-        </div>
-      </div>
-    ));
-  };
-  const get_hero_fight_list = () => {
-    return heroList.map((hero) => (
-      <div key={hero.id} className="app-card">
-        <img src={hero.image} alt="" />
-
-        <div className="app-card-body">
-          <p className="app-card-title">{hero.name}</p>
-          <p>
-            Mana: <span id="mana">{hero.mp}</span>
-          </p>
-          <p>
-            HP: <span id="hp">{hero.hp}</span>
-          </p>
-          <div className="buttons">
-            <button className="button" onClick={hit}>
+            <button className="button" onClick={attack}>
               Attack
             </button>
             <button className="button" onClick={magic}>
@@ -192,24 +207,6 @@ const TheGame = () => {
   };
   const get_enemies_list = () => {
     return enemies.map((enemy) => (
-      <div key={enemy.id} className="app-card">
-        <img src={enemy.image} alt="" />
-
-        <div className="app-card-body">
-          <p className="app-card-title">{enemy.name}</p>
-          <p>
-            HP: <span id="hp">{enemy.hp}</span>
-          </p>
-
-          <p>
-            Level: <span>{enemy.level}</span>
-          </p>
-        </div>
-      </div>
-    ));
-  };
-  const get_enemy_fight_list = () => {
-    return enemyList.map((enemy) => (
       <div key={enemy.id} className="app-card">
         <img src={enemy.image} alt="" />
 
@@ -297,7 +294,11 @@ const TheGame = () => {
       <li
         key={index}
         className={
-          heroLocation === index ? "map-location active" : "map-location"
+          heroLocation === index
+            ? "map-location active"
+            : heroLocation - 1 > index
+            ? "none"
+            : "map-location"
         }
       >
         {index} -{" "}
@@ -305,81 +306,49 @@ const TheGame = () => {
       </li>
     ));
   };
-  const get_inventory_list = () => {
-    return inventory && inventory.length > 0 ? (
-      inventory.map((item) => (
-        <div key={item.id} className="app-card">
-          <img src={item.image} alt="" />
-
-          <div className="app-card-body">
-            <p className="app-card-title">{item.name}</p>
-            <p>
-              Value: <span id="hp">{item.value}</span>
-            </p>
-
-            <p>
-              Preço: <span>${item.price}</span>
-            </p>
-
-            <div className="buttons">
-              <button className="button" onClick={() => use(item)}>
-                Use
-              </button>
-              <button className="button" onClick={() => sell(item)}>
-                Sell
-              </button>
-            </div>
-          </div>
-          <div className="app-card-footer">
-            <code>{item.id}</code>
-          </div>
-        </div>
-      ))
-    ) : (
-      <div>Empty list</div>
-    );
-  };
 
   useEffect(() => {
     const result = generateRandomMap();
     setGameMap(result);
     setHeroList(heroes);
-    get_hero_fight_list();
+    // get_hero_fight_list();
     return () => {};
   }, []);
 
   return (
-    <div>
+    <>
       <Container>
         <Row>
-          <Col style={{ padding: 0 }}>
-            <HeroList list={heroList} hit={hit} magic={magic} />
+          <Col md="5" style={{ padding: 0 }}>
+            <HeroList
+              hit={attack}
+              magic={magic}
+              list={heroList}
+              active={queue[0]}
+              isFighting={isFighting}
+            />
           </Col>
-          <Col style={{ padding: 0, textAlign: "center" }} md="1">
-            <p>Versus</p>
-            <span>Dice: {dice}</span>
-            <div>
-              {queue &&
-                queue.map((x, i) => (
-                  <p className="map-turn" key={i}>
-                    {x.name}
-                  </p>
-                ))}
-            </div>
+          <Col md="2" style={{ padding: 0, textAlign: "center" }}>
+            <GameStats queue={queue} dice={dice} />
           </Col>
-          <Col>
-            <EnemyList list={enemyList} />
+          <Col md="5">
+            <EnemyList
+              hit={hit}
+              list={enemyList}
+              isHeroAttacking={isHeroAttacking}
+            />
           </Col>
         </Row>
+        {/* ---------------------- */}
         <Row>
-          <Col style={{ padding: 0 }}>
+          <Col md="5" style={{ padding: 0 }}>
             <InventoryList list={inventory} use={use} sell={sell} />
           </Col>
-          <Col style={{ padding: 0 }} md="1">
+          <Col md="2" style={{ padding: 0 }}>
             <div className="d-grid gap-1">
               <Button
                 style={{ borderRadius: 0 }}
-                disabled={!heroPlaying}
+                disabled={isFighting}
                 variant="primary"
                 onClick={play}
               >
@@ -387,6 +356,7 @@ const TheGame = () => {
               </Button>
               <Button
                 style={{ borderRadius: 0 }}
+                disabled={isFighting}
                 variant="primary"
                 onClick={handleModalShopShow}
               >
@@ -401,7 +371,7 @@ const TheGame = () => {
               </Button>
             </div>
           </Col>
-          <Col className="container-map">
+          <Col md="5" className="container-map">
             {heroes && heroes.length > 0 && get_map_list()}
           </Col>
         </Row>
@@ -471,7 +441,7 @@ const TheGame = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 };
 

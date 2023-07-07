@@ -1,8 +1,14 @@
-const EnemyList = ({ list = [] }) => {
+const EnemyList = ({ list = [], isHeroAttacking, hit }) => {
   const get_enemy_fight_list = () => {
     return list.map((enemy) => (
-      <div key={enemy.id} className="app-card">
-        <img src={enemy.image} alt="" />
+      <div
+        key={enemy.id}
+        onClick={() => hit(enemy)}
+        className={`app-card app-card__enemy ${
+          isHeroAttacking ? "is-hero-attacking" : ""
+        }`}
+      >
+        <img src={enemy.image} alt={enemy.name} />
 
         <div className="app-card-body">
           <p className="app-card-title">{enemy.name}</p>

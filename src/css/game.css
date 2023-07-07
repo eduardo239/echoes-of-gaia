@@ -9,8 +9,14 @@
 .map-location.active {
   background-color: #0603ac;
 }
+
+/* TODO: remover */
 .map-turn{
-  margin: 0;
+  margin: 0 0 2px;
+  background-color: #4caf50;
+  color: #ececec;
+  padding: 2px;
+  font-size: .8rem;
 }
 
 .container-map {
@@ -53,6 +59,11 @@
   font-size: .7rem;
 }
 
+.app-card__enemy:hover {
+  border-bottom: 2px solid #ff006a;
+  cursor: pointer;
+}
+
 .buttons {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -71,7 +82,10 @@
   outline: none;
   border: none;
 }
-
+.button:disabled {
+  background-color: #38393a;
+  color: #5f5f5f;
+}
 .button:hover {
   background-color: #45a049;
 }
@@ -85,4 +99,10 @@
 .modal-header, .modal-body, .modal-footer {
   border-top: 1px solid #2b2b2b;
   border-bottom: 1px solid #2b2b2b;
+}
+
+
+/*  */
+.is-hero-attacking {
+  outline: 1px dotted red;
 }

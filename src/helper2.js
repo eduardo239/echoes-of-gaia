@@ -21,7 +21,7 @@ export function chooseRandomItem(list = []) {
 
 export const generateRandomMap = () => {
   //const types = [EMPTY, ENEMY, ENEMY, ITEM];
-  const types = [ITEM, ENEMY];
+  const types = [ENEMY];
   const map = [];
 
   for (let index = 0; index < 120; index++) {
@@ -51,4 +51,16 @@ export const generateRandomMap = () => {
 
 export function generateRandomNumber(min, max) {
   return Math.random() * (max - min) + min;
+}
+
+export function rearrangeList(list) {
+  if (!Array.isArray(list)) {
+    throw new Error("O argumento deve ser uma lista.");
+  }
+  if (list.length < 2) {
+    return list;
+  }
+  const firstItem = list.shift();
+  list.push(firstItem);
+  return list;
 }

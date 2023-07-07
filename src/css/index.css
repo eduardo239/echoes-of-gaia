@@ -32,9 +32,3 @@ li {
 .none {
     display: none;
 }
-
-.row > div {
-    outline: 1px solid #353535;
-    margin-bottom: 3px;
-    margin-left: 3px;
-}

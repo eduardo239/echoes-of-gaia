@@ -8,7 +8,7 @@ function App() {
   // const { count, incrementCount, decrementCount } = useContext(PlayerContext);
 
   return (
-    <div className="p-2 container-sm">
+    <>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/select-character" element={<SelectCharacter />} />
@@ -17,7 +17,7 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </div>
+    </>
   );
 }
 
