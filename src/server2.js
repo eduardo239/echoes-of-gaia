@@ -1,38 +1,40 @@
 export const heroes = [
   {
     id: "5231e313-4865-43fb-8abf-1cbesf7eb811",
-    name: "Mari Mia",
+    name: "Mary",
     class: "Warrior",
     level: 1,
     exp: 0,
     strength: 20,
     intelligence: 3,
     weapon: "Sword",
-    hp: 90,
-    maxHp: 90,
+    hp: 99,
+    maxHp: 99,
     mp: 10,
     maxMp: 150,
     gold: 0,
-    type: "hero",
+    type: "Hero",
     image: "./assets/japanese.png",
   },
   {
     id: "5231e313-4865-43fb-8abf-1cab1f7eb811",
-    name: "Prix Lix",
+    name: "Prix",
     class: "Sorceress",
     level: 1,
     exp: 0,
     strength: 8,
-    intelligence: 3,
+    intelligence: 23,
     weapon: "Staff",
-    hp: 95,
-    maxHp: 95,
+    hp: 99,
+    maxHp: 99,
     mp: 45,
     maxMp: 45,
     gold: 0,
-    type: "hero",
+    type: "Hero",
     image: "./assets/red_rid.png",
   },
+];
+export const heroes2 = [
   {
     id: "5231e313-4865-43fb-8abf-1be1faeb811",
     name: "Amy Iris",
@@ -47,7 +49,7 @@ export const heroes = [
     mp: 55,
     maxMp: 55,
     gold: 0,
-    type: "hero",
+    type: "Hero",
     image: "./assets/blond.png",
   },
 ];
@@ -58,6 +60,7 @@ export const enemies = [
     class: "Normal",
     type: "Enemy",
     level: 2,
+    intelligence: 0,
     hp: 40,
     strength: 4,
     image: "../assets/goblin1.png",
@@ -68,6 +71,7 @@ export const enemies = [
     class: "Normal",
     type: "Enemy",
     level: 1,
+    intelligence: 0,
     hp: 30,
     strength: 3,
     image: "../assets/goblin2.png",
@@ -78,12 +82,35 @@ export const enemies = [
     class: "Normal",
     type: "Enemy",
     level: 3,
+    intelligence: 0,
     hp: 50,
     strength: 5,
     image: "../assets/goblin3.png",
   },
-];
 
+  {
+    id: "84401aa9-bba4-44xf-a7c9-05s5965e7547",
+    name: "Caterpillar",
+    class: "Medium",
+    type: "Enemy",
+    level: 5,
+    intelligence: 0,
+    hp: 250,
+    strength: 12,
+    image: "../assets/caterpillar.png",
+  },
+  {
+    id: "84401aa9-bba4-44xf-a7c9-05s21357547",
+    name: "Undead",
+    class: "Hard",
+    type: "Enemy",
+    level: 6,
+    intelligence: 0,
+    hp: 310,
+    strength: 10,
+    image: "../assets/undead.png",
+  },
+];
 export const items = [
   {
     id: "82a0344c-ae51-44fb-87e-f704f80e3de6",
@@ -91,6 +118,7 @@ export const items = [
     value: 80,
     price: 50,
     type: "Item",
+    class: "Cure",
     image: "../assets/red.png",
   },
   {
@@ -99,6 +127,7 @@ export const items = [
     value: 50,
     price: 35,
     type: "Item",
+    class: "Mana",
     image: "../assets/blue.png",
   },
   {
@@ -107,6 +136,7 @@ export const items = [
     value: 40,
     price: 5,
     type: "Item",
+    class: "Poison",
     image: "../assets/green.png",
   },
   {
@@ -115,10 +145,10 @@ export const items = [
     value: 200,
     price: 200,
     type: "Item",
+    class: "Elixir",
     image: "../assets/white.png",
   },
 ];
-
 export const bosses = [
   {
     id: "cfa22ba6-0c0-4dac-9bde-c1eb5154408",
@@ -131,5 +161,4 @@ export const bosses = [
     image: "../assets/dragon.png",
   },
 ];
-
 export const empty = [{ name: "Empty", type: "Empty" }];

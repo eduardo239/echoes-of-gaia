@@ -1,6 +1,11 @@
 import Button from "react-bootstrap/Button";
 
-const HeroList = ({ list = [], hit, magic, active = null, isFighting }) => {
+const HeroList = ({
+  list = [],
+  heroMagicalAttack,
+  heroAttackPhysically,
+  activeHero = null,
+}) => {
   const get_hero_fight_list = () => {
     return list.map((hero) => (
       <div key={hero.id} className="app-card">
@@ -9,23 +14,24 @@ const HeroList = ({ list = [], hit, magic, active = null, isFighting }) => {
         <div className="app-card-body">
           <p className="app-card-title">{hero.name}</p>
           <p>
-            Mana: <span id="mana">{hero.mp}</span>
-          </p>
-          <p>
             HP: <span id="hp">{hero.hp}</span>
           </p>
+          <p>
+            Mana: <span id="mana">{hero.mp}</span>
+          </p>
+
           <div className="buttons">
             <Button
               className="button"
-              onClick={hit}
-              disabled={(active && active.id !== hero.id) || !isFighting}
+              onClick={() => heroAttackPhysically(hero)}
+              disabled={activeHero && activeHero.id !== hero.id}
             >
               Attack
             </Button>
             <Button
               className="button"
-              onClick={magic}
-              disabled={(active && active.id !== hero.id) || !isFighting}
+              onClick={() => heroMagicalAttack(hero)}
+              disabled={activeHero && activeHero.id !== hero.id}
             >
               Magic
             </Button>

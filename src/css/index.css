@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-
+:root {
+  --dark-background: #131316;
+  --dark-background-alternative: #19232e;
+  --light-color: #fefefe;
+}
 body {
   font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background-color: #222222;
@@ -31,4 +35,18 @@ li {
 
 .none {
     display: none;
+}
+
+table{
+  width: 100%;
+}
+
+th, td {
+  font-size: .8rem;
+  border: 1px solid var(--dark-background-alternative);
+  padding: 5px;
+}
+
+.list-group {
+  border-radius: 0;
 }

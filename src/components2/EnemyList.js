@@ -1,9 +1,9 @@
-const EnemyList = ({ list = [], isHeroAttacking, hit }) => {
+const EnemyList = ({ list = [], isHeroAttacking, characterAttack }) => {
   const get_enemy_fight_list = () => {
     return list.map((enemy) => (
       <div
         key={enemy.id}
-        onClick={() => hit(enemy)}
+        onClick={isHeroAttacking ? () => characterAttack(enemy) : null}
         className={`app-card app-card__enemy ${
           isHeroAttacking ? "is-hero-attacking" : ""
         }`}

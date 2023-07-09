@@ -1,14 +1,18 @@
 import { ENEMY, ITEM, EMPTY } from "./constants";
 import { bosses, enemies, items, empty } from "./server2";
 
+export function generateRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export function randomlyCombineArrays(array1, array2) {
-  var newArray = array1.concat(array2); // Combina as duas arrays em uma nova array
+  var newArray = array1.concat(array2);
   var result = [];
 
   while (newArray.length > 0) {
-    var randomIndex = Math.floor(Math.random() * newArray.length); // Gera um índice aleatório
-    var randomItem = newArray.splice(randomIndex, 1)[0]; // Remove e obtém o item aleatório
-    result.push(randomItem); // Adiciona o item aleatório na nova array
+    var randomIndex = Math.floor(Math.random() * newArray.length);
+    var randomItem = newArray.splice(randomIndex, 1)[0];
+    result.push(randomItem);
   }
 
   return result;
@@ -19,12 +23,12 @@ export function chooseRandomItem(list = []) {
   return list[randomIndex];
 }
 
-export const generateRandomMap = () => {
+export const generateRandomMap = (quantity = 20) => {
   //const types = [EMPTY, ENEMY, ENEMY, ITEM];
   const types = [ENEMY];
   const map = [];
 
-  for (let index = 0; index < 12; index++) {
+  for (let index = 0; index < quantity; index++) {
     const randomNumber = Math.floor(Math.random() * types.length);
     const randomObject = types[randomNumber];
 
@@ -48,7 +52,3 @@ export const generateRandomMap = () => {
   map[map.length - 1] = [boss];
   return map;
 };
-
-export function generateRandomNumber(min, max) {
-  return Math.random() * (max - min) + min;
-}

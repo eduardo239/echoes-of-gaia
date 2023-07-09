@@ -7,6 +7,7 @@ const GameStats = ({ queue, dice }) => {
       <br />
       <div style={{ textAlign: "left" }}>
         {queue &&
+          queue.length > 0 &&
           queue.map((x, i) => (
             <p className="map-turn" key={i}>
               {i} - {x.name}

@@ -1,108 +1,43 @@
-
-
-/* map */
-.map-location {
-  background-color: #222222;
-  border-bottom: 1px solid #2b2b2b;
-  
-}
-.map-location.active {
-  background-color: #0603ac;
-}
-
-/* TODO: remover */
-.map-turn{
-  margin: 0 0 2px;
-  background-color: #4caf50;
-  color: #ececec;
-  padding: 2px;
-  font-size: .8rem;
-}
-
-.container-map {
-  display: block;
-  max-height: 351px;
-  overflow-y: scroll;
+/* theme */
+.dark {
+  background-color: var(--dark-background);
+  color: var(--light-color);
 }
 
 /* card */
-.app-card-title {
-  font-size: 1.1rem;
-  letter-spacing: .5px;
-  color: #ececec;
-}
 .app-card {
-  background-color: #111111;
-  border: 1px solid #2b2b2b;
-  color: #ececec;
-  border-radius: 0px;
-  padding: 0px;
-  width: 150px;
-}
-
-.app-card p {
-  margin: 0;
-  line-height: 1.4;
+  max-width: 12rem;
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--dark-background);
+  border: 1px solid var(--dark-background-alternative);
 }
 
 .app-card img {
-  margin: 0;
   width: 100%;
+  display: inline-block;
 }
 
 .app-card-body {
-  padding: 5px 10px;
-}
-.app-card-footer {
-  text-align: center;
-  padding-bottom: 10px;
-  font-size: .7rem;
+  padding: .5rem 0;
 }
 
-.app-card__enemy:hover {
-  border-bottom: 2px solid #ff006a;
+.app-card-footer code {
+  font-size: .7rem;
+}
+.hero-picking {
+  border-color: #bfffd4;
+}
+.hero-picking:hover {
+  border-color: #04ff57;
   cursor: pointer;
 }
 
-.buttons {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: grid;
-  gap: 3px;
+/* modal */
+.modal-content, .modal-header, .modal-footer {
+  border-radius: 0;
 }
-
-.button {
-  display: block;
-  width: 100%;
-  padding: 5px 10px;
-  background-color: #4caf50;
-  color: #ececec;
-  text-decoration: none;
-  border-radius: 0px;
-  outline: none;
-  border: none;
-}
-.button:disabled {
-  background-color: #38393a;
-  color: #5f5f5f;
-}
-.button:hover {
-  background-color: #45a049;
-}
-
-
-.modal-content {
-  background-color: #222222;
-  color: #ececec;
- 
-}
-.modal-header, .modal-body, .modal-footer {
-  border-top: 1px solid #2b2b2b;
-  border-bottom: 1px solid #2b2b2b;
-}
-
-
-/*  */
-.is-hero-attacking {
-  outline: 1px dotted red;
+.modal-header, .modal-footer {
+  border-top: 1px solid var(--dark-background-alternative);
+  border-bottom: 1px solid var(--dark-background-alternative);
 }
