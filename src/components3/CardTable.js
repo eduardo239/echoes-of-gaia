@@ -40,6 +40,10 @@ const CardTable = ({ modalType, item }) => {
             <td>Class</td>
             <td>{item.class}</td>
           </tr>
+          <tr>
+            <td>Is Alive?</td>
+            <td>{item.live ? "Yes" : "No"}</td>
+          </tr>
           {modalType === ITEM && (
             <>
               <tr>

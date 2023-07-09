@@ -3,8 +3,8 @@ import CardTable from "../CardTable";
 import { ENEMY, HERO, ITEM } from "../../constants";
 
 const MapForItems = ({
-  modalType,
   list,
+  modalType,
   isEnemyFighting = null,
   firstInTheQueue = null,
   physicalAttack = null,
@@ -23,7 +23,7 @@ const MapForItems = ({
           (isPhysicalAttack || isMagicalAttack)
             ? "hero-picking"
             : ""
-        } app-card`}
+        } app-card ${item.live ? "" : "dead-character"}`}
         onClick={
           modalType === ENEMY && (isPhysicalAttack || isMagicalAttack)
             ? () => selectedTarget(item)

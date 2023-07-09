@@ -49,6 +49,7 @@ const TheGame = () => {
   const [isMagicalAttack, setIsMagicalAttack] = useState(false);
   //
   const [message, setMessage] = useState(0);
+  const [log, setLog] = useState([]);
 
   useEffect(() => {
     const result = generateRandomMap(100);
@@ -58,6 +59,7 @@ const TheGame = () => {
   }, []);
 
   const reset = () => {
+    setLog([]);
     setIsFighting(false);
     setPosition(0);
     setIsPhysicalAttack(false);
@@ -93,6 +95,7 @@ const TheGame = () => {
 
     switch (positionType) {
       case ENEMY:
+        setMessage("Enemy Founded");
         // gerar a ordem de batalha
         const randomOrder = randomlyCombineArrays(positionData, heroList);
         // setEnemyList(positionData);
@@ -105,7 +108,7 @@ const TheGame = () => {
         // desabilitar botão shop
         break;
       case ITEM:
-        setMessage("item");
+        setMessage("Item Founded");
         break;
       default:
         break;
@@ -126,7 +129,7 @@ const TheGame = () => {
   /**
    * h e h OK
    * h e e h OK
-   * e h .... ERROR
+   * e h OK
    */
   // começo da batalha
 
@@ -134,94 +137,114 @@ const TheGame = () => {
   const startEnemyTurn = (list) => {
     setTimeout(() => {
       // selecionar um herói aleatório
-      const rndHero = chooseRandomItem(heroList);
-      setMessage("inimigo atacando " + rndHero.name);
+      const _her = chooseRandomItem(heroList);
 
       // gerar um dano aleatório
-      const str = list[0].strength;
-      const rndDamage = generateRandomNumber(str, str + 10);
-      setMessage("inimigo provocou " + rndDamage + " de dano");
+      const _en = list[0];
+      const _dmg = generateRandomNumber(_en.strength, _en.strength + 30);
 
-      // provoca o dano
-      rndHero.hp -= rndDamage;
+      setMessage(_en.name + " enemy deals " + _dmg + " damage to " + _her.name);
+
+      // provocando o dano
+      _her.hp -= _dmg;
+      if (_her.hp < 1) _her.live = false;
+
       // atualizar as listas
       const newHeroList = heroList;
       for (let i = 0; i < heroList.length; i++) {
-        if (heroList[i].id === rndHero.id) {
-          newHeroList[i] = rndHero;
+        if (heroList[i].id === _her.id) {
+          newHeroList[i] = _her;
         }
       }
 
       const newQueue = list;
       for (let y = 0; y < list.length; y++) {
-        if (list[y].id === rndHero.id) {
-          newQueue[y] = rndHero;
+        if (list[y].id === _her.id) {
+          newQueue[y] = _her;
         }
       }
 
-      setHeroList(newHeroList);
       setOrderBattle(newQueue);
+      setHeroList(newHeroList);
 
       reorderQueue(newQueue);
-    }, 1000);
+    }, 800);
   };
 
   // ataque mágico
   const magicalAttack = () => {
-    setMessage("magicalAttack");
+    setMessage("Magical Attack");
     setIsMagicalAttack(true);
   };
   // ataque físico
   const physicalAttack = () => {
-    setMessage("physicalAttack");
+    setMessage("Physical Attack");
     setIsPhysicalAttack(true);
   };
 
   const selectedTarget = (character) => {
-    const hero = orderBattle[0];
-    const target = character;
-    randomDamage(hero, target, orderBattle);
+    const _her = orderBattle[0];
+    const _target = character;
+    randomDamage(_her, _target, orderBattle);
   };
 
-  const randomDamage = (x, y, list) => {
-    let rndPhysicalAttack = 0;
-    let rndMagicalAttack = 0;
-    setMessage("hero attacking " + y.name);
+  const randomDamage = (hero, _ene, list) => {
+    let physAttack = 0;
+    let MagAttack = 0;
+
+    setIsPhysicalAttack(false);
+    setIsMagicalAttack(false);
 
     setTimeout(() => {
+      const _her = hero;
       if (isPhysicalAttack) {
-        const str = x.strength;
-        rndPhysicalAttack = generateRandomNumber(str, str + 20);
-        y.hp -= rndPhysicalAttack;
-        setMessage("physical damage " + rndPhysicalAttack);
+        physAttack = generateRandomNumber(_her.strength, _her.strength + 30);
+        _ene.hp -= physAttack;
+
+        setMessage(
+          hero.name + " hero deals " + physAttack + " damage to " + _ene.name
+        );
       }
       if (isMagicalAttack) {
-        const intel = x.intelligence;
-        rndMagicalAttack = generateRandomNumber(intel, intel + 20);
-        y.hp -= rndMagicalAttack;
-        setMessage("magical damage " + rndMagicalAttack);
+        MagAttack = generateRandomNumber(
+          _her.intelligence,
+          _her.intelligence + 10
+        );
+        _ene.hp -= MagAttack;
+        setMessage(
+          hero.name + " hero deals " + MagAttack + " damage to " + _ene.name
+        );
       }
 
-      const newEnemyList = enemyList;
+      let newQueue = list;
+      let newEnemyList = enemyList;
+
       for (let i = 0; i < enemyList.length; i++) {
-        if (enemyList[i].id === y.id) {
-          newEnemyList[i] = y;
+        if (enemyList[i].id === _ene.id) {
+          if (_ene.hp < 1) {
+            console.log("enemy morreu");
+            _ene.live = false;
+          }
+          newEnemyList[i] = _ene;
         }
       }
-      const newQueue = list;
       for (let t = 0; t < list.length; t++) {
-        if (list[t].id === y.id) {
-          newQueue[t] = y;
+        if (list[t].id === _ene.id) {
+          newQueue[t] = _ene;
         }
       }
 
-      setEnemyList(enemyList);
-      setIsPhysicalAttack(false);
-      setIsMagicalAttack(false);
+      // TODO: validar se o personagem está vivo, e atualizar as listas
+      // if (!_ene.live) {
+      //   const t = newEnemyList.filter((x) => x.live === true);
+      //   console.log(t);
+      // }
+
+      setEnemyList(newEnemyList);
 
       setOrderBattle(newQueue);
       reorderQueue(newQueue);
-    }, 1000);
+    }, 800);
   };
 
   const reorderQueue = (list) => {
@@ -232,44 +255,55 @@ const TheGame = () => {
 
       if (list[0].type === ENEMY) startEnemyTurn(list);
 
-      setMessage("Fila reordenada");
-    }, 1000);
+      setMessage("Reordered Queue");
+    }, 800);
     return list;
   };
 
   return (
     <>
-      <Row>{message && <Alert variant="light">{message}</Alert>}</Row>
+      <Row>
+        <Alert variant="light">{message ? message : "Game"}</Alert>
+      </Row>
 
       <Row>
         <Col sm="6" md="8">
-          <div className="d-flex justify-content-start">
-            <div className="d-flex align-content-start flex-wrap">
-              {isFighting && heroList && heroList.length > 0 && (
-                <MapForItems
-                  list={heroList}
-                  modalType={HERO}
-                  magicalAttack={magicalAttack}
-                  physicalAttack={physicalAttack}
-                  isEnemyFighting={isEnemyFighting}
-                  firstInTheQueue={orderBattle[0]}
-                  isPhysicalAttack={isPhysicalAttack}
-                  selectedTarget={selectedTarget}
-                />
-              )}
+          <div className="d-flex align-content-start flex-wrap">
+            {isFighting && heroList && heroList.length > 0 && (
+              <MapForItems
+                list={heroList}
+                modalType={HERO}
+                magicalAttack={magicalAttack}
+                physicalAttack={physicalAttack}
+                isEnemyFighting={isEnemyFighting}
+                firstInTheQueue={orderBattle[0]}
+                isPhysicalAttack={isPhysicalAttack}
+                selectedTarget={selectedTarget}
+              />
+            )}
 
-              {isFighting && enemyList && enemyList.length > 0 && (
-                <MapForItems
-                  list={enemyList}
-                  modalType={ENEMY}
-                  isPhysicalAttack={isPhysicalAttack}
-                  isMagicalAttack={isMagicalAttack}
-                  isEnemyFighting={isEnemyFighting}
-                  selectedTarget={selectedTarget}
-                />
-              )}
-            </div>
+            {isFighting && enemyList && enemyList.length > 0 && (
+              <MapForItems
+                list={enemyList}
+                modalType={ENEMY}
+                isPhysicalAttack={isPhysicalAttack}
+                isMagicalAttack={isMagicalAttack}
+                isEnemyFighting={isEnemyFighting}
+                selectedTarget={selectedTarget}
+              />
+            )}
           </div>
+
+          <div>
+            {log &&
+              log.length > 0 &&
+              log.map((x, i) => (
+                <p key={i}>
+                  {i} - {x}
+                </p>
+              ))}
+          </div>
+
           <ModalShop
             list={items}
             modalType={ITEM}

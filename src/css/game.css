@@ -32,6 +32,10 @@
   border-color: #04ff57;
   cursor: pointer;
 }
+.dead-character {
+  filter: grayscale(100%);
+  filter: blur(50%);
+}
 
 /* modal */
 .modal-content, .modal-header, .modal-footer {
