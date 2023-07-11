@@ -194,6 +194,7 @@ const TheGame = () => {
         _her.live = false;
         if (newHeroList.length === 0) {
           gameOver();
+          return;
         }
       } else {
         // atualizar as listas
@@ -270,6 +271,7 @@ const TheGame = () => {
 
         if (newEnemyList.length === 0) {
           winner();
+          return;
         }
       } else {
         for (let i = 0; i < enemyList.length; i++) {
@@ -319,6 +321,7 @@ const TheGame = () => {
                 modalType={HERO}
                 magicalAttack={magicalAttack}
                 physicalAttack={physicalAttack}
+                isFighting={isFighting}
                 isEnemyFighting={isEnemyFighting}
                 firstInTheQueue={orderBattle[0]}
                 isPhysicalAttack={isPhysicalAttack}

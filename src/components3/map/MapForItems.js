@@ -5,6 +5,7 @@ import { ENEMY, HERO, ITEM } from "../../constants";
 const MapForItems = ({
   list,
   modalType,
+  isFighting = false,
   isEnemyFighting = null,
   firstInTheQueue = null,
   physicalAttack = null,
@@ -45,23 +46,27 @@ const MapForItems = ({
             <Button
               size="sm"
               onClick={physicalAttack}
-              disabled={isEnemyFighting || firstInTheQueue.id !== item.id}
+              disabled={
+                isEnemyFighting || firstInTheQueue.id !== item.id || !isFighting
+              }
             >
               Attack
             </Button>
             <Button
               size="sm"
               onClick={magicalAttack}
-              disabled={isEnemyFighting || firstInTheQueue.id !== item.id}
+              disabled={
+                isEnemyFighting || firstInTheQueue.id !== item.id || !isFighting
+              }
             >
               Magic
             </Button>
           </div>
         )}
 
-        <div className="app-card-footer">
+        {/* <div className="app-card-footer">
           <code>{item.id}</code>
-        </div>
+        </div> */}
       </div>
     ));
   };

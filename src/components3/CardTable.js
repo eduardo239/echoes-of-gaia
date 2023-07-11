@@ -23,8 +23,22 @@ const CardTable = ({ modalType, item }) => {
                 </tr>
               )}
               <tr>
+                <td colSpan={2}>
+                  <hr />
+                </td>
+              </tr>
+              <tr>
+                <td>Experience</td>
+                <td>{item.exp}</td>
+              </tr>
+              <tr>
                 <td>Level</td>
                 <td>{item.level}</td>
+              </tr>
+              <tr>
+                <td colSpan={2}>
+                  <hr />
+                </td>
               </tr>
             </>
           )}
