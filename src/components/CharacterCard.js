@@ -4,7 +4,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 const CharacterCard = ({ character, children }) => {
   return (
     <Card style={{ width: "11rem" }}>
-      <Card.Img variant="top" src={character?.image} />
+      <Card.Img variant="top" src={character?.avatar} />
       <Card.Body>
         <Card.Title>{character?.name}</Card.Title>
         <Card.Text>Some quick example text to build.</Card.Text>

@@ -12,7 +12,7 @@ const SelectCharacter = () => {
   const selectCharacter = (item) => {
     setCharacter({ ...item, inventory: { totalItems: 4, items: [] } });
   };
-
+  console.log(heroes);
   return (
     <div>
       <h1>SelectCharacter</h1>

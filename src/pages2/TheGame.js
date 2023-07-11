@@ -21,7 +21,7 @@ import {
   chooseRandomItem,
 } from "../helper3";
 //
-import { ENEMY, HERO, ITEM } from "../constants";
+import { ENEMY, GAME_BATTLE_DELAY, HERO, ITEM } from "../constants";
 
 /**
  * TODO: remover enable do botão play ao encontrar o inimigo
@@ -57,6 +57,37 @@ const TheGame = () => {
     setHeroList(heroes);
     return () => {};
   }, []);
+
+  const gameOver = () => {
+    setMessage("Game Over!!!");
+    reset();
+  };
+
+  function nextLevel(level) {
+    return Math.round((4 * (level ^ 3)) / 5);
+  }
+
+  const get_exp = () => {
+    const _heroList = heroList.map((x) => {
+      return (x.exp += 40);
+    });
+    console.log(_heroList);
+  };
+
+  const winner = () => {
+    console.log("Victory");
+    setLog([]);
+    setIsFighting(false);
+    setIsPhysicalAttack(false);
+    setIsMagicalAttack(false);
+    setOrderBattle([]);
+    setEnemyList([]);
+
+    setTimeout(() => {
+      setMessage("Exp added!");
+      get_exp();
+    }, GAME_BATTLE_DELAY);
+  };
 
   const reset = () => {
     setLog([]);
@@ -97,9 +128,10 @@ const TheGame = () => {
       case ENEMY:
         setMessage("Enemy Founded");
         // gerar a ordem de batalha
-        const randomOrder = randomlyCombineArrays(positionData, heroList);
-        // setEnemyList(positionData);
-        setEnemyList(generateNewListWithNewUUID(positionData));
+        const generatedNewList = generateNewListWithNewUUID(positionData);
+        const randomOrder = randomlyCombineArrays(generatedNewList, heroList);
+        // gera uma nova lista, cada item com novo id
+        setEnemyList(generatedNewList);
         setOrderBattle(randomOrder);
         // ordem da batalha
         if (randomOrder[0].type === ENEMY) startEnemyTurn(randomOrder);
@@ -138,37 +170,50 @@ const TheGame = () => {
     setTimeout(() => {
       // selecionar um herói aleatório
       const _her = chooseRandomItem(heroList);
-
       // gerar um dano aleatório
-      const _en = list[0];
-      const _dmg = generateRandomNumber(_en.strength, _en.strength + 30);
+      const _ene = list[0];
+      const _dmg = generateRandomNumber(_ene.strength, _ene.strength + 30);
 
-      setMessage(_en.name + " enemy deals " + _dmg + " damage to " + _her.name);
+      setMessage(
+        _ene.name + " enemy deals " + _dmg + " damage to " + _her.name
+      );
 
-      // provocando o dano
+      // associando as listas
+      let newHeroList = heroList;
+      let newQueue = list;
+
+      // dano causado ao hero
       _her.hp -= _dmg;
-      if (_her.hp < 1) _her.live = false;
-
       // atualizar as listas
-      const newHeroList = heroList;
-      for (let i = 0; i < heroList.length; i++) {
-        if (heroList[i].id === _her.id) {
-          newHeroList[i] = _her;
+      if (_her.hp < 1) {
+        setMessage("Hero is dead!");
+        const _newHeroList = newHeroList.filter((x) => x.id !== _her.id);
+        const _newQueueList = newQueue.filter((x) => x.id !== _her.id);
+        newHeroList = _newHeroList;
+        newQueue = _newQueueList;
+        _her.live = false;
+        if (newHeroList.length === 0) {
+          gameOver();
+        }
+      } else {
+        // atualizar as listas
+        for (let i = 0; i < heroList.length; i++) {
+          if (heroList[i].id === _her.id) {
+            newHeroList[i] = _her;
+          }
+        }
+
+        for (let y = 0; y < list.length; y++) {
+          if (list[y].id === _her.id) {
+            newQueue[y] = _her;
+          }
         }
       }
 
-      const newQueue = list;
-      for (let y = 0; y < list.length; y++) {
-        if (list[y].id === _her.id) {
-          newQueue[y] = _her;
-        }
-      }
-
-      setOrderBattle(newQueue);
       setHeroList(newHeroList);
-
+      setOrderBattle(newQueue);
       reorderQueue(newQueue);
-    }, 800);
+    }, GAME_BATTLE_DELAY);
   };
 
   // ataque mágico
@@ -188,22 +233,22 @@ const TheGame = () => {
     randomDamage(_her, _target, orderBattle);
   };
 
-  const randomDamage = (hero, _ene, list) => {
+  const randomDamage = (hero, enemy, list) => {
     let physAttack = 0;
     let MagAttack = 0;
+    const _ene = enemy;
 
     setIsPhysicalAttack(false);
     setIsMagicalAttack(false);
 
     setTimeout(() => {
-      const _her = hero;
+      let _her = hero;
+      let newEnemyList = enemyList;
+      let newQueue = list;
+
       if (isPhysicalAttack) {
         physAttack = generateRandomNumber(_her.strength, _her.strength + 30);
         _ene.hp -= physAttack;
-
-        setMessage(
-          hero.name + " hero deals " + physAttack + " damage to " + _ene.name
-        );
       }
       if (isMagicalAttack) {
         MagAttack = generateRandomNumber(
@@ -211,52 +256,51 @@ const TheGame = () => {
           _her.intelligence + 10
         );
         _ene.hp -= MagAttack;
-        setMessage(
-          hero.name + " hero deals " + MagAttack + " damage to " + _ene.name
-        );
       }
 
-      let newQueue = list;
-      let newEnemyList = enemyList;
+      if (_ene.hp < 1) {
+        setMessage("Enemy is dead!");
 
-      for (let i = 0; i < enemyList.length; i++) {
-        if (enemyList[i].id === _ene.id) {
-          if (_ene.hp < 1) {
-            console.log("enemy morreu");
-            _ene.live = false;
+        const _newEnemyList = newEnemyList.filter((x) => x.id !== _ene.id);
+        const _newQueue = newQueue.filter((x) => x.id !== _ene.id);
+
+        newEnemyList = _newEnemyList;
+        newQueue = _newQueue;
+        _ene.live = false;
+
+        if (newEnemyList.length === 0) {
+          winner();
+        }
+      } else {
+        for (let i = 0; i < enemyList.length; i++) {
+          if (enemyList[i].id === _ene.id) {
+            newEnemyList[i] = _ene;
           }
-          newEnemyList[i] = _ene;
+        }
+        for (let t = 0; t < list.length; t++) {
+          if (list[t].id === _ene.id) {
+            newQueue[t] = _ene;
+          }
         }
       }
-      for (let t = 0; t < list.length; t++) {
-        if (list[t].id === _ene.id) {
-          newQueue[t] = _ene;
-        }
-      }
-
-      // TODO: validar se o personagem está vivo, e atualizar as listas
-      // if (!_ene.live) {
-      //   const t = newEnemyList.filter((x) => x.live === true);
-      //   console.log(t);
-      // }
 
       setEnemyList(newEnemyList);
-
       setOrderBattle(newQueue);
       reorderQueue(newQueue);
-    }, 800);
+    }, GAME_BATTLE_DELAY);
   };
 
   const reorderQueue = (list) => {
     setTimeout(() => {
       const first = list.shift();
       list.push(first);
-      setOrderBattle(list);
+      // setOrderBattle(list);
 
       if (list[0].type === ENEMY) startEnemyTurn(list);
 
       setMessage("Reordered Queue");
-    }, 800);
+    }, GAME_BATTLE_DELAY);
+
     return list;
   };
 
@@ -269,7 +313,7 @@ const TheGame = () => {
       <Row>
         <Col sm="6" md="8">
           <div className="d-flex align-content-start flex-wrap">
-            {isFighting && heroList && heroList.length > 0 && (
+            {heroList && heroList.length > 0 && (
               <MapForItems
                 list={heroList}
                 modalType={HERO}
@@ -292,16 +336,6 @@ const TheGame = () => {
                 selectedTarget={selectedTarget}
               />
             )}
-          </div>
-
-          <div>
-            {log &&
-              log.length > 0 &&
-              log.map((x, i) => (
-                <p key={i}>
-                  {i} - {x}
-                </p>
-              ))}
           </div>
 
           <ModalShop

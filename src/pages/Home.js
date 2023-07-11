@@ -1,3 +1,4 @@
+import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -5,15 +6,8 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Start</h1>
-
-      <button
-        className="btn btn-info"
-        onClick={() => navigate("/select-character")}
-      >
-        Start Game
-      </button>
-      <p>Primeira página!</p>
+      <h1>Echoes Of Gaia</h1>
+      <Button onClick={() => navigate("/select-character")}>Start Game</Button>
     </div>
   );
 };

@@ -10,3 +10,5 @@ export const MANA = "Mana";
 
 export const NOTHING = "Nothing";
 export const EMPTY = "Empty";
+
+export const GAME_BATTLE_DELAY = 300;
