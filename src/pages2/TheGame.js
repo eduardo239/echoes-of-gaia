@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 //
-import { heroes, items } from "../server2";
+import { heroes, items, player } from "../server2";
 //
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -21,23 +21,33 @@ import {
   chooseRandomItem,
 } from "../helper3";
 //
-import { ENEMY, GAME_BATTLE_DELAY, HERO, ITEM } from "../constants";
+import {
+  CURE,
+  ELIXIR,
+  ENEMY,
+  GAME_BATTLE_DELAY,
+  HERO,
+  ITEM,
+  MANA,
+  POISON,
+} from "../constants";
+import ModalInventory from "../components3/modal/ModalInventory";
 
-/**
- * TODO: remover enable do botão play ao encontrar o inimigo
- * e reabilitar ao final da batalha
- * @returns
- */
 const TheGame = () => {
+  // shop modal
   const [modalShop, setModalShop] = useState(false);
   const handleModalShopClose = () => setModalShop(false);
   const handleModalShopShow = () => setModalShop(true);
+  // inventory modal
+  const [modalInventory, setModalInventory] = useState(false);
+  const handleModalInventoryClose = () => setModalInventory(false);
+  const handleModalInventoryShow = () => setModalInventory(true);
   // game
   const [dice, setDice] = useState(0);
   const [position, setPosition] = useState(0);
   const [orderBattle, setOrderBattle] = useState([]);
   const [map, setMap] = useState([]);
-
+  const [inventory, setInventory] = useState([]);
   // listas da batalha
   const [enemyList, setEnemyList] = useState([]);
   const [heroList, setHeroList] = useState([]);
@@ -47,6 +57,9 @@ const TheGame = () => {
   //
   const [isPhysicalAttack, setIsPhysicalAttack] = useState(false);
   const [isMagicalAttack, setIsMagicalAttack] = useState(false);
+  //
+  const [isUsingItem, setIsUsingItem] = useState(false);
+  const [useItem, setUseItem] = useState(null);
   //
   const [message, setMessage] = useState(0);
   const [log, setLog] = useState([]);
@@ -63,19 +76,15 @@ const TheGame = () => {
     reset();
   };
 
-  function nextLevel(level) {
-    return Math.round((4 * (level ^ 3)) / 5);
+  function getExp(level) {
+    return level * Math.round(Math.sqrt(level));
   }
 
-  const get_exp = () => {
-    const _heroList = heroList.map((x) => {
-      return (x.exp += 40);
-    });
-    console.log(_heroList);
+  const getNexLevel = (level, nextLevel) => {
+    return Math.sqrt(getExp(level) / nextLevel);
   };
 
   const winner = () => {
-    console.log("Victory");
     setLog([]);
     setIsFighting(false);
     setIsPhysicalAttack(false);
@@ -85,7 +94,8 @@ const TheGame = () => {
 
     setTimeout(() => {
       setMessage("Exp added!");
-      get_exp();
+      const exp = getExp(10);
+      console.log(exp);
     }, GAME_BATTLE_DELAY);
   };
 
@@ -306,6 +316,70 @@ const TheGame = () => {
     return list;
   };
 
+  const selectedTargetToUseItem = (character) => {
+    const _item = useItem;
+    const _hero = character;
+
+    if (isFighting) {
+      switchOverItems(_item, _hero);
+      reorderQueue(orderBattle);
+    } else {
+      switchOverItems(_item, _hero);
+    }
+    setIsUsingItem(false);
+  };
+
+  const switchOverItems = (_item, _hero) => {
+    switch (_item.class) {
+      case CURE:
+        if (_hero.hp + _item.value > _hero.maxHp) {
+          _hero.hp = _hero.maxHp;
+        } else {
+          _hero.hp += _item.value;
+        }
+        break;
+      case MANA:
+        if (_hero.mp + _item.value > _hero.maxMp) {
+          _hero.mp = _hero.maxMp;
+        } else {
+          _hero.mp += _item.value;
+        }
+        break;
+      case ELIXIR:
+        if (_hero.hp + _item.value > _hero.maxHp) {
+          _hero.hp = _hero.maxHp;
+        } else {
+          _hero.hp += _item.value;
+        }
+        if (_hero.mp + _item.value > _hero.maxMp) {
+          _hero.mp = _hero.maxMp;
+        } else {
+          _hero.mp += _item.value;
+        }
+        break;
+      case POISON:
+        _hero.strength += _item.value;
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleBuyItem = (item) => {
+    const _player = player;
+    console.log(_player);
+    console.log(item);
+    if (item.price > _player.gold) {
+      setMessage("Insufficient gold");
+    } else {
+      const newItem = { ...item };
+      newItem.id = uuidv4();
+      setInventory([...inventory, newItem]);
+      player.gold -= item.price;
+    }
+    handleModalShopClose();
+  };
+
   return (
     <>
       <Row>
@@ -319,13 +393,18 @@ const TheGame = () => {
               <MapForItems
                 list={heroList}
                 modalType={HERO}
-                magicalAttack={magicalAttack}
-                physicalAttack={physicalAttack}
+                // status da batalha
                 isFighting={isFighting}
                 isEnemyFighting={isEnemyFighting}
                 firstInTheQueue={orderBattle[0]}
-                isPhysicalAttack={isPhysicalAttack}
+                // ataque ao personagem
+                magicalAttack={magicalAttack}
+                physicalAttack={physicalAttack}
                 selectedTarget={selectedTarget}
+                isPhysicalAttack={isPhysicalAttack}
+                // itens para usar
+                isUsingItem={isUsingItem}
+                selectedTargetToUseItem={selectedTargetToUseItem}
               />
             )}
 
@@ -340,13 +419,24 @@ const TheGame = () => {
               />
             )}
           </div>
-
+          {/*  */}
           <ModalShop
+            gold={player?.gold ? player.gold : "Balance not found"}
             list={items}
             modalType={ITEM}
             modalShop={modalShop}
             handleModalShopClose={handleModalShopClose}
+            handleBuyItem={handleBuyItem}
           />
+          <ModalInventory
+            list={inventory}
+            modalType={ITEM}
+            modalInventory={modalInventory}
+            handleModalInventoryClose={handleModalInventoryClose}
+            setUseItem={setUseItem}
+            setUsingItem={setIsUsingItem}
+          />
+          {/*  */}
         </Col>
         <Col sm="6" md="4">
           <Button disabled={isFighting} onClick={handleModalShopShow}>
@@ -355,12 +445,13 @@ const TheGame = () => {
           <Button disabled={isFighting} onClick={() => rollTheDice(setDice)}>
             Play! {dice}
           </Button>
+          <Button onClick={handleModalInventoryShow}>Inventory</Button>
           <Button onClick={() => reset()}>Reset! </Button>
-
-          <br />
-          <MapForQueue list={orderBattle} />
-          <br />
-          <MapForList list={map} position={position} />
+          {/*  */}
+          <div className="d-grid">
+            <MapForQueue list={orderBattle} />
+            <MapForList list={map} position={position} />
+          </div>
         </Col>
       </Row>
     </>

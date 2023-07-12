@@ -1,9 +1,15 @@
+export const player = {
+  gold: 100,
+  exp: 0,
+};
+
 export const heroes = [
   {
-    id: "5231e313-4865-43fb-8abf-1cbesf7eb811",
+    id: "5231e313-4865-43fb-8abf-1c2345f7eb811",
     name: "Mary",
     class: "Warrior",
     level: 1,
+    nextLevel: 100,
     exp: 0,
     strength: 15,
     live: true,
@@ -13,7 +19,7 @@ export const heroes = [
     maxHp: 100,
     mp: 10,
     maxMp: 100,
-    gold: 0,
+
     type: "Hero",
     image: "./assets/japanese.png",
   },
@@ -22,6 +28,7 @@ export const heroes = [
     name: "Prix",
     class: "Sorceress",
     level: 1,
+    nextLevel: 100,
     exp: 0,
     strength: 10,
     live: true,
@@ -30,8 +37,8 @@ export const heroes = [
     hp: 100,
     maxHp: 100,
     mp: 45,
-    maxMp: 45,
-    gold: 0,
+    maxMp: 55,
+
     type: "Hero",
     image: "./assets/red_rid.png",
   },
@@ -42,6 +49,7 @@ export const heroes2 = [
     name: "Amy Iris",
     class: "Mage",
     level: 1,
+    nextLevel: 100,
     exp: 0,
     strength: 12,
     live: true,
@@ -51,7 +59,7 @@ export const heroes2 = [
     maxHp: 100,
     mp: 55,
     maxMp: 55,
-    gold: 0,
+
     type: "Hero",
     image: "./assets/blond.png",
   },
@@ -123,7 +131,7 @@ export const items = [
   {
     id: "82a0344c-ae51-44fb-87e-f704f80e3de6",
     name: "Healing Potion",
-    value: 80,
+    value: 20,
     price: 50,
     type: "Item",
     class: "Cure",
@@ -132,7 +140,7 @@ export const items = [
   {
     id: "2a0344c-ae51-44fb-87e-f704f80e3de6",
     name: "Mana Potion",
-    value: 50,
+    value: 20,
     price: 35,
     type: "Item",
     class: "Mana",
@@ -141,8 +149,8 @@ export const items = [
   {
     id: "82a0344c-ae1-44fb-87e-f704f80e3de6",
     name: "Poison Potion",
-    value: 40,
-    price: 5,
+    value: 4,
+    price: 12,
     type: "Item",
     class: "Poison",
     image: "../assets/green.png",
@@ -150,8 +158,8 @@ export const items = [
   {
     id: "82a034c-ae51-44fb-87e-f704f80e3de6",
     name: "Elixir Potion",
-    value: 200,
-    price: 200,
+    value: 10,
+    price: 10,
     type: "Item",
     class: "Elixir",
     image: "../assets/white.png",

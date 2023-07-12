@@ -13,6 +13,8 @@ const MapForItems = ({
   isPhysicalAttack = false,
   isMagicalAttack = false,
   selectedTarget = null,
+  selectedTargetToUseItem = null,
+  isUsingItem,
 }) => {
   const map_for_items = () => {
     return list.map((item) => (
@@ -23,11 +25,15 @@ const MapForItems = ({
           modalType === ENEMY &&
           (isPhysicalAttack || isMagicalAttack)
             ? "hero-picking"
+            : modalType === HERO && isUsingItem
+            ? "hero-picking"
             : ""
         } app-card ${item.live ? "" : "dead-character"}`}
         onClick={
           modalType === ENEMY && (isPhysicalAttack || isMagicalAttack)
             ? () => selectedTarget(item)
+            : modalType === HERO && isUsingItem
+            ? () => selectedTargetToUseItem(item)
             : null
         }
       >

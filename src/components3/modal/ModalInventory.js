@@ -3,14 +3,20 @@ import Modal from "react-bootstrap/Modal";
 import { ITEM } from "../../constants";
 import CardTable from "../CardTable";
 
-const ModalShop = ({
-  gold,
-  list,
+const ModalInventory = ({
   modalType,
-  modalShop,
-  handleModalShopClose,
-  handleBuyItem,
+  list,
+  modalInventory,
+  handleModalInventoryClose,
+  setUseItem = null,
+  setUsingItem,
 }) => {
+  const clickUseItem = (item) => {
+    setUseItem(item);
+    handleModalInventoryClose(true);
+    setUsingItem(true);
+  };
+
   const get_items_list = () => {
     return list.map((item) => (
       <div key={item.id} className="app-card">
@@ -22,9 +28,9 @@ const ModalShop = ({
             <Button
               variant="primary"
               size="sm"
-              onClick={() => handleBuyItem(item)}
+              onClick={() => clickUseItem(item)}
             >
-              Buy
+              Use
             </Button>
           </div>
         )}
@@ -33,9 +39,9 @@ const ModalShop = ({
   };
 
   return (
-    <Modal size="xl" show={modalShop} onHide={handleModalShopClose}>
+    <Modal size="xl" show={modalInventory} onHide={handleModalInventoryClose}>
       <Modal.Header closeButton className="dark">
-        <Modal.Title>Shop Items - Gold ${gold}</Modal.Title>
+        <Modal.Title>Inventory</Modal.Title>
       </Modal.Header>
       <Modal.Body className="dark">
         <div className="d-flex justify-content-center flex-wrap gap-1">
@@ -43,7 +49,7 @@ const ModalShop = ({
         </div>
       </Modal.Body>
       <Modal.Footer className="dark">
-        <Button variant="primary" onClick={handleModalShopClose}>
+        <Button variant="primary" onClick={handleModalInventoryClose}>
           Close
         </Button>
       </Modal.Footer>
@@ -51,4 +57,4 @@ const ModalShop = ({
   );
 };
 
-export default ModalShop;
+export default ModalInventory;
