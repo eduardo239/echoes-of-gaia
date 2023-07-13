@@ -3,6 +3,9 @@
   --dark-background: #131316;
   --dark-background-alternative: #19232e;
   --light-color: #fefefe;
+
+  --alert: #dc143c;
+  --success: #04ff57;
 }
 body {
   font-family: 'Inter', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;

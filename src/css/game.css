@@ -45,3 +45,10 @@
   border-top: 1px solid var(--dark-background-alternative);
   border-bottom: 1px solid var(--dark-background-alternative);
 }
+
+/* queue */
+.list-item-hero {
+  border-left: 3px solid var(--success);
+}.list-item-enemy {
+  border-left: 3px solid var(--alert);
+}

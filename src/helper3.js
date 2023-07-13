@@ -25,7 +25,7 @@ export function chooseRandomItem(list = []) {
 
 export const generateRandomMap = (quantity = 20) => {
   //const types = [EMPTY, ENEMY, ENEMY, ITEM];
-  const types = [ENEMY];
+  const types = [ITEM];
   const map = [];
 
   for (let index = 0; index < quantity; index++) {

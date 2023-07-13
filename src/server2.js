@@ -43,27 +43,7 @@ export const heroes = [
     image: "./assets/red_rid.png",
   },
 ];
-export const heroes2 = [
-  {
-    id: "5231e313-4865-43fb-8abf-1be1faeb811",
-    name: "Amy Iris",
-    class: "Mage",
-    level: 1,
-    nextLevel: 100,
-    exp: 0,
-    strength: 12,
-    live: true,
-    intelligence: 3,
-    weapon: "Magic Stone",
-    hp: 100,
-    maxHp: 100,
-    mp: 55,
-    maxMp: 55,
 
-    type: "Hero",
-    image: "./assets/blond.png",
-  },
-];
 export const enemies = [
   {
     id: "86511949-bba4-44bf-a7c9-405r965e75b7",

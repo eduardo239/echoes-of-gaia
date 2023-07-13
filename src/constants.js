@@ -2,6 +2,7 @@ export const HERO = "Hero";
 export const ENEMY = "Enemy";
 export const ITEM = "Item";
 export const BOSS = "Boss";
+export const GIFT = "Gift";
 
 export const CURE = "Cure";
 export const POISON = "Poison";

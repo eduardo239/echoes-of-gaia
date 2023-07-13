@@ -1,20 +1,21 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { ITEM } from "../../constants";
+import { GIFT } from "../../constants";
 import CardTable from "../CardTable";
 
-const ModalInventory = ({
+const ModalGift = ({
   list,
   modalType,
-  modalInventory,
-  handleModalInventoryClose,
-  setUseItem = null,
-  setUsingItem,
+  modalGift,
+  handleModalGiftClose,
+  setGiftList,
+  inventory,
+  setInventory,
 }) => {
-  const clickUseItem = (item) => {
-    setUseItem(item);
-    handleModalInventoryClose(true);
-    setUsingItem(true);
+  const handleGetItem = (item) => {
+    setInventory([...inventory, item]);
+    handleModalGiftClose(true);
+    setGiftList([]);
   };
 
   const get_items_list = () => {
@@ -23,14 +24,14 @@ const ModalInventory = ({
         <img src={item.image} alt={item.name} />
 
         <CardTable modalType={modalType} item={item} />
-        {modalType === ITEM && (
+        {modalType === GIFT && (
           <div className="d-grid gap-2">
             <Button
               variant="primary"
               size="sm"
-              onClick={() => clickUseItem(item)}
+              onClick={() => handleGetItem(item)}
             >
-              Use
+              Get
             </Button>
           </div>
         )}
@@ -39,7 +40,7 @@ const ModalInventory = ({
   };
 
   return (
-    <Modal size="xl" show={modalInventory} onHide={handleModalInventoryClose}>
+    <Modal size="xl" show={modalGift} onHide={handleModalGiftClose}>
       <Modal.Header closeButton className="dark">
         <Modal.Title>Inventory</Modal.Title>
       </Modal.Header>
@@ -49,7 +50,7 @@ const ModalInventory = ({
         </div>
       </Modal.Body>
       <Modal.Footer className="dark">
-        <Button variant="primary" onClick={handleModalInventoryClose}>
+        <Button variant="primary" onClick={handleModalGiftClose}>
           Close
         </Button>
       </Modal.Footer>
@@ -57,4 +58,4 @@ const ModalInventory = ({
   );
 };
 
-export default ModalInventory;
+export default ModalGift;
