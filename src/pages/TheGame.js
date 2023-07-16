@@ -14,7 +14,7 @@ import ModalShop from "../components/modal/ModalShop";
 import ModalInventory from "../components/modal/ModalInventory";
 import ModalGift from "../components/modal/ModalGift";
 //
-import MapForItems from "../components/map/MapForItems";
+import MapForCharacters from "../components/map/MapForCharacters";
 import MapForList from "../components/map/MapForList";
 import MapForQueue from "../components/map/MapForQueue";
 //
@@ -35,6 +35,7 @@ import {
   MANA,
   POISON,
   GAME_BATTLE_DELAY,
+  REBORN,
 } from "../constants";
 
 const TheGame = () => {
@@ -138,13 +139,13 @@ const TheGame = () => {
     const positionType = map[position][0].type;
     const positionData = map[position];
 
+    // gerar a ordem de batalha
+    const _queue = randomlyCombineArrays(positionData, heroList);
     switch (positionType) {
       case ENEMY:
         setMessage("Enemy Founded");
         // gera uma nova lista, cada item com um novo id
         // const _listWithNewId = generateNewId(positionData);
-        // gerar a ordem de batalha
-        const _queue = randomlyCombineArrays(positionData, heroList);
         setEnemyList(positionData);
         setBattleQueue(_queue);
         // ordem da batalha
@@ -166,7 +167,7 @@ const TheGame = () => {
         setEnemyList(positionData);
         setBattleQueue(_bossQueue);
         // ordem da batalha
-        if (_queue[0].type === ENEMY) startEnemyTurn(_queue);
+        if (_queue[0].type === BOSS) startEnemyTurn(_queue);
         else setMessage("Hero Time");
         // status da batalha
         setIsFighting(true);
@@ -206,14 +207,13 @@ const TheGame = () => {
         _her.status.isAlive = false;
 
         // validar se ainda há personagens para continuar
-        for (let z = 0; z < _newQueueList.length; z++) {
-          if (_newQueueList[z].type === HERO) {
-            console.log("ok");
-          } else {
-            gameOver();
-            return;
-          }
+        const hasHeroes = _newQueueList.some((x) => x.type === HERO);
+        if (!hasHeroes) {
+          gameOver();
+          return;
         }
+
+        //
       } else {
         // atualizar as listas
         for (let i = 0; i < heroList.length; i++) {
@@ -274,35 +274,33 @@ const TheGame = () => {
       if (isMagicalAttack) {
         MagAttack = randomNumber(
           _her.status.intelligence,
-          _her.status.intelligence + 24
+          _her.status.intelligence + 12
         );
         _ene.status.hp -= MagAttack;
       }
 
       if (_ene.status.hp < 1) {
         setMessage("Enemy is dead!");
-        console.log("o");
-        const _newEnemyList = newEnemyList.filter((x) => x.id !== _ene.id);
         const _newQueue = newQueue.filter((x) => x.id !== _ene.id);
 
-        newEnemyList = _newEnemyList;
         newQueue = _newQueue;
         _ene.status.isAlive = false;
 
-        if (newEnemyList.length <= 0) {
+        // validar se ainda há personagens para continuar
+        const hasEnemy = _newQueue.some((x) => x.type === ENEMY);
+        if (!hasEnemy) {
           winner();
           return;
         }
+        //
       } else {
         for (let i = 0; i < enemyList.length; i++) {
           if (enemyList[i].id === _ene.id) {
-            console.log("h");
             newEnemyList[i] = _ene;
           }
         }
         for (let t = 0; t < list.length; t++) {
           if (list[t].id === _ene.id) {
-            console.log("x");
             newQueue[t] = _ene;
           }
         }
@@ -379,6 +377,18 @@ const TheGame = () => {
         _hero.status.strength += _item.value;
         setInventory(newInventoryList);
         break;
+      case REBORN:
+        if (_hero.status.hp < 1) {
+          _hero.status.hp = _item.value;
+          _hero.status.isAlive = true;
+          setInventory(newInventoryList);
+          if (isFighting) {
+            setBattleQueue([...battleQueue, _hero]);
+          }
+        } else {
+          setMessage("Invalid Character");
+        }
+        break;
       default:
         break;
     }
@@ -394,7 +404,6 @@ const TheGame = () => {
       setInventory([...inventory, newItem]);
       player.gold -= item.price;
     }
-    handleModalShopClose();
   };
   const generateNewRandomItem = () => {
     setMessage("New item founded");
@@ -427,10 +436,10 @@ const TheGame = () => {
         </Row>
       )}
       <Row>
-        <Col sm="6" md="8">
+        <Col sm="12" md="8" lg="9" xl="10">
           <div className="d-flex align-content-start flex-wrap">
             {heroList && heroList.length > 0 && (
-              <MapForItems
+              <MapForCharacters
                 list={heroList}
                 modalType={HERO}
                 // status da batalha
@@ -449,7 +458,7 @@ const TheGame = () => {
             )}
 
             {isFighting && enemyList && enemyList.length > 0 && (
-              <MapForItems
+              <MapForCharacters
                 list={enemyList}
                 modalType={ENEMY}
                 isPhysicalAttack={isPhysicalAttack}
@@ -487,7 +496,7 @@ const TheGame = () => {
           />
           {/*  */}
         </Col>
-        <Col sm="6" md="4">
+        <Col sm="12" md="4" lg="3" xl="2">
           <div className="d-grid gap-1">
             <Button disabled={isFighting} onClick={() => rollTheDice(setDice)}>
               Play! {dice}

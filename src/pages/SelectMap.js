@@ -3,10 +3,10 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from "../hook/PlayerContext";
 import { items, maps } from "../server";
-import MapForItems from "../components/map/MapForItems";
 import { SELECT_MAP } from "../constants";
 import { generateRandomMap } from "../helper";
 import { Item } from "../classes/Item";
+import MapForMaps from "../components/map/MapForMaps";
 
 const SelectMap = () => {
   const navigate = useNavigate();
@@ -39,11 +39,10 @@ const SelectMap = () => {
 
       <div className="d-flex justify-content-center flex-wrap gap-1">
         {maps && maps.length > 0 && (
-          <MapForItems
+          <MapForMaps
             list={maps}
-            modalType={SELECT_MAP}
-            // removeCharacter={removeCharacter}
             selectMap={selectMap}
+            modalType={SELECT_MAP}
           />
         )}
       </div>

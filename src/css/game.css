@@ -6,7 +6,7 @@
 
 /* card */
 .app-card {
-  max-width: 12rem;
+  max-width: 14rem;
   width: 100%;
   padding: 1rem;
   background-color: var(--dark-background);
@@ -32,6 +32,7 @@
   border-color: #04ff57;
   cursor: pointer;
 }
+
 .dead-character {
   filter: grayscale(100%);
   filter: blur(50%);

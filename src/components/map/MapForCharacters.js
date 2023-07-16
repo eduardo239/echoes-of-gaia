@@ -1,8 +1,8 @@
 import Button from "react-bootstrap/Button";
 import CardTable from "../table/CardTable";
-import { BOSS, ENEMY, HERO, SELECT_HERO, SELECT_MAP } from "../../constants";
+import { BOSS, ENEMY, HERO, SELECT_HERO } from "../../constants";
 
-const MapForItems = ({
+const MapForCharacters = ({
   list = [],
   modalType,
   isFighting = false,
@@ -17,7 +17,6 @@ const MapForItems = ({
   isUsingItem = false,
   selectCharacter = null,
   removeCharacter = null,
-  selectMap = null,
 }) => {
   const map_for_items = () => {
     return list.map((item) => (
@@ -26,7 +25,8 @@ const MapForItems = ({
         className={`app-card ${
           !isEnemyFighting &&
           modalType === ENEMY &&
-          (isPhysicalAttack || isMagicalAttack)
+          (isPhysicalAttack || isMagicalAttack) &&
+          item.status.isAlive
             ? "hero-picking "
             : modalType === HERO && isUsingItem
             ? "hero-picking "
@@ -41,7 +41,9 @@ const MapForItems = ({
             : "dead-character "
         }`}
         onClick={
-          modalType === ENEMY && (isPhysicalAttack || isMagicalAttack)
+          modalType === ENEMY &&
+          (isPhysicalAttack || isMagicalAttack) &&
+          item.status.isAlive
             ? () => selectedTarget(item)
             : modalType === HERO && isUsingItem
             ? () => selectedTargetToUseItem(item)
@@ -85,18 +87,6 @@ const MapForItems = ({
             </Button>
           </div>
         )}
-
-        {modalType === SELECT_MAP && (
-          <div className="d-grid gap-2">
-            <Button size="sm" onClick={() => selectMap(item)}>
-              Select
-            </Button>
-          </div>
-        )}
-
-        {/* <div className="app-card-footer">
-          <code>{item.id}</code>
-        </div> */}
       </div>
     ));
   };
@@ -104,4 +94,4 @@ const MapForItems = ({
   return <>{list && list.length > 0 && map_for_items()}</>;
 };
 
-export default MapForItems;
+export default MapForCharacters;

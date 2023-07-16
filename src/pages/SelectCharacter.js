@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { heroes } from "../server";
 import { SELECT_HERO } from "../constants";
 import { PlayerContext } from "../hook/PlayerContext";
-import MapForItems from "../components/map/MapForItems";
+import MapForCharacters from "../components/map/MapForCharacters";
 import Button from "react-bootstrap/Button";
 import { Hero } from "../classes/Hero";
 
@@ -63,7 +63,7 @@ const SelectCharacter = () => {
 
       <div className="d-flex justify-content-center flex-wrap gap-1">
         {loadedHeroes && loadedHeroes.length > 0 && (
-          <MapForItems
+          <MapForCharacters
             list={loadedHeroes}
             modalType={SELECT_HERO}
             removeCharacter={removeCharacter}
