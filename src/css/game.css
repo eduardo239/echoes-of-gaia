@@ -52,3 +52,17 @@
 }.list-item-enemy {
   border-left: 3px solid var(--alert);
 }
+
+/* map */
+.position-empty {
+  border-left: 3px solid #f0f0f0;
+}
+.position-item {
+  border-left: 3px solid #4680ff;
+}
+.position-enemy {
+  border-left: 3px solid #5133fd;
+}
+.position-boss {
+  border-left: 3px solid #ff455e;
+}

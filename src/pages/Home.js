@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div>
       <h1>Echoes Of Gaia</h1>
-      <Button onClick={() => navigate("/select-character")}>Start Game</Button>
+      <Button onClick={() => navigate("/select-character")}>Start</Button>
     </div>
   );
 };

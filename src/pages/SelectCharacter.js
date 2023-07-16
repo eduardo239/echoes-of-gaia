@@ -1,35 +1,80 @@
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { heroes } from "../server";
-import { useContext } from "react";
+import { SELECT_HERO } from "../constants";
 import { PlayerContext } from "../hook/PlayerContext";
-import CharacterCard from "../components/CharacterCard";
+import MapForItems from "../components/map/MapForItems";
 import Button from "react-bootstrap/Button";
+import { Hero } from "../classes/Hero";
 
 const SelectCharacter = () => {
   const navigate = useNavigate();
-  const { setCharacter } = useContext(PlayerContext);
 
-  const selectCharacter = (item) => {
-    setCharacter({ ...item, inventory: { totalItems: 4, items: [] } });
+  const { heroList, setHeroList } = useContext(PlayerContext);
+  //
+  const [loadedHeroes, setLoadedHeroes] = useState([]);
+
+  const selectCharacter = (character) => {
+    const alreadyChosen = heroList.some((x) => x.id === character.id);
+    if (!alreadyChosen) {
+      setHeroList([...heroList, character]);
+    }
   };
-  console.log(heroes);
+  const removeCharacter = (character) => {
+    const newList = heroList.filter((x) => x.id !== character.id);
+    setHeroList(newList);
+  };
+
+  const loadCharacters = () => {
+    const _newArray = [];
+
+    heroes.forEach((hero) => {
+      _newArray.push(
+        new Hero(
+          hero.name,
+          hero.image,
+          hero.type,
+          hero.level,
+          hero.class,
+          hero.strength,
+          hero.intelligence,
+          hero.hp,
+          hero.maxHp,
+          hero.mp,
+          hero.maxMp,
+          hero.weapon
+        )
+      );
+    });
+
+    setLoadedHeroes(_newArray);
+  };
+
+  useEffect(() => {
+    loadCharacters();
+
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div>
       <h1>SelectCharacter</h1>
-      <div className="d-flex gap-3 justify-content-start">
-        {heroes.length > 0 ? (
-          heroes.map((item, index) => (
-            <CharacterCard character={item} key={index}>
-              <Button onClick={() => selectCharacter(item)}>Select</Button>
-            </CharacterCard>
-          ))
-        ) : (
-          <p>A lista está vazia.</p>
+
+      <div className="d-flex justify-content-center flex-wrap gap-1">
+        {loadedHeroes && loadedHeroes.length > 0 && (
+          <MapForItems
+            list={loadedHeroes}
+            modalType={SELECT_HERO}
+            removeCharacter={removeCharacter}
+            selectCharacter={selectCharacter}
+          />
         )}
       </div>
-      <div className="d-flex justify-content-center gap-3 my-3">
+
+      <div className="d-flex justify-content-center gap-1 m-3">
+        <Button onClick={() => navigate("/select-map")}>Select Map</Button>
         <Button onClick={() => navigate("/")}>Back</Button>
-        <Button onClick={() => navigate("/start-game")}>Start Game</Button>
       </div>
     </div>
   );

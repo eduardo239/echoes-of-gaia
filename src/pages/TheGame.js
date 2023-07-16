@@ -1,366 +1,513 @@
-/* eslint-disable no-unused-vars */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { generateRandomNumber, getRandomItem } from "../helper";
 import { PlayerContext } from "../hook/PlayerContext";
-import { heroes, enemies, items, bosses } from "../server2";
-import { generateRandomMap, randomlyCombineArrays } from "../helper2";
+//
+import { player } from "../server";
 //
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import HeroList from "../components2/HeroList";
-import EnemyList from "../components2/EnemyList";
-import Container from "react-bootstrap/Container";
-import InventoryList from "../components2/InventoryList";
-import { BOSS, EMPTY, ENEMY, HERO, ITEM, NOTHING } from "../constants";
-import GameStats from "../components2/GameStats";
+import Alert from "react-bootstrap/Alert";
+
+//
+import ModalShop from "../components/modal/ModalShop";
+import ModalInventory from "../components/modal/ModalInventory";
+import ModalGift from "../components/modal/ModalGift";
+//
+import MapForItems from "../components/map/MapForItems";
+import MapForList from "../components/map/MapForList";
+import MapForQueue from "../components/map/MapForQueue";
+//
+import {
+  randomNumber,
+  randomlyCombineArrays,
+  chooseRandomItem,
+} from "../helper";
+//
+import {
+  BOSS,
+  CURE,
+  ELIXIR,
+  ENEMY,
+  GIFT,
+  HERO,
+  ITEM,
+  MANA,
+  POISON,
+  GAME_BATTLE_DELAY,
+} from "../constants";
 
 const TheGame = () => {
-  const { inventory, setInventory } = useContext(PlayerContext);
-  //
-  const [gifts, setGifts] = useState([]);
-  //
-  const [position, setPosition] = useState(0);
-  const [queue, setQueue] = useState([]);
-  const [map, setMap] = useState([]);
-  const [turn, setTurn] = useState(null);
-  const [dice, setDice] = useState(0);
-  const [heroList, setHeroList] = useState([]);
-  const [log, setLog] = useState([]);
-  // modal
+  const { map, heroList, setHeroList, enemyList, setEnemyList, shopItems } =
+    useContext(PlayerContext);
+  // shop modal
   const [modalShop, setModalShop] = useState(false);
   const handleModalShopClose = () => setModalShop(false);
   const handleModalShopShow = () => setModalShop(true);
+  // inventory modal
+  const [modalInventory, setModalInventory] = useState(false);
+  const handleModalInventoryClose = () => setModalInventory(false);
+  const handleModalInventoryShow = () => setModalInventory(true);
+  // inventory gift
+  const [modalGift, setModalGift] = useState(false);
+  const handleModalGiftClose = () => setModalGift(false);
+  const handleModalGiftShow = () => setModalGift(true);
+  // game
+  const [dice, setDice] = useState(0);
+  const [position, setPosition] = useState(0);
+  const [battleQueue, setBattleQueue] = useState([]);
+  const [inventory, setInventory] = useState([]);
+  // status da batalha
+  const [isFighting, setIsFighting] = useState(false);
+  const isEnemyFighting = isFighting && battleQueue[0]?.type === ENEMY;
   //
-  const [modalItem, setModalItem] = useState(false);
-  const handleModalItemClose = () => setModalItem(false);
-  const handleModalItemShow = () => setModalItem(true);
+  const [isPhysicalAttack, setIsPhysicalAttack] = useState(false);
+  const [isMagicalAttack, setIsMagicalAttack] = useState(false);
+  //
+  const [isUsingItem, setIsUsingItem] = useState(false);
+  const [useItem, setUseItem] = useState(null);
+  //
+  const [message, setMessage] = useState(0);
+  // const [log, setLog] = useState([]);
+  //
+  const [giftList, setGiftList] = useState([]);
 
-  // play !
-  const rollTheDice = () => {
-    const randomNumber = generateRandomNumber(1, 6);
-    const newPosition = randomNumber + position;
-    setDice(randomNumber);
-    walkTo(newPosition);
+  const gameOver = () => {
+    setMessage("Game Over!!!");
+    reset();
   };
-  // move o personagem no mapa
-  const walkTo = (newPosition) => {
-    // validar se acabou o mapa, se sim
-    // move o personagem para última posição
-    const isLastLocation = newPosition >= map.length - 1;
+
+  const winner = () => {
+    setIsFighting(false);
+    setEnemyList([]);
+    setIsPhysicalAttack(false);
+    setIsMagicalAttack(false);
+    setIsUsingItem(false);
+    setBattleQueue([]);
+    //
+    setTimeout(() => {
+      const addedExp = player.exp + 45;
+      if (addedExp > player.expToNextLevel) {
+        setMessage("Level Up !!");
+        const remain = addedExp - player.expToNextLevel;
+        player.exp = remain;
+      } else {
+        player.exp += 45;
+        setMessage("Exp added!");
+      }
+    }, GAME_BATTLE_DELAY);
+  };
+  const reset = () => {
+    setIsFighting(false);
+    setPosition(0);
+    setIsPhysicalAttack(false);
+    setIsMagicalAttack(false);
+    setIsUsingItem(false);
+    setUseItem(null);
+    setBattleQueue([]);
+    setEnemyList([]);
+    setHeroList([]);
+    setInventory([]);
+    setGiftList([]);
+    setMessage("");
+  };
+  const rollTheDice = (setDice) => {
+    // reset status
+    setIsFighting(false);
+    // reset list de presentes
+    setGiftList([]);
+    //
+    const result = randomNumber(1, 6);
+    setDice(result);
+    moveTo(position + result);
+  };
+  const moveTo = (position) => {
+    // validar se o mapa chegou ao fim
+    const isLastLocation = position >= map.length - 1;
     if (isLastLocation) {
       setPosition(map.length - 1);
-      checkActualLocal(map.length - 1);
+      checkPosition(map.length - 1);
     } else {
-      setPosition(newPosition);
-      checkActualLocal(newPosition);
+      setPosition(position);
+      checkPosition(position);
     }
   };
-  // verifica o local atual
-  const checkActualLocal = (local) => {
-    const localType = map[local][0].type;
-    const localData = map[local];
 
-    // reset o gift e a lista de inimigos
-    setGifts([]);
+  // validar o tipo de posição
+  const checkPosition = (position) => {
+    const positionType = map[position][0].type;
+    const positionData = map[position];
 
-    // verifica o que tem no local
-    switch (localType) {
+    switch (positionType) {
       case ENEMY:
-        //
-        const newEnemyList = [];
-        // cria novos ids para não duplicar
-        for (let i = 0; i < localData.length; i++) {
-          const newEnemy = { ...localData[i] };
-          newEnemy.id = uuidv4();
-          newEnemyList.push(newEnemy);
-        }
-        // mistura a lista de inimigos e heróis
-        const battleOrderList = randomlyCombineArrays(heroes, newEnemyList);
-        setQueue(battleOrderList);
-        whoIsTheFirst(battleOrderList);
-        //
+        setMessage("Enemy Founded");
+        // gera uma nova lista, cada item com um novo id
+        // const _listWithNewId = generateNewId(positionData);
+        // gerar a ordem de batalha
+        const _queue = randomlyCombineArrays(positionData, heroList);
+        setEnemyList(positionData);
+        setBattleQueue(_queue);
+        // ordem da batalha
+        if (_queue[0].type === ENEMY) startEnemyTurn(_queue);
+        else setMessage("Hero Time");
+        // status da batalha
+        setIsFighting(true);
+        // desabilitar botão shop
         break;
       case ITEM:
-        setGifts(localData);
-        setModalItem(true);
+        generateNewRandomItem();
         break;
       case BOSS:
-        //
-        break;
-      case EMPTY:
-        //
+        setMessage("Boss Time !!");
+        // gera uma nova lista, cada item com um novo id
+        // const _bossListWithNewId = generateNewId(positionData);
+        // gerar a ordem de batalha
+        const _bossQueue = randomlyCombineArrays(positionData, heroList);
+        setEnemyList(positionData);
+        setBattleQueue(_bossQueue);
+        // ordem da batalha
+        if (_queue[0].type === ENEMY) startEnemyTurn(_queue);
+        else setMessage("Hero Time");
+        // status da batalha
+        setIsFighting(true);
         break;
       default:
         break;
     }
   };
-  const heroAttackPhysically = () => {
-    console.log("");
-  };
-  const heroMagicalAttack = () => {
-    console.log("");
-  };
 
-  const characterAttack = (character) => {
-    console.log("character attack, turn is " + turn);
+  // -----------------------------------------------------------------------
+  const startEnemyTurn = (list) => {
+    if (heroList.length <= 0) {
+      setMessage("Insufficient Players");
+      return;
+    }
     setTimeout(() => {
-      // pega o valor da força do herói e gera um dano aleatório
-      const strength = queue[0]?.strength;
-      const rndDamage = generateRandomNumber(strength, strength + 10);
-      // log
-      setLog([...log, { info: `${queue[0]?.name} attacking...` }]);
-      // remove o hp do inimigo
-      const updatedList = changeValueOfAnObject(character.id, "hp", rndDamage);
-      // reordenar a lista, mover primeiro para fim da lista
-      queueReorder(updatedList);
-    }, 300);
-  };
+      // selecionar um herói aleatório
+      const _her = chooseRandomItem(heroList);
+      // gerar um dano aleatório
+      const _ene = list[0];
+      const _dmg = randomNumber(_ene.status.strength, _ene.status.strength + 3);
 
-  // TOD TOD -- - -- - - -
-  const restart = () => {};
-  const use = (item) => {
-    // // remove o item do inventário
-    // const updatedInventory = inventory.filter((x) => x.id !== item.id);
-    // setInventory(updatedInventory);
-  };
-  const get = (item) => {
-    // const purchasedItem = { ...item };
-    // purchasedItem.id = uuidv4();
-    // setInventory([...inventory, purchasedItem]);
-    // handleModalItemClose();
-  };
-  const buy = (item) => {
-    // const purchasedItem = { ...item };
-    // purchasedItem.id = uuidv4();
-    // setInventory([...inventory, purchasedItem]);
-  };
-  const sell = (item) => {
-    // const gold = item.price;
-    // // remove o item do inventário
-    // const updatedInventory = inventory.filter((x) => x.id !== item.id);
-    // setInventory(updatedInventory);
-  };
+      setMessage("Hero attacked");
+      // associando as listas
+      let newHeroList = heroList;
+      let newQueue = list;
 
-  // check quem é o primeiro
-  const whoIsTheFirst = (list) => {
-    console.log("who is the first");
+      // dano causado ao hero
+      _her.status.hp -= _dmg;
 
-    const isHero = list[0].type === HERO;
-    const isEnemy = list[0].type === ENEMY;
+      // validar o status de vida
+      if (_her.status.hp < 1) {
+        // const _newHeroList = newHeroList.filter((x) => x.id !== _her.id);
+        const _newQueueList = newQueue.filter((x) => x.id !== _her.id);
+        // newHeroList = _newHeroList;
+        newQueue = _newQueueList;
+        _her.status.isAlive = false;
 
-    if (isHero) setTurn(0);
-    else if (isEnemy) setTurn(1);
-
-    if (turn === 1 || isEnemy) {
-      const heroesList = list.filter((x) => x.type === HERO);
-      const targetHero = getRandomItem(heroesList);
-      characterAttack(targetHero);
-    }
-  };
-
-  // reordenar, primeiro item para última posição
-  const queueReorder = (list) => {
-    console.log("queue reorder");
-    if (list.length <= 1) return;
-
-    const firstItem = list.shift();
-    const newList = [...list, firstItem];
-    setQueue(newList);
-    whoIsTheFirst(newList);
-  };
-
-  // alterar status de um objeto
-  const changeValueOfAnObject = (id, property, value) => {
-    const newList = queue.map((character) => {
-      if (character.id === id) {
-        return { ...character, [property]: character.hp - value };
-      }
-      return character;
-    });
-    return newList;
-  };
-
-  // inicia um novo jogo, gera um novo mapa e preenche a lista de heróis
-  useEffect(() => {
-    const result = generateRandomMap();
-    setMap(result);
-    setHeroList(heroes);
-    return () => {};
-  }, []);
-
-  // listas mapeadas
-  const get_items_list = () => {
-    return items.map((item) => (
-      <div key={item.id} className="app-card">
-        <img src={item.image} alt="" />
-
-        <div className="app-card-body">
-          <p className="app-card-title">{item.name}</p>
-          <p>
-            Value: <span id="hp">{item.value}</span>
-          </p>
-
-          <p>
-            Preço: <span>${item.price}</span>
-          </p>
-
-          <div className="buttons">
-            <button className="button" onClick={() => buy(item)}>
-              Buy
-            </button>
-          </div>
-        </div>
-      </div>
-    ));
-  };
-  const get_item_gift_list = () => {
-    return gifts.map((gift) => (
-      <div key={gift.id} className="app-card">
-        <img src={gift.image} alt="" />
-
-        <div className="app-card-body">
-          <p className="app-card-title">{gift.name}</p>
-          <p>
-            Value: <span id="hp">{gift.value}</span>
-          </p>
-
-          <p>
-            Preço: <span>${gift.price}</span>
-          </p>
-
-          <div className="buttons">
-            <button className="button" onClick={() => get(gift)}>
-              Get
-            </button>
-          </div>
-        </div>
-      </div>
-    ));
-  };
-  const get_map_list = () => {
-    return map.map((local, index) => (
-      <li
-        key={index}
-        className={
-          position === index
-            ? "map-location active"
-            : position - 1 > index
-            ? "none"
-            : "map-location"
+        // validar se ainda há personagens para continuar
+        for (let z = 0; z < _newQueueList.length; z++) {
+          if (_newQueueList[z].type === HERO) {
+            console.log("ok");
+          } else {
+            gameOver();
+            return;
+          }
         }
-      >
-        {index} -{" "}
-        {local.length === 1 ? local[0].type : local.map((i) => i.type + " ")}
-      </li>
-    ));
+      } else {
+        // atualizar as listas
+        for (let i = 0; i < heroList.length; i++) {
+          if (heroList[i].id === _her.id) {
+            newHeroList[i] = _her;
+          }
+        }
+
+        for (let y = 0; y < list.length; y++) {
+          if (list[y].id === _her.id) {
+            newQueue[y] = _her;
+          }
+        }
+      }
+
+      setHeroList(newHeroList);
+      setBattleQueue(newQueue);
+      reorderQueue(newQueue);
+    }, GAME_BATTLE_DELAY);
   };
-  // mapeia a lista de inimigos e retorna para o html
-  const get_enemy_list = () => {
-    if (queue && queue.length > 0) {
-      return queue.filter((character) => character.type === ENEMY);
+
+  // tipo de ataque
+  const magicalAttack = () => {
+    setMessage("Magical Attack");
+    setIsMagicalAttack(true);
+  };
+  const physicalAttack = () => {
+    setMessage("Physical Attack");
+    setIsPhysicalAttack(true);
+  };
+
+  const selectedTarget = (character) => {
+    damage(battleQueue[0], character, battleQueue);
+  };
+
+  // ataque do herói
+  const damage = (character, target, list) => {
+    // reset os status
+    setIsPhysicalAttack(false);
+    setIsMagicalAttack(false);
+    let physAttack = 0;
+    let MagAttack = 0;
+
+    let _ene = { ...target };
+
+    setTimeout(() => {
+      let _her = character;
+      let newEnemyList = enemyList;
+      let newQueue = list;
+
+      if (isPhysicalAttack) {
+        physAttack = randomNumber(
+          _her.status.strength,
+          _her.status.strength + 12
+        );
+        _ene.status.hp -= physAttack;
+      }
+      if (isMagicalAttack) {
+        MagAttack = randomNumber(
+          _her.status.intelligence,
+          _her.status.intelligence + 24
+        );
+        _ene.status.hp -= MagAttack;
+      }
+
+      if (_ene.status.hp < 1) {
+        setMessage("Enemy is dead!");
+        console.log("o");
+        const _newEnemyList = newEnemyList.filter((x) => x.id !== _ene.id);
+        const _newQueue = newQueue.filter((x) => x.id !== _ene.id);
+
+        newEnemyList = _newEnemyList;
+        newQueue = _newQueue;
+        _ene.status.isAlive = false;
+
+        if (newEnemyList.length <= 0) {
+          winner();
+          return;
+        }
+      } else {
+        for (let i = 0; i < enemyList.length; i++) {
+          if (enemyList[i].id === _ene.id) {
+            console.log("h");
+            newEnemyList[i] = _ene;
+          }
+        }
+        for (let t = 0; t < list.length; t++) {
+          if (list[t].id === _ene.id) {
+            console.log("x");
+            newQueue[t] = _ene;
+          }
+        }
+      }
+
+      setEnemyList(newEnemyList);
+      setBattleQueue(newQueue);
+      reorderQueue(newQueue);
+    }, GAME_BATTLE_DELAY);
+  };
+  // -----------------------------------------------------------------------
+  const reorderQueue = (list) => {
+    setTimeout(() => {
+      const first = list.shift();
+      list.push(first);
+      // setOrderBattle(list);
+
+      if (list[0].type === ENEMY || list[0].type === BOSS) startEnemyTurn(list);
+
+      setMessage("Reordered Queue");
+    }, GAME_BATTLE_DELAY);
+
+    return list;
+  };
+  const selectedTargetToUseItem = (character) => {
+    const _item = useItem;
+    const _hero = character;
+
+    if (isFighting) {
+      switchOverItems(_item, _hero);
+      reorderQueue(battleQueue);
+    } else {
+      switchOverItems(_item, _hero);
+    }
+    setIsUsingItem(false);
+  };
+
+  // -----------------------------------------------------------------------
+  const switchOverItems = (_item, _hero) => {
+    const itemId = _item.id;
+    const newInventoryList = inventory.filter((x) => x.id !== itemId);
+
+    switch (_item.class) {
+      case CURE:
+        if (_hero.status.hp + _item.value > _hero.status.maxHp) {
+          _hero.status.hp = _hero.status.maxHp;
+        } else {
+          _hero.status.hp += _item.value;
+        }
+        setInventory(newInventoryList);
+        break;
+      case MANA:
+        if (_hero.status.mp + _item.value > _hero.status.maxMp) {
+          _hero.status.mp = _hero.status.maxMp;
+        } else {
+          _hero.status.mp += _item.value;
+        }
+        setInventory(newInventoryList);
+        break;
+      case ELIXIR:
+        if (_hero.status.hp + _item.value > _hero.status.maxHp) {
+          _hero.status.hp = _hero.status.maxHp;
+        } else {
+          _hero.status.hp += _item.value;
+        }
+        if (_hero.status.mp + _item.value > _hero.status.maxMp) {
+          _hero.status.mp = _hero.status.maxMp;
+        } else {
+          _hero.status.mp += _item.value;
+        }
+        setInventory(newInventoryList);
+        break;
+      case POISON:
+        _hero.status.strength += _item.value;
+        setInventory(newInventoryList);
+        break;
+      default:
+        break;
     }
   };
+  const handleBuyItem = (item) => {
+    const _player = player;
+
+    if (item.price > _player.gold) {
+      setMessage("Insufficient gold");
+    } else {
+      const newItem = { ...item };
+      newItem.id = uuidv4();
+      setInventory([...inventory, newItem]);
+      player.gold -= item.price;
+    }
+    handleModalShopClose();
+  };
+  const generateNewRandomItem = () => {
+    setMessage("New item founded");
+    const itemList = shopItems;
+    const giftItem1 = chooseRandomItem(itemList);
+    const giftItem2 = chooseRandomItem(itemList);
+
+    const newGiftItem1 = { ...giftItem1 };
+    newGiftItem1.id = uuidv4();
+    const newGiftItem2 = { ...giftItem2 };
+    newGiftItem2.id = uuidv4();
+
+    setGiftList([...giftList, newGiftItem1, newGiftItem2]);
+    handleModalGiftShow();
+  };
+
   return (
     <>
-      <Container style={{ padding: "1rem" }}>
+      <Row>
+        <Alert style={{ marginBottom: 0 }} variant="dark">
+          {message ? message : "Game"}
+        </Alert>
+      </Row>
+      {player && (
         <Row>
-          <Col md="5" style={{ padding: 0 }}>
-            <HeroList
-              list={heroList}
-              activeHero={(queue && queue[0]) || map[0]?.type !== NOTHING}
-              heroAttackPhysically={heroAttackPhysically}
-              heroMagicalAttack={heroMagicalAttack}
-            />
-          </Col>
-          <Col md="2" style={{ padding: 0, textAlign: "center" }}>
-            <p>Turn: {turn && turn}</p>
-            {log.map((x, i) => (
-              <p key={i}>
-                {i} - {x.info}
-              </p>
-            ))}
-            <GameStats queue={queue} dice={dice} />
-          </Col>
-          <Col md="5" style={{ padding: 0 }}>
-            <EnemyList
-              list={get_enemy_list()}
-              isHeroAttacking={turn === 0}
-              characterAttack={characterAttack}
-            />
-          </Col>
+          <Alert variant="primary">
+            Gold: ${player.gold} | Experience: {player.exp} | Level:
+            {player.level}
+          </Alert>
         </Row>
-        {/* ---------------------- */}
-        <Row>
-          <Col md="5" style={{ padding: 0 }}>
-            <InventoryList list={inventory} use={use} sell={sell} />
-          </Col>
-          <Col md="2" style={{ padding: 0 }}>
-            <div className="d-grid gap-1">
-              <Button
-                style={{ borderRadius: 0 }}
-                disabled={turn === 0}
-                variant="primary"
-                onClick={rollTheDice}
-              >
-                Play
-              </Button>
-              <Button
-                style={{ borderRadius: 0 }}
-                disabled={turn === 0}
-                variant="primary"
-                onClick={handleModalShopShow}
-              >
-                Shop
-              </Button>
-              <Button
-                style={{ borderRadius: 0 }}
-                variant="secondary"
-                onClick={restart}
-              >
-                Restart
-              </Button>
-            </div>
-          </Col>
-          <Col md="5" className="container-map">
-            {heroes && heroes.length > 0 && get_map_list()}
-          </Col>
-        </Row>
-      </Container>
+      )}
+      <Row>
+        <Col sm="6" md="8">
+          <div className="d-flex align-content-start flex-wrap">
+            {heroList && heroList.length > 0 && (
+              <MapForItems
+                list={heroList}
+                modalType={HERO}
+                // status da batalha
+                isFighting={isFighting}
+                isEnemyFighting={isEnemyFighting}
+                firstInTheQueue={battleQueue[0]}
+                // ataque ao personagem
+                magicalAttack={magicalAttack}
+                physicalAttack={physicalAttack}
+                selectedTarget={selectedTarget}
+                isPhysicalAttack={isPhysicalAttack}
+                // itens para usar
+                isUsingItem={isUsingItem}
+                selectedTargetToUseItem={selectedTargetToUseItem}
+              />
+            )}
 
-      <Modal size="xl" show={modalShop} onHide={handleModalShopClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Shop Items</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="d-flex justify-content-center flex-wrap gap-1">
-            {items && items.length > 0 && get_items_list()}
+            {isFighting && enemyList && enemyList.length > 0 && (
+              <MapForItems
+                list={enemyList}
+                modalType={ENEMY}
+                isPhysicalAttack={isPhysicalAttack}
+                isMagicalAttack={isMagicalAttack}
+                isEnemyFighting={isEnemyFighting}
+                selectedTarget={selectedTarget}
+              />
+            )}
           </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleModalShopClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      {/*  */}
-      <Modal size="xl" show={modalItem} onHide={handleModalItemClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Gift Item</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="d-flex justify-content-center flex-wrap gap-1">
-            {items && items.length > 0 && get_item_gift_list()}
+          {/*  */}
+          <ModalShop
+            gold={player?.gold ? player.gold : "Balance not found"}
+            list={shopItems}
+            modalType={ITEM}
+            modalShop={modalShop}
+            handleModalShopClose={handleModalShopClose}
+            handleBuyItem={handleBuyItem}
+          />
+          <ModalInventory
+            list={inventory}
+            modalType={ITEM}
+            modalInventory={modalInventory}
+            handleModalInventoryClose={handleModalInventoryClose}
+            setUseItem={setUseItem}
+            setUsingItem={setIsUsingItem}
+          />
+          <ModalGift
+            list={giftList}
+            setGiftList={setGiftList}
+            modalType={GIFT}
+            inventory={inventory}
+            modalGift={modalGift}
+            handleModalGiftClose={handleModalGiftClose}
+            setInventory={setInventory}
+          />
+          {/*  */}
+        </Col>
+        <Col sm="6" md="4">
+          <div className="d-grid gap-1">
+            <Button disabled={isFighting} onClick={() => rollTheDice(setDice)}>
+              Play! {dice}
+            </Button>
+
+            <Button disabled={isFighting} onClick={handleModalShopShow}>
+              Shop!
+            </Button>
+            <Button onClick={handleModalInventoryShow}>Inventory</Button>
+            <Button onClick={() => reset()}>Reset! </Button>
           </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleModalItemClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          {/*  */}
+          <div className="d-grid">
+            <MapForQueue list={battleQueue} firstInTheQueue={battleQueue[0]} />
+            <br />
+
+            <MapForList list={map} position={position} />
+          </div>
+        </Col>
+      </Row>
     </>
   );
 };
