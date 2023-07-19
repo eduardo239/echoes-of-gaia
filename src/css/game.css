@@ -28,11 +28,19 @@
 .hero-picking {
   border-color: #bfffd4;
 }
+.enemy-picking-attack:hover {
+  border-color: #5552fc;
+}
+.enemy-picking-magic:hover {
+  border-color: #fc527c;
+}
 .hero-picking:hover {
   border-color: #04ff57;
   cursor: pointer;
 }
-
+.hero-selected {
+  filter: grayscale(100%);
+}
 .dead-character {
   filter: grayscale(100%);
   filter: blur(50%);

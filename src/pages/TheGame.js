@@ -8,7 +8,6 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
-
 //
 import ModalShop from "../components/modal/ModalShop";
 import ModalInventory from "../components/modal/ModalInventory";
@@ -22,6 +21,7 @@ import {
   randomNumber,
   randomlyCombineArrays,
   chooseRandomItem,
+  logManager,
 } from "../helper";
 //
 import {
@@ -36,7 +36,11 @@ import {
   POISON,
   GAME_BATTLE_DELAY,
   REBORN,
+  MAGIC,
+  FIRE,
+  ICE,
 } from "../constants";
+import ModalMagic from "../components/modal/ModalMagic";
 
 const TheGame = () => {
   const { map, heroList, setHeroList, enemyList, setEnemyList, shopItems } =
@@ -49,10 +53,14 @@ const TheGame = () => {
   const [modalInventory, setModalInventory] = useState(false);
   const handleModalInventoryClose = () => setModalInventory(false);
   const handleModalInventoryShow = () => setModalInventory(true);
-  // inventory gift
+  //  gift modal
   const [modalGift, setModalGift] = useState(false);
   const handleModalGiftClose = () => setModalGift(false);
   const handleModalGiftShow = () => setModalGift(true);
+  // magic modal
+  const [modalMagic, setModalMagic] = useState(false);
+  const handleModalMagicClose = () => setModalMagic(false);
+  const handleModalMagicShow = () => setModalMagic(true);
   // game
   const [dice, setDice] = useState(0);
   const [position, setPosition] = useState(0);
@@ -68,16 +76,18 @@ const TheGame = () => {
   const [isUsingItem, setIsUsingItem] = useState(false);
   const [useItem, setUseItem] = useState(null);
   //
+  const [isUsingMagic, setIsUsingMagic] = useState(false);
+  const [useMagic, setUseMagic] = useState(null);
+  //
   const [message, setMessage] = useState(0);
-  // const [log, setLog] = useState([]);
+  const [log, setLog] = useState([]);
   //
   const [giftList, setGiftList] = useState([]);
 
   const gameOver = () => {
-    setMessage("Game Over!!!");
+    setMessage("Game Over!");
     reset();
   };
-
   const winner = () => {
     setIsFighting(false);
     setEnemyList([]);
@@ -89,7 +99,7 @@ const TheGame = () => {
     setTimeout(() => {
       const addedExp = player.exp + 45;
       if (addedExp > player.expToNextLevel) {
-        setMessage("Level Up !!");
+        setMessage("Level Up!");
         const remain = addedExp - player.expToNextLevel;
         player.exp = remain;
       } else {
@@ -119,10 +129,14 @@ const TheGame = () => {
     setGiftList([]);
     //
     const result = randomNumber(1, 6);
+    setLog([...log, logManager(`Dice Result: ${result}`)]);
+
     setDice(result);
     moveTo(position + result);
   };
+  // Mover para o novo local e verificar a posição -------------------
   const moveTo = (position) => {
+    setLog([...log, logManager(`The character went to the site ${position}`)]);
     // validar se o mapa chegou ao fim
     const isLastLocation = position >= map.length - 1;
     if (isLastLocation) {
@@ -133,41 +147,39 @@ const TheGame = () => {
       checkPosition(position);
     }
   };
-
-  // validar o tipo de posição
+  // Validar o tipo de posição ------------------------------
   const checkPosition = (position) => {
     const positionType = map[position][0].type;
     const positionData = map[position];
-
-    // gerar a ordem de batalha
-    const _queue = randomlyCombineArrays(positionData, heroList);
+    // gerar a ordem de batalha ------------------------------
     switch (positionType) {
       case ENEMY:
+        const _queue2 = randomlyCombineArrays(positionData, heroList);
         setMessage("Enemy Founded");
-        // gera uma nova lista, cada item com um novo id
+        setLog([...log, logManager(`Enemy Founded!`)]);
         // const _listWithNewId = generateNewId(positionData);
         setEnemyList(positionData);
-        setBattleQueue(_queue);
+        setBattleQueue(_queue2);
         // ordem da batalha
-        if (_queue[0].type === ENEMY) startEnemyTurn(_queue);
+        if (_queue2[0].type === ENEMY) startEnemyTurn(_queue2);
         else setMessage("Hero Time");
         // status da batalha
         setIsFighting(true);
         // desabilitar botão shop
         break;
       case ITEM:
+        setLog([...log, logManager(`Item Founded`)]);
         generateNewRandomItem();
         break;
       case BOSS:
+        const _queue1 = randomlyCombineArrays(positionData, heroList);
         setMessage("Boss Time !!");
-        // gera uma nova lista, cada item com um novo id
-        // const _bossListWithNewId = generateNewId(positionData);
+        setLog([...log, logManager(`Boss Time !!!!`)]);
         // gerar a ordem de batalha
-        const _bossQueue = randomlyCombineArrays(positionData, heroList);
         setEnemyList(positionData);
-        setBattleQueue(_bossQueue);
+        setBattleQueue(_queue1);
         // ordem da batalha
-        if (_queue[0].type === BOSS) startEnemyTurn(_queue);
+        if (_queue1[0].type === BOSS) startEnemyTurn(_queue1);
         else setMessage("Hero Time");
         // status da batalha
         setIsFighting(true);
@@ -176,13 +188,13 @@ const TheGame = () => {
         break;
     }
   };
-
-  // -----------------------------------------------------------------------
+  // Turno do inimigo -------------------------------------------------
   const startEnemyTurn = (list) => {
     if (heroList.length <= 0) {
       setMessage("Insufficient Players");
       return;
     }
+    setLog([...log, logManager(`Enemy Turn!`)]);
     setTimeout(() => {
       // selecionar um herói aleatório
       const _her = chooseRandomItem(heroList);
@@ -197,12 +209,11 @@ const TheGame = () => {
 
       // dano causado ao hero
       _her.status.hp -= _dmg;
+      setLog([...log, logManager(`${_dmg} damage deal to hero.`)]);
 
       // validar o status de vida
       if (_her.status.hp < 1) {
-        // const _newHeroList = newHeroList.filter((x) => x.id !== _her.id);
         const _newQueueList = newQueue.filter((x) => x.id !== _her.id);
-        // newHeroList = _newHeroList;
         newQueue = _newQueueList;
         _her.status.isAlive = false;
 
@@ -212,7 +223,6 @@ const TheGame = () => {
           gameOver();
           return;
         }
-
         //
       } else {
         // atualizar as listas
@@ -234,28 +244,26 @@ const TheGame = () => {
       reorderQueue(newQueue);
     }, GAME_BATTLE_DELAY);
   };
-
-  // tipo de ataque
+  // Tipo de ataque --------------------------------------
   const magicalAttack = () => {
     setMessage("Magical Attack");
-    setIsMagicalAttack(true);
+    handleModalMagicShow(true);
   };
   const physicalAttack = () => {
     setMessage("Physical Attack");
     setIsPhysicalAttack(true);
   };
-
+  // TODO: remover set Is MagicalAttack
+  // Ataque do herói --------------------------------------
   const selectedTarget = (character) => {
     damage(battleQueue[0], character, battleQueue);
   };
-
-  // ataque do herói
   const damage = (character, target, list) => {
     // reset os status
     setIsPhysicalAttack(false);
     setIsMagicalAttack(false);
     let physAttack = 0;
-    let MagAttack = 0;
+    let magAttack = 0;
 
     let _ene = { ...target };
 
@@ -270,13 +278,15 @@ const TheGame = () => {
           _her.status.strength + 12
         );
         _ene.status.hp -= physAttack;
+        setLog([...log, logManager(`${physAttack} damage deal to enemy.`)]);
       }
       if (isMagicalAttack) {
-        MagAttack = randomNumber(
+        magAttack = randomNumber(
           _her.status.intelligence,
           _her.status.intelligence + 12
         );
-        _ene.status.hp -= MagAttack;
+        _ene.status.hp -= magAttack;
+        setLog([...log, logManager(`${magAttack} damage deal to enemy.`)]);
       }
 
       if (_ene.status.hp < 1) {
@@ -311,79 +321,100 @@ const TheGame = () => {
       reorderQueue(newQueue);
     }, GAME_BATTLE_DELAY);
   };
-  // -----------------------------------------------------------------------
+  // Reordenar a fila de batalha ----------------------------------
   const reorderQueue = (list) => {
     setTimeout(() => {
       const first = list.shift();
       list.push(first);
-      // setOrderBattle(list);
-
-      if (list[0].type === ENEMY || list[0].type === BOSS) startEnemyTurn(list);
-
+      if (list[0].type === ENEMY || list[0].type === BOSS) {
+        startEnemyTurn(list);
+        setLog([...log, logManager(`Hero Time!`)]);
+      }
       setMessage("Reordered Queue");
     }, GAME_BATTLE_DELAY);
-
     return list;
   };
-  const selectedTargetToUseItem = (character) => {
+  //
+
+  const selectedTargetToUseMagic = (enemy) => {
+    console.log("-----------------");
+    console.log(enemy);
+    console.log(useMagic);
+    console.log(useMagic.type);
+    switch (useMagic.type) {
+      case FIRE:
+        setMessage("Fire Attacking");
+        break;
+      case ICE:
+        setMessage("Ice Attacking");
+        break;
+      default:
+        break;
+    }
+  };
+
+  const selectedTargetToUseItem = (hero) => {
     const _item = useItem;
-    const _hero = character;
 
     if (isFighting) {
-      switchOverItems(_item, _hero);
+      switchOverItems(_item, hero);
       reorderQueue(battleQueue);
     } else {
-      switchOverItems(_item, _hero);
+      switchOverItems(_item, hero);
     }
     setIsUsingItem(false);
   };
-
-  // -----------------------------------------------------------------------
-  const switchOverItems = (_item, _hero) => {
-    const itemId = _item.id;
+  // Usar item -------------------------------------------------
+  const switchOverItems = (item, hero) => {
+    const itemId = item.id;
     const newInventoryList = inventory.filter((x) => x.id !== itemId);
 
-    switch (_item.class) {
+    switch (item.class) {
       case CURE:
-        if (_hero.status.hp + _item.value > _hero.status.maxHp) {
-          _hero.status.hp = _hero.status.maxHp;
+        if (hero.status.hp < 1) {
+          setMessage("Invalid Character");
         } else {
-          _hero.status.hp += _item.value;
+          setLog([...log, logManager(`Cure Potion Used!`)]);
+          if (hero.status.hp + item.value > hero.status.maxHp) {
+            hero.status.hp = hero.status.maxHp;
+          } else {
+            hero.status.hp += item.value;
+          }
+          setInventory(newInventoryList);
         }
-        setInventory(newInventoryList);
         break;
       case MANA:
-        if (_hero.status.mp + _item.value > _hero.status.maxMp) {
-          _hero.status.mp = _hero.status.maxMp;
+        if (hero.status.mp + item.value > hero.status.maxMp) {
+          hero.status.mp = hero.status.maxMp;
         } else {
-          _hero.status.mp += _item.value;
+          hero.status.mp += item.value;
         }
         setInventory(newInventoryList);
         break;
       case ELIXIR:
-        if (_hero.status.hp + _item.value > _hero.status.maxHp) {
-          _hero.status.hp = _hero.status.maxHp;
+        if (hero.status.hp + item.value > hero.status.maxHp) {
+          hero.status.hp = hero.status.maxHp;
         } else {
-          _hero.status.hp += _item.value;
+          hero.status.hp += item.value;
         }
-        if (_hero.status.mp + _item.value > _hero.status.maxMp) {
-          _hero.status.mp = _hero.status.maxMp;
+        if (hero.status.mp + item.value > hero.status.maxMp) {
+          hero.status.mp = hero.status.maxMp;
         } else {
-          _hero.status.mp += _item.value;
+          hero.status.mp += item.value;
         }
         setInventory(newInventoryList);
         break;
       case POISON:
-        _hero.status.strength += _item.value;
+        hero.status.strength += item.value;
         setInventory(newInventoryList);
         break;
       case REBORN:
-        if (_hero.status.hp < 1) {
-          _hero.status.hp = _item.value;
-          _hero.status.isAlive = true;
+        if (hero.status.hp < 1) {
+          hero.status.hp = item.value;
+          hero.status.isAlive = true;
           setInventory(newInventoryList);
           if (isFighting) {
-            setBattleQueue([...battleQueue, _hero]);
+            setBattleQueue([...battleQueue, hero]);
           }
         } else {
           setMessage("Invalid Character");
@@ -393,6 +424,7 @@ const TheGame = () => {
         break;
     }
   };
+  // Comprar item -------------------------------------------------
   const handleBuyItem = (item) => {
     const _player = player;
 
@@ -405,6 +437,7 @@ const TheGame = () => {
       player.gold -= item.price;
     }
   };
+  // Gerar itens aleatórios para a posição Item -------------------
   const generateNewRandomItem = () => {
     setMessage("New item founded");
     const itemList = shopItems;
@@ -415,7 +448,6 @@ const TheGame = () => {
     newGiftItem1.id = uuidv4();
     const newGiftItem2 = { ...giftItem2 };
     newGiftItem2.id = uuidv4();
-
     setGiftList([...giftList, newGiftItem1, newGiftItem2]);
     handleModalGiftShow();
   };
@@ -449,14 +481,18 @@ const TheGame = () => {
                 // ataque ao personagem
                 magicalAttack={magicalAttack}
                 physicalAttack={physicalAttack}
+                //
                 selectedTarget={selectedTarget}
+                //
                 isPhysicalAttack={isPhysicalAttack}
                 // itens para usar
                 isUsingItem={isUsingItem}
+                //
                 selectedTargetToUseItem={selectedTargetToUseItem}
+                // mágica do personagem
               />
             )}
-
+            {/* - - - - - lista dos inimigos - - - - -  */}
             {isFighting && enemyList && enemyList.length > 0 && (
               <MapForCharacters
                 list={enemyList}
@@ -465,6 +501,8 @@ const TheGame = () => {
                 isMagicalAttack={isMagicalAttack}
                 isEnemyFighting={isEnemyFighting}
                 selectedTarget={selectedTarget}
+                //
+                selectedTargetToUseMagic={selectedTargetToUseMagic}
               />
             )}
           </div>
@@ -477,14 +515,6 @@ const TheGame = () => {
             handleModalShopClose={handleModalShopClose}
             handleBuyItem={handleBuyItem}
           />
-          <ModalInventory
-            list={inventory}
-            modalType={ITEM}
-            modalInventory={modalInventory}
-            handleModalInventoryClose={handleModalInventoryClose}
-            setUseItem={setUseItem}
-            setUsingItem={setIsUsingItem}
-          />
           <ModalGift
             list={giftList}
             setGiftList={setGiftList}
@@ -494,9 +524,33 @@ const TheGame = () => {
             handleModalGiftClose={handleModalGiftClose}
             setInventory={setInventory}
           />
+          <ModalInventory
+            list={inventory}
+            modalType={ITEM}
+            modalInventory={modalInventory}
+            handleModalInventoryClose={handleModalInventoryClose}
+            setUseItem={setUseItem}
+            setIsUsingItem={setIsUsingItem}
+          />
+          <ModalMagic
+            list={heroList}
+            modalType={MAGIC}
+            modalMagic={modalMagic}
+            handleModalMagicClose={handleModalMagicClose}
+            setUseMagic={setUseMagic}
+            setIsUsingMagic={setIsUsingMagic}
+            setIsMagicalAttack={setIsMagicalAttack}
+          />
           {/*  */}
+          {log &&
+            log.length > 0 &&
+            log.map((x, i) => (
+              <div key={i}>
+                <code>{x.date + " " + x.message}</code>
+              </div>
+            ))}
         </Col>
-        <Col sm="12" md="4" lg="3" xl="2">
+        <Col>
           <div className="d-grid gap-1">
             <Button disabled={isFighting} onClick={() => rollTheDice(setDice)}>
               Play! {dice}
@@ -512,7 +566,6 @@ const TheGame = () => {
           <div className="d-grid">
             <MapForQueue list={battleQueue} firstInTheQueue={battleQueue[0]} />
             <br />
-
             <MapForList list={map} position={position} />
           </div>
         </Col>

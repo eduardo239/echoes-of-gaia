@@ -10,7 +10,7 @@ import MapForMaps from "../components/map/MapForMaps";
 
 const SelectMap = () => {
   const navigate = useNavigate();
-  const { setMap, setShopItems } = useContext(PlayerContext);
+  const { map, setMap, setShopItems } = useContext(PlayerContext);
 
   const selectMap = (_map) => {
     const map = generateRandomMap(_map.length);

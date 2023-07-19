@@ -11,12 +11,14 @@ const MapForCharacters = ({
   physicalAttack = null,
   magicalAttack = null,
   isPhysicalAttack = false,
-  isMagicalAttack = false,
+  isMagicalAttack = true,
   selectedTarget = null,
   selectedTargetToUseItem = null,
   isUsingItem = false,
   selectCharacter = null,
+  selectedCharacter = [],
   removeCharacter = null,
+  selectedTargetToUseMagic = null,
 }) => {
   const map_for_items = () => {
     return list.map((item) => (
@@ -25,31 +27,38 @@ const MapForCharacters = ({
         className={`app-card ${
           !isEnemyFighting &&
           modalType === ENEMY &&
-          (isPhysicalAttack || isMagicalAttack) &&
+          isPhysicalAttack &&
           item.status.isAlive
-            ? "hero-picking "
+            ? "enemy-picking-attack"
             : modalType === HERO && isUsingItem
-            ? "hero-picking "
-            : " "
+            ? "hero-picking"
+            : modalType === ENEMY && isMagicalAttack
+            ? "enemy-picking-magic"
+            : ""
         } ${
           (modalType === HERO ||
             modalType === SELECT_HERO ||
             modalType === ENEMY ||
             modalType === BOSS) &&
           item.status.isAlive
-            ? " "
-            : "dead-character "
+            ? ""
+            : "dead-character"
+        } ${
+          modalType === SELECT_HERO && selectedCharacter.indexOf(item) !== -1
+            ? "hero-selected"
+            : ""
         }`}
         onClick={
-          modalType === ENEMY &&
-          (isPhysicalAttack || isMagicalAttack) &&
-          item.status.isAlive
+          modalType === ENEMY && isPhysicalAttack && item.status.isAlive
             ? () => selectedTarget(item)
             : modalType === HERO && isUsingItem
             ? () => selectedTargetToUseItem(item)
+            : modalType === ENEMY && isMagicalAttack && item.status.isAlive
+            ? () => selectedTargetToUseMagic(item)
             : null
         }
       >
+        {/* imagem */}
         <img src={item.image} alt={item.name} />
         <CardTable modalType={modalType} item={item} />
 
@@ -78,11 +87,29 @@ const MapForCharacters = ({
 
         {modalType === SELECT_HERO && (
           <div className="d-grid gap-2">
-            <Button size="sm" onClick={() => selectCharacter(item)}>
+            <Button
+              size="sm"
+              onClick={() => selectCharacter(item)}
+              className={`${
+                modalType === SELECT_HERO &&
+                selectedCharacter.indexOf(item) !== -1
+                  ? "none"
+                  : ""
+              }`}
+            >
               Select
             </Button>
 
-            <Button size="sm" onClick={() => removeCharacter(item)}>
+            <Button
+              size="sm"
+              onClick={() => removeCharacter(item)}
+              className={`${
+                modalType === SELECT_HERO &&
+                selectedCharacter.indexOf(item) === -1
+                  ? "none"
+                  : ""
+              }`}
+            >
               Remove
             </Button>
           </div>

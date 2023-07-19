@@ -16,10 +16,6 @@ const MapForMaps = ({ list, selectMap, modalType }) => {
             </Button>
           </div>
         )}
-
-        {/* <div className="app-card-footer">
-              <code>{item.id}</code>
-            </div> */}
       </div>
     ));
   };

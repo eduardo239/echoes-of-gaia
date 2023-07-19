@@ -17,6 +17,11 @@ export const GAME_BATTLE_DELAY = 300;
 export const SELECT_HERO = "Select Hero";
 export const SELECT_MAP = "Select Map";
 export const MAP = "Map";
+export const MAGIC = "Magic";
+
+//
+export const FIRE = "Fire";
+export const ICE = "Ice";
 
 // https://www.thegamer.com/rpg-iconic-character-classes/#archer
 export const SOLDIER = "Soldier";

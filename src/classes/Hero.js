@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { Status } from "./Status";
+import { Magic } from "./Magic";
+import { FIRE } from "../constants";
 
 export class Hero {
   constructor(
@@ -32,5 +34,6 @@ export class Hero {
       weapon
     );
     this.status.isAlive = true;
+    this.magic = [new Magic("fire", 12, 40, FIRE)];
   }
 }

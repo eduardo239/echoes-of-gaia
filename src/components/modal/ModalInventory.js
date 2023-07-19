@@ -9,12 +9,12 @@ const ModalInventory = ({
   modalInventory,
   handleModalInventoryClose,
   setUseItem = null,
-  setUsingItem,
+  setIsUsingItem = false,
 }) => {
   const clickUseItem = (item) => {
     setUseItem(item);
     handleModalInventoryClose(true);
-    setUsingItem(true);
+    setIsUsingItem(true);
   };
 
   const get_items_list = () => {

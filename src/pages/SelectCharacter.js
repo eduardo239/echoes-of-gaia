@@ -68,6 +68,7 @@ const SelectCharacter = () => {
             modalType={SELECT_HERO}
             removeCharacter={removeCharacter}
             selectCharacter={selectCharacter}
+            selectedCharacter={heroList}
           />
         )}
       </div>

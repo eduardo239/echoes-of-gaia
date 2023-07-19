@@ -437,7 +437,6 @@ export const empty = {
   type: "Empty",
 };
 export const start = {
-  id: "168c5421-f228-463e-b092-4817623afd9b",
   name: "Start",
   type: "Start",
 };

@@ -81,7 +81,11 @@ export const generateRandomMap = (quantity = 20) => {
       map.push([_newEmpty]);
     }
   }
-  map[0] = [start];
+
+  const _startLocation = { ...start };
+  _startLocation.id = uuidv4();
+
+  map[0] = [_startLocation];
   const x = chooseRandomItem(bosses);
   const _newBoss = new Enemy(
     x.name,
@@ -109,4 +113,20 @@ export const generateNewId = (list) => {
     _newList.push(_newCharacter);
   }
   return _newList;
+};
+
+export function formateDate(data) {
+  const dia = data.getDate().toString().padStart(2, "0");
+  const mes = (data.getMonth() + 1).toString().padStart(2, "0");
+  const ano = data.getFullYear().toString().slice(-2); // Pegar apenas os dois últimos dígitos do ano
+  const hora = data.getHours().toString().padStart(2, "0");
+  const minuto = data.getMinutes().toString().padStart(2, "0");
+  const segundo = data.getSeconds().toString().padStart(2, "0");
+
+  return `${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`;
+}
+
+export const logManager = (message) => {
+  const _date = formateDate(new Date());
+  return { date: _date, message: ` # ${message}` };
 };
