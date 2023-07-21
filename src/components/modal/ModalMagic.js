@@ -10,14 +10,14 @@ const ModalMagic = ({
   modalMagic,
   handleModalMagicClose,
   setUseMagic = null,
-  setIsUsingMagic = false,
+  // setIsUsingMagic = false,
   setIsMagicalAttack = false,
 }) => {
   const [magicList, setMagicList] = useState([]);
   const clickUseMagic = (item) => {
     setUseMagic(item);
     handleModalMagicClose(true);
-    setIsUsingMagic(true);
+    // setIsUsingMagic(true);
     setIsMagicalAttack(true);
   };
 
@@ -37,8 +37,8 @@ const ModalMagic = ({
         {modalType === MAGIC && (
           <div className="d-grid gap-2">
             <Button
-              variant="primary"
-              size="sm"
+              size="lg"
+              variant="danger"
               onClick={() => clickUseMagic(item)}
             >
               {item.name} - MP: {item.mp}

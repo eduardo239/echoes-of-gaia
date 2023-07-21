@@ -18,6 +18,7 @@ export const SELECT_HERO = "Select Hero";
 export const SELECT_MAP = "Select Map";
 export const MAP = "Map";
 export const MAGIC = "Magic";
+export const WINNER = "Winner";
 
 //
 export const FIRE = "Fire";
