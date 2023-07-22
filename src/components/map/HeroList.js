@@ -11,10 +11,12 @@ const HeroList = ({
   isFighting,
   selectedCharacter,
   selectCharacter,
+  selectedTargetToUseItem,
   setIsMagicalAttack,
   setIsPhysicalAttack,
   handleModalMagicShow,
 }) => {
+  console.log(firstInTheQueue);
   const { heroList } = useContext(PlayerContext);
 
   const physicalAttack = () => {
@@ -35,16 +37,16 @@ const HeroList = ({
         <div
           key={hero.id}
           className={`app-card ${isUsingItem ? "hero-picking" : ""} ${
-            hero.status.isAlive ? "" : "dead-character"
-          }`}
-          onClick={null}
+            hero.status.hp < 1 ? "dead-character" : ""
+          } ${firstInTheQueue?.id === hero.id ? "hero-active" : ""}`}
+          onClick={isUsingItem ? () => selectedTargetToUseItem(hero) : null}
         >
           <div className="absolute-top-left hero-strength">
-            {hero.status.strength}
+            <span>{hero.status.strength}</span>
           </div>
 
           <div className="absolute-top-right hero-intelligence">
-            {hero.status.intelligence}
+            <span>{hero.status.intelligence}</span>
           </div>
 
           <img src={hero.image} alt={hero.name} />

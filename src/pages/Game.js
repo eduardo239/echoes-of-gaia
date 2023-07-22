@@ -5,15 +5,42 @@ import { useContext, useState } from "react";
 import { PlayerContext } from "../hook/PlayerContext";
 import GameNavbar from "../components/NavBar";
 import HeroList from "../components/map/HeroList";
-import { ENEMY } from "../constants";
-import { nextTurn, selectedTarget } from "./func";
+import {
+  CURE,
+  ELIXIR,
+  ENEMY,
+  GIFT,
+  HERO,
+  ITEM,
+  MAGIC,
+  MANA,
+  POISON,
+  REBORN,
+} from "../constants";
+import { removeAnObjectFromTheList, updateTheList } from "./func";
 import GameMenu from "../components/GameMenu";
 import MapForQueue from "../components/map/MapForQueue";
 import MapForList from "../components/map/MapForList";
 import EnemyList from "../components/map/EnemyList";
+import { chooseRandomItem } from "../helper";
+import ModalShop from "../components/modal/ModalShop";
+import ModalInventory from "../components/modal/ModalInventory";
+import ModalGift from "../components/modal/ModalGift";
+import ModalMagic from "../components/modal/ModalMagic";
 
 const Game = () => {
-  const { map, player, heroList, battleQueue } = useContext(PlayerContext);
+  const {
+    map,
+    player,
+    inventory,
+    setInventory,
+    heroList,
+    setHeroList,
+    enemyList,
+    setEnemyList,
+    battleQueue,
+    setBattleQueue,
+  } = useContext(PlayerContext);
 
   // Modal
   const [modalShop, setModalShop] = useState(false);
@@ -45,8 +72,199 @@ const Game = () => {
   const [isPhysicalAttack, setIsPhysicalAttack] = useState(false);
   const [isMagicalAttack, setIsMagicalAttack] = useState(false);
   //
+  const [useItem, setUseItem] = useState(null);
+  const [useMagic, setUseMagic] = useState(null);
+  //
   const firstInTheQueue = isFighting && battleQueue[0] ? battleQueue[0] : null;
-  console.log(map);
+
+  const selectedTarget = (target) => {
+    console.log("selected target");
+    const character = battleQueue[0];
+    if (isPhysicalAttack) {
+      const result = physicalDamage(character, target);
+      // check if its alive
+      checkIfItsAlive(result);
+    } else if (isMagicalAttack) {
+      const result = magicalDamage(character, target);
+      // check if its alive
+      checkIfItsAlive(result);
+    }
+    // reorderTheQueue(battleQueue);
+  };
+  const physicalDamage = (character, target) => {
+    console.log(character);
+    const damage = character.status.strength;
+    console.log("physical damage " + damage + " to : " + target.name);
+    // cause damage
+    target.status.hp -= damage;
+    return target;
+  };
+  const magicalDamage = (character, target) => {
+    const damage = 120;
+    console.log("magical damage " + damage + " to : " + target.name);
+    // cause damage
+    target.status.hp -= damage;
+    return target;
+  };
+  const checkIfItsAlive = (character) => {
+    console.log("check if its alive");
+    let new_queue = battleQueue;
+    // validar hp
+    if (character.status.hp < 1) {
+      console.log("character is dead");
+      // remove from queue
+      new_queue = removeAnObjectFromTheList(character, new_queue);
+      console.log(new_queue);
+      reorderTheQueue(new_queue);
+      // FIXME: update queue
+      setBattleQueue(new_queue);
+      // validar inimigo
+      if (character.type === ENEMY) {
+        console.log("enemy is dead");
+        const e_list = removeAnObjectFromTheList(character, enemyList);
+        setEnemyList(e_list);
+
+        const is_the_list_empty = e_list.length === 0;
+        if (is_the_list_empty) battleWon();
+        // validar hero
+      } else if (character.type === HERO) {
+        console.log("hero is dead");
+        const h_list = removeAnObjectFromTheList(character, heroList);
+        // setHeroList(h_list);
+        character.status.isAlive = false;
+
+        const is_the_list_empty = h_list.length === 0;
+        if (is_the_list_empty) gameOver();
+        else updateTheList(character, setHeroList);
+      }
+    } else {
+      console.log("character is alive");
+      updateTheList(character, setBattleQueue);
+      updateTheList(character, setEnemyList);
+      updateTheList(character, setHeroList);
+      reorderTheQueue(new_queue);
+    }
+  };
+  const reorderTheQueue = (list) => {
+    console.log("reorder the queue");
+    const first = list.shift();
+    list.push(first);
+    setBattleQueue(list);
+  };
+  const battleWon = () => {
+    console.log("battle won");
+    console.log("generate random exp");
+    console.log("generate random gold");
+    console.log("generate random gift");
+    resetBattle();
+    handleModalWinnerShow();
+  };
+  const gameOver = () => {
+    console.log("game over");
+    // reset();
+  };
+  const nextTurn = () => {
+    console.log("next turn");
+
+    startEnemyTurn();
+  };
+  const startEnemyTurn = () => {
+    console.log("start enemy turn");
+    // enemy
+    console.log(battleQueue);
+    const enemy_attacking = battleQueue[0];
+    console.log(enemy_attacking);
+    // get random hero
+    const random_hero = chooseRandomItem(heroList);
+    // cause damage
+    physicalDamage(enemy_attacking, random_hero);
+    // check if its alive
+    checkIfItsAlive(random_hero);
+    // update list
+    // reorder_the_queue(battleQueue);
+  };
+  const resetBattle = () => {
+    setBattleQueue([]);
+    setEnemyList([]);
+    setIsPhysicalAttack(false);
+    setIsMagicalAttack(false);
+    setIsUsingItem(false);
+    setIsFighting(false);
+    setUseItem(null);
+  };
+  const selectedTargetToUseItem = (hero) => {
+    console.log("use item");
+    const _item = useItem;
+
+    if (isFighting) {
+      switchOverItems(_item, hero);
+      reorderTheQueue(battleQueue);
+    } else {
+      switchOverItems(_item, hero);
+    }
+    setIsUsingItem(false);
+  };
+  const switchOverItems = (item, hero) => {
+    const itemId = item.id;
+    const newInventoryList = inventory.filter((x) => x.id !== itemId);
+
+    switch (item.class) {
+      case CURE:
+        if (hero.status.hp < 1) {
+          console.log("Invalid Character");
+        } else {
+          if (hero.status.hp + item.value > hero.status.maxHp) {
+            hero.status.hp = hero.status.maxHp;
+          } else {
+            hero.status.hp += item.value;
+          }
+          setInventory(newInventoryList);
+        }
+        break;
+      case MANA:
+        if (hero.status.mp + item.value > hero.status.maxMp) {
+          hero.status.mp = hero.status.maxMp;
+        } else {
+          hero.status.mp += item.value;
+        }
+        setInventory(newInventoryList);
+        break;
+      case ELIXIR:
+        if (hero.status.hp + item.value > hero.status.maxHp) {
+          hero.status.hp = hero.status.maxHp;
+        } else {
+          hero.status.hp += item.value;
+        }
+        if (hero.status.mp + item.value > hero.status.maxMp) {
+          hero.status.mp = hero.status.maxMp;
+        } else {
+          hero.status.mp += item.value;
+        }
+        setInventory(newInventoryList);
+        break;
+      case POISON:
+        hero.status.strength += item.value;
+        setInventory(newInventoryList);
+        break;
+      case REBORN:
+        if (hero.status.hp < 1) {
+          hero.status.hp = item.value;
+          hero.status.isAlive = true;
+          setInventory(newInventoryList);
+          const _newOrderBattle = [...battleQueue, hero];
+          if (isFighting) setBattleQueue(_newOrderBattle);
+          if (isFighting) reorderTheQueue(_newOrderBattle);
+        } else {
+          console.log("Invalid Character");
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  console.log(useMagic);
+  console.log(isMagicalAttack);
   return (
     <>
       <Row>
@@ -56,8 +274,8 @@ const Game = () => {
       </Row>
       <Row>
         <Col>
-          <div className="d-flex justify-content-between">
-            <div className="d-flex align-items-start">
+          <div className="d-flex flex-wrap justify-content-between">
+            <div className="d-flex align-items-start ">
               <HeroList
                 firstInTheQueue={firstInTheQueue}
                 //
@@ -66,14 +284,16 @@ const Game = () => {
                 isFighting={isFighting}
                 //
                 selectedCharacter={selectedTarget}
+                selectedTargetToUseItem={selectedTargetToUseItem}
                 //
                 setIsMagicalAttack={setIsMagicalAttack}
                 setIsPhysicalAttack={setIsPhysicalAttack}
+                //
                 handleModalMagicShow={handleModalMagicShow}
               />
             </div>
             <div className="d-flex align-items-center p-3">VS</div>
-            <div className="d-flex align-items-start">
+            <div className="d-flex align-items-start ">
               <EnemyList
                 firstInTheQueue={firstInTheQueue}
                 //
@@ -103,6 +323,7 @@ const Game = () => {
             setPosition={setPosition}
             //
             isFighting={isFighting}
+            isEnemyFighting={isEnemyFighting}
             //
             setIsFighting={setIsFighting}
             //
@@ -139,6 +360,37 @@ const Game = () => {
           <pre>
             <code>Her Lst: {heroList && heroList.length} | </code>
           </pre>
+
+          {/*  */}
+          <ModalShop
+            modalType={ITEM}
+            modalShop={modalShop}
+            handleModalShopClose={handleModalShopClose}
+          />
+
+          <ModalInventory
+            modalType={ITEM}
+            modalInventory={modalInventory}
+            handleModalInventoryClose={handleModalInventoryClose}
+            //
+            setUseItem={setUseItem}
+            setIsUsingItem={setIsUsingItem}
+          />
+
+          <ModalGift
+            modalType={GIFT}
+            modalGift={modalGift}
+            handleModalGiftClose={handleModalGiftClose}
+          />
+
+          <ModalMagic
+            character={firstInTheQueue}
+            modalType={MAGIC}
+            modalMagic={modalMagic}
+            handleModalMagicClose={handleModalMagicClose}
+            setUseMagic={setUseMagic}
+            setIsMagicalAttack={setIsMagicalAttack}
+          />
         </Col>
       </Row>
     </>

@@ -20,6 +20,7 @@ const GameMenu = ({
   position,
 
   isFighting,
+  isEnemyFighting,
 
   setIsFighting,
   setShow,
@@ -33,6 +34,7 @@ const GameMenu = ({
   // eslint-disable-next-line no-unused-vars
   const {
     map,
+    player,
     heroList,
     setEnemyList,
     setBattleQueue,
@@ -45,12 +47,12 @@ const GameMenu = ({
 
   // gerar um item aleatório
   const getRandomItems = () => {
-    setShow(true);
-    setToastMessage({
-      ...toastMessage,
-      title: "Fight!",
-      message: "New item founded",
-    });
+    // setShow(true);
+    // setToastMessage({
+    //   ...toastMessage,
+    //   title: "Fight!",
+    //   message: "New item founded",
+    // });
     //
     const itemList = shopItems;
     const giftItem1 = chooseRandomItem(itemList);
@@ -135,27 +137,29 @@ const GameMenu = ({
   };
 
   return (
-    <div className="d-grid">
-      <ButtonGroup vertical>
+    <div className="d-flex justify-content-center">
+      <ButtonGroup vertical style={{ minWidth: "12rem" }}>
         <div className="dice-container">
           <span className="dice">{dice}</span>
         </div>
         <Button
           disabled={!map || isFighting}
-          size="lg"
           variant="danger"
           onClick={rollTheDice}
         >
           Play !
         </Button>
-        <Button disabled={isFighting} onClick={handleModalShopShow}>
+        <Button disabled={isFighting || !player} onClick={handleModalShopShow}>
           Shop
         </Button>
-        <Button onClick={handleModalInventoryShow}>Inventory</Button>
-        <Button>Restart</Button>
+        <Button
+          disabled={!player || isEnemyFighting}
+          onClick={handleModalInventoryShow}
+        >
+          Inventory
+        </Button>
 
         <Button
-          size="lg"
           disabled={
             (firstInTheQueue || !isFighting) &&
             (!isFighting || firstInTheQueue.type === HERO)

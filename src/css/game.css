@@ -29,8 +29,14 @@
 .app-card-footer code {
   font-size: .7rem;
 }
+.hero-active {
+  border: 1px dashed #bbf157;
+}
 .hero-picking {
   border-color: #bfffd4;
+}
+.hero-hp-danger, .hero-mp-danger{
+  color: #d11212;
 }
 .enemy-picking-attack:hover {
   border-color: #5552fc;
@@ -88,22 +94,23 @@
   min-height: 100vh;
   background-color: #112928;
 }
+
+
 /* dice */
 .dice-container {
   display: flex;
   justify-content: center;
   width: 100%;
-  background-color: #4680ff;
-  border-radius: 10px;
-  margin-bottom: 10px;
+  background-color: #e0c467;
+  border-radius: 5px;
+
 }
 .dice {
   font-size: 3rem;
+  color: #212422;
 }
 
-pre {
-  margin-bottom: 0;
-}
+
 
 
 .relative {
@@ -111,28 +118,28 @@ pre {
 }
 .absolute-top-left {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 5px;
+  left: 5px;
 }
 
 .absolute-top-right {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 5px;
+  right: 5px;
 }
 
 
 .hero-strength {
-  background-color: #ac375a;
-  color: #fdfdfd;
+  background-color: #0075F2;
+  color: #eaf9f9;
 }
 .hero-intelligence {
-  background-color: #30698a;
-  color: #fdfdfd;
+  background-color: #C1666B;
+  color: #eaf9f9;
 }
 
 .hero-strength, .hero-intelligence {
-  border-radius: 50%;
+  border-radius: 10%;
   width: 27px;
   height: 27px;
   padding: 8px;

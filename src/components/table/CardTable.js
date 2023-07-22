@@ -23,14 +23,30 @@ const CardTable = ({ modalType, item }) => {
               <tr>
                 <td>Health</td>
                 <td>
-                  {item.status.hp} / {item.status.maxHp}
+                  <span
+                    className={`${
+                      item.status.hp < item.status.maxHp * 0.2
+                        ? "hero-hp-danger"
+                        : ""
+                    }`}
+                  >
+                    {item.status.hp} / {item.status.maxHp}
+                  </span>
                 </td>
               </tr>
 
               <tr>
                 <td>Mana</td>
                 <td>
-                  {item.status.mp} / {item.status.maxMp}
+                  <span
+                    className={`${
+                      item.status.mp < item.status.maxMp * 0.2
+                        ? "hero-mp-danger"
+                        : ""
+                    }`}
+                  >
+                    {item.status.mp} / {item.status.maxMp}
+                  </span>
                 </td>
               </tr>
 

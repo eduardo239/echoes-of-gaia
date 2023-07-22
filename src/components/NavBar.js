@@ -4,6 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 
 const GameNavbar = ({ player }) => {
   const navigate = useNavigate();
+
+  const restart = () => {
+    console.log("restart");
+  };
+
   return (
     <div className="bg-dark p-3 primary">
       {player ? (
@@ -15,6 +20,12 @@ const GameNavbar = ({ player }) => {
           <div>Level: {player.level}</div>
           <div>Experience: {player.exp}</div>
           <div>Next Level: {player.nextLevel}</div>
+          <div>
+            <Link to="/">Home</Link>
+          </div>
+          <div>
+            <Button onClick={restart}>Restart</Button>
+          </div>
         </Stack>
       ) : (
         <Stack direction="horizontal" gap={3}>
@@ -24,6 +35,9 @@ const GameNavbar = ({ player }) => {
           <div>Player Not Found !</div>
           <div>
             <Link to="/">Home</Link>
+          </div>
+          <div>
+            <Button onClick={restart}>Restart</Button>
           </div>
         </Stack>
       )}

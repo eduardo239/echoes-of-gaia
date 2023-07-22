@@ -34,6 +34,9 @@ ul {
 li {
     list-style-type: none;
 }
+pre {
+  margin-bottom: 0;
+}
 
 .text-alert {
     color: #FF4136;

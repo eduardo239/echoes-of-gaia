@@ -10,7 +10,7 @@ import PlayerList from "../components/map/PlayerList";
 const CreatePlayer = () => {
   const navigate = useNavigate();
   const { player, setPlayer } = useContext(PlayerContext);
-  const [username, setUsername] = useState("usuário sem nome  ");
+  const [username, setUsername] = useState("jack");
 
   const savePlayer = (e) => {
     e.preventDefault();

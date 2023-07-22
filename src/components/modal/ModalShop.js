@@ -7,13 +7,11 @@ import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
 
 const ModalShop = ({ modalType, modalShop, handleModalShopClose }) => {
-  const { player, setPlayer, inventory, setInventory, shopItems } =
+  const { player, inventory, setInventory, shopItems } =
     useContext(PlayerContext);
 
   const buyItem = (item) => {
-    const _player = player;
-
-    if (item.price > _player.gold) {
+    if (item.price > player.gold) {
       // setMessage("Insufficient gold");
     } else {
       const newItem = { ...item };
@@ -23,7 +21,7 @@ const ModalShop = ({ modalType, modalShop, handleModalShopClose }) => {
     }
   };
 
-  const get_items_list = () => {
+  const getItemList = () => {
     return shopItems.map((item) => (
       <div key={item.id} className="app-card">
         <img src={item.image} alt={item.name} />
@@ -47,7 +45,7 @@ const ModalShop = ({ modalType, modalShop, handleModalShopClose }) => {
       </Modal.Header>
       <Modal.Body className="dark">
         <div className="d-flex justify-content-center flex-wrap gap-1">
-          {shopItems && shopItems.length > 0 && get_items_list()}
+          {shopItems && shopItems.length > 0 && getItemList()}
         </div>
       </Modal.Body>
       <Modal.Footer className="dark">

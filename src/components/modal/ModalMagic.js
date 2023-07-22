@@ -1,11 +1,12 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { MAGIC } from "../../constants";
+import { HERO, MAGIC } from "../../constants";
 import CardTable from "../table/CardTable";
 import { useEffect, useState } from "react";
 
 const ModalMagic = ({
-  list,
+  list = [],
+  character,
   modalType,
   modalMagic,
   handleModalMagicClose,
@@ -20,14 +21,12 @@ const ModalMagic = ({
   };
 
   useEffect(() => {
-    if (list && list.length > 0 && list[0].magic) {
-      setMagicList(list[0].magic);
-    }
+    return () => {
+      if (!!character && character.type === HERO) setMagicList(character.magic);
+    };
+  }, [character]);
 
-    return () => {};
-  }, [list]);
-
-  const get_items_list = () => {
+  const getItemList = () => {
     return magicList.map((item) => (
       <div key={item.id} className="app-card">
         {/* <img src={item.image} alt={item.name} /> */}
@@ -54,7 +53,7 @@ const ModalMagic = ({
       </Modal.Header>
       <Modal.Body className="dark">
         <div className="d-flex justify-content-center flex-wrap gap-1">
-          {list && list.length > 0 && get_items_list()}
+          {magicList && magicList.length > 0 && getItemList()}
         </div>
       </Modal.Body>
       <Modal.Footer className="dark">

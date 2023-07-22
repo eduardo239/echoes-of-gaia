@@ -18,7 +18,6 @@ export const heroes = [
     maxHp: 1000,
     mp: 40,
     maxMp: 40,
-    isAlive: true,
     weapon: "Sword",
   },
   {
@@ -32,7 +31,6 @@ export const heroes = [
     maxHp: 120,
     mp: 220,
     maxMp: 220,
-    isAlive: true,
     weapon: "Sword",
   },
   {
@@ -46,7 +44,6 @@ export const heroes = [
     maxHp: 110,
     mp: 60,
     maxMp: 60,
-    isAlive: true,
     weapon: "Staff",
   },
   {
@@ -60,7 +57,7 @@ export const heroes = [
     maxHp: 120,
     mp: 75,
     maxMp: 75,
-    isAlive: true,
+
     weapon: "Staff",
   },
 ];
@@ -322,7 +319,7 @@ export const enemies = [
 export const items = [
   {
     name: "Healing Potion",
-    image: "../assets/red_potion1.png",
+    image: "../assets/items/red_potion1.png",
     type: "Item",
     class: "Cure",
     value: 20,
@@ -330,7 +327,7 @@ export const items = [
   },
   {
     name: "Healing Big Potion",
-    image: "../assets/red_potion2.png",
+    image: "../assets/items/red_potion2.png",
     type: "Item",
     class: "Cure",
     value: 60,
@@ -338,7 +335,7 @@ export const items = [
   },
   {
     name: "Mana Potion",
-    image: "../assets/blue_potion1.png",
+    image: "../assets/items/blue_potion1.png",
     type: "Item",
     class: "Mana",
     value: 20,
@@ -346,7 +343,7 @@ export const items = [
   },
   {
     name: "Mana Big Potion",
-    image: "../assets/blue_potion2.png",
+    image: "../assets/items/blue_potion2.png",
     type: "Item",
     class: "Mana",
     value: 100,
@@ -354,7 +351,7 @@ export const items = [
   },
   {
     name: "Poison Potion",
-    image: "../assets/green_potion1.png",
+    image: "../assets/items/green_potion1.png",
     type: "Item",
     class: "Poison",
     value: 4,
@@ -362,7 +359,7 @@ export const items = [
   },
   {
     name: "Poison Big Potion",
-    image: "../assets/green_potion2.png",
+    image: "../assets/items/green_potion2.png",
     type: "Item",
     class: "Poison",
     value: 12,
@@ -370,7 +367,7 @@ export const items = [
   },
   {
     name: "Elixir Potion",
-    image: "../assets/white_potion1.png",
+    image: "../assets/items/white_potion1.png",
     type: "Item",
     class: "Elixir",
     value: 100,
@@ -378,7 +375,7 @@ export const items = [
   },
   {
     name: "Reborn Potion",
-    image: "../assets/purple_potion1.png",
+    image: "../assets/items/purple_potion1.png",
     type: "Item",
     class: "Reborn",
     value: 50,
@@ -386,7 +383,7 @@ export const items = [
   },
   {
     name: "Reborn Rare Potion",
-    image: "../assets/purple_potion2.png",
+    image: "../assets/items/purple_potion2.png",
     type: "Item",
     class: "Reborn",
     value: 100,
