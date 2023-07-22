@@ -1,18 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { heroes } from "../server";
 import { SELECT_HERO } from "../constants";
 import { PlayerContext } from "../hook/PlayerContext";
 import MapForCharacters from "../components/map/MapForCharacters";
 import Button from "react-bootstrap/Button";
-import { Hero } from "../classes/Hero";
+import TextTitle from "../components/TextTitle";
 
 const SelectCharacter = () => {
   const navigate = useNavigate();
-
-  const { heroList, setHeroList } = useContext(PlayerContext);
-  //
-  const [loadedHeroes, setLoadedHeroes] = useState([]);
+  const { heroList, setHeroList, allHeroes } = useContext(PlayerContext);
 
   const selectCharacter = (character) => {
     const alreadyChosen = heroList.some((x) => x.id === character.id);
@@ -25,46 +21,19 @@ const SelectCharacter = () => {
     setHeroList(newList);
   };
 
-  const loadCharacters = () => {
-    const _newArray = [];
-
-    heroes.forEach((hero) => {
-      _newArray.push(
-        new Hero(
-          hero.name,
-          hero.image,
-          hero.type,
-          hero.level,
-          hero.class,
-          hero.strength,
-          hero.intelligence,
-          hero.hp,
-          hero.maxHp,
-          hero.mp,
-          hero.maxMp,
-          hero.weapon
-        )
-      );
-    });
-
-    setLoadedHeroes(_newArray);
-  };
-
-  useEffect(() => {
-    loadCharacters();
-
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
-    <div>
-      <h1>SelectCharacter</h1>
+    <>
+      <TextTitle title="Select Characters" />
+
+      <div className="d-flex justify-content-center gap-1 m-3">
+        <Button onClick={() => navigate("/create-player")}>Back</Button>
+        <Button onClick={() => navigate("/select-map")}>Next</Button>
+      </div>
 
       <div className="d-flex justify-content-center flex-wrap gap-1">
-        {loadedHeroes && loadedHeroes.length > 0 && (
+        {allHeroes && allHeroes.length > 0 && (
           <MapForCharacters
-            list={loadedHeroes}
+            list={allHeroes}
             modalType={SELECT_HERO}
             removeCharacter={removeCharacter}
             selectCharacter={selectCharacter}
@@ -72,12 +41,7 @@ const SelectCharacter = () => {
           />
         )}
       </div>
-
-      <div className="d-flex justify-content-center gap-1 m-3">
-        <Button onClick={() => navigate("/select-map")}>Select Map</Button>
-        <Button onClick={() => navigate("/")}>Back</Button>
-      </div>
-    </div>
+    </>
   );
 };
 

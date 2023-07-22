@@ -2,24 +2,21 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { GIFT } from "../../constants";
 import CardTable from "../table/CardTable";
+import { useContext } from "react";
+import { PlayerContext } from "../../hook/PlayerContext";
 
-const ModalGift = ({
-  list,
-  modalType,
-  modalGift,
-  handleModalGiftClose,
-  setGiftList,
-  inventory,
-  setInventory,
-}) => {
+const ModalGift = ({ modalType, modalGift, handleModalGiftClose }) => {
+  const { giftItemList, setGiftItemList, inventory, setInventory } =
+    useContext(PlayerContext);
+
   const handleGetItem = (item) => {
     setInventory([...inventory, item]);
     handleModalGiftClose(true);
-    setGiftList([]);
+    setGiftItemList([]);
   };
 
   const get_items_list = () => {
-    return list.map((item) => (
+    return giftItemList.map((item) => (
       <div key={item.id} className="app-card">
         <img src={item.image} alt={item.name} />
 
@@ -46,7 +43,7 @@ const ModalGift = ({
       </Modal.Header>
       <Modal.Body className="dark">
         <div className="d-flex justify-content-center flex-wrap gap-1">
-          {list && list.length > 0 && get_items_list()}
+          {giftItemList && giftItemList.length > 0 && get_items_list()}
         </div>
       </Modal.Body>
       <Modal.Footer className="dark">

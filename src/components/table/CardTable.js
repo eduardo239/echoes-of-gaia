@@ -3,6 +3,7 @@ import {
   GIFT,
   HERO,
   ITEM,
+  PLAYER,
   SELECT_HERO,
   SELECT_MAP,
 } from "../../constants";
@@ -13,28 +14,26 @@ const CardTable = ({ modalType, item }) => {
       <table>
         <thead>
           <tr>
-            <th colSpan={2}>{item.name ? item.name : "unknown"}</th>
+            <th colSpan={2}>{item.name ? item.name : ""}</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="app-card-table">
           {(modalType === HERO || modalType === SELECT_HERO) && (
             <>
               <tr>
                 <td>Health</td>
-                <td>{item.status.hp}</td>
+                <td>
+                  {item.status.hp} / {item.status.maxHp}
+                </td>
               </tr>
-              <tr>
-                <td>Max Health</td>
-                <td>{item.status.maxHp}</td>
-              </tr>
+
               <tr>
                 <td>Mana</td>
-                <td>{item.status.mp}</td>
+                <td>
+                  {item.status.mp} / {item.status.maxMp}
+                </td>
               </tr>
-              <tr>
-                <td>Max Mana</td>
-                <td>{item.status.maxMp}</td>
-              </tr>
+
               <tr>
                 <td>Strength</td>
                 <td>{item.status.strength}</td>
@@ -46,10 +45,6 @@ const CardTable = ({ modalType, item }) => {
               <tr>
                 <td>Class</td>
                 <td>{item.class}</td>
-              </tr>
-              <tr>
-                <td>Is Alive?</td>
-                <td>{item?.status?.isAlive ? "Yes" : "No"}</td>
               </tr>
             </>
           )}
@@ -112,6 +107,28 @@ const CardTable = ({ modalType, item }) => {
               </tr>
             </>
           )}
+
+          {modalType === PLAYER && (
+            <>
+              <tr>
+                <td>Name</td>
+                <td>{item.name}</td>
+              </tr>
+              <tr>
+                <td>Name</td>
+                <td>{item.name}</td>
+              </tr>
+              <tr>
+                <td>Name</td>
+                <td>{item.name}</td>
+              </tr>
+              <tr>
+                <td>Name</td>
+                <td>{item.name}</td>
+              </tr>
+            </>
+          )}
+
           {/* <tr>
             <td>ID</td>
             <td>

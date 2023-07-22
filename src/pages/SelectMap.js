@@ -1,20 +1,23 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from "../hook/PlayerContext";
-import { items, maps } from "../server";
-import { SELECT_MAP } from "../constants";
+import { items } from "../server";
 import { generateRandomMap } from "../helper";
 import { Item } from "../classes/Item";
 import MapForMaps from "../components/map/MapForMaps";
+import { SELECT_MAP } from "../constants";
+import TextTitle from "../components/TextTitle";
 
 const SelectMap = () => {
   const navigate = useNavigate();
-  const { map, setMap, setShopItems } = useContext(PlayerContext);
+  const { map, setMap, setShopItems, allMaps } = useContext(PlayerContext);
 
-  const selectMap = (_map) => {
-    const map = generateRandomMap(_map.length);
-    setMap(map);
+  const selectMap = (selectedMap) => {
+    // preencher o map
+    const _positions = generateRandomMap(selectedMap.length);
+    selectedMap.setPositions(_positions);
+    setMap(selectedMap);
 
     // preencher a lista de itens da loja
     const shopList = [];
@@ -27,31 +30,33 @@ const SelectMap = () => {
         items[s].value,
         items[s].price
       );
-
       shopList.push(_item);
     }
     setShopItems(shopList);
   };
 
   return (
-    <div>
-      <h1>SelectMap</h1>
+    <>
+      <TextTitle title="Select Map" />
 
-      <div className="d-flex justify-content-center flex-wrap gap-1">
-        {maps && maps.length > 0 && (
+      <div className="d-flex justify-content-center gap-1 m-3">
+        <Button onClick={() => navigate("/select-character")}>Back</Button>
+        <Button onClick={() => navigate("/start-game")} variant="danger">
+          Start Game
+        </Button>
+      </div>
+
+      <div className="d-flex  justify-content-center flex-wrap gap-1">
+        {allMaps && allMaps.length > 0 && (
           <MapForMaps
-            list={maps}
+            list={allMaps}
             selectMap={selectMap}
             modalType={SELECT_MAP}
+            selectedCharacter={[map]}
           />
         )}
       </div>
-
-      <div className="d-flex justify-content-center gap-1 m-3">
-        <Button onClick={() => navigate("/start-game")}>Start Game</Button>
-        <Button onClick={() => navigate("/select-character")}>Back</Button>
-      </div>
-    </div>
+    </>
   );
 };
 

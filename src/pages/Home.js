@@ -1,13 +1,17 @@
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import TextTitle from "../components/TextTitle";
 
 const Home = () => {
   const navigate = useNavigate();
 
   return (
     <div>
-      <h1>Echoes Of Gaia</h1>
-      <Button onClick={() => navigate("/select-character")}>Start</Button>
+      <TextTitle title="Echoes Of Gaia" />
+
+      <div className="d-flex justify-content-center gap-1 m-3">
+        <Button onClick={() => navigate("/create-player")}>Start</Button>
+      </div>
     </div>
   );
 };

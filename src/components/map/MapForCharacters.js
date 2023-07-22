@@ -12,7 +12,7 @@ const MapForCharacters = ({
   magicalAttack = null,
   isPhysicalAttack = false,
   isMagicalAttack = true,
-  selectedTarget = null,
+  selectedTargetToAttack = null,
   selectedTargetToUseItem = null,
   isUsingItem = false,
   selectCharacter = null,
@@ -20,7 +20,7 @@ const MapForCharacters = ({
   removeCharacter = null,
   selectedTargetToUseMagic = null,
 }) => {
-  const map_for_items = () => {
+  const mapForItems = () => {
     return list.map((item) => (
       <div
         key={item.id}
@@ -50,7 +50,7 @@ const MapForCharacters = ({
         }`}
         onClick={
           modalType === ENEMY && isPhysicalAttack && item.status.isAlive
-            ? () => selectedTarget(item)
+            ? () => selectedTargetToAttack(item)
             : modalType === HERO && isUsingItem
             ? () => selectedTargetToUseItem(item)
             : modalType === ENEMY && isMagicalAttack && item.status.isAlive
@@ -118,7 +118,7 @@ const MapForCharacters = ({
     ));
   };
 
-  return <>{list && list.length > 0 && map_for_items()}</>;
+  return <>{list && list.length > 0 && mapForItems()}</>;
 };
 
 export default MapForCharacters;

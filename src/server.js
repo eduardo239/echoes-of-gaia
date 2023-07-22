@@ -1,20 +1,21 @@
 export const player = {
   gold: 1000,
   level: 1,
-  expToNextLevel: 110,
+  nextLevel: 10,
   exp: 0,
+  name: "Player 1",
 };
 
 export const heroes = [
   {
     name: "Maeda Yori",
-    image: "./assets/japanese1.png",
+    image: "./assets/characters/blond2.png",
     class: "Sorceress",
     type: "Hero",
     strength: 1,
     intelligence: 3200,
     hp: 1,
-    maxHp: 100,
+    maxHp: 1000,
     mp: 40,
     maxMp: 40,
     isAlive: true,
@@ -22,24 +23,24 @@ export const heroes = [
   },
   {
     name: "Vita Norman",
-    image: "./assets/red_rid2.png",
+    image: "./assets/characters/red_rid2.png",
     class: "Warrior",
     type: "Hero",
     strength: 1,
-    intelligence: 533,
+    intelligence: 800,
     hp: 1,
     maxHp: 120,
-    mp: 30,
-    maxMp: 30,
+    mp: 220,
+    maxMp: 220,
     isAlive: true,
     weapon: "Sword",
   },
   {
     name: "Eveline Barre",
-    image: "./assets/alice2.png",
+    image: "./assets/characters/white_hair1.png",
     class: "Warrior",
     type: "Hero",
-    strength: 128,
+    strength: 1000,
     intelligence: 7,
     hp: 110,
     maxHp: 110,
@@ -50,7 +51,7 @@ export const heroes = [
   },
   {
     name: "Wendy Blair",
-    image: "./assets/ginger1.png",
+    image: "./assets/characters/ginger1.png",
     class: "Black Mage",
     type: "Hero",
     strength: 3,
@@ -67,7 +68,7 @@ export const heroes = [
 export const enemies = [
   {
     name: "Goblin Ray",
-    image: "../assets/goblin1.png",
+    image: "../assets/characters/goblin1.png",
     class: "Normal",
     type: "Enemy",
     level: 2,
@@ -79,7 +80,7 @@ export const enemies = [
   },
   {
     name: "Goblin Night",
-    image: "../assets/goblin2.png",
+    image: "../assets/characters/goblin2.png",
     class: "Normal",
     type: "Enemy",
     level: 3,
@@ -91,7 +92,7 @@ export const enemies = [
   },
   {
     name: "Goblin Night",
-    image: "../assets/goblin3.png",
+    image: "../assets/characters/goblin3.png",
     class: "Normal",
     type: "Enemy",
     level: 3,
@@ -103,7 +104,7 @@ export const enemies = [
   },
   {
     name: "Goblin Night",
-    image: "../assets/goblin4.png",
+    image: "../assets/characters/goblin4.png",
     class: "Normal",
     type: "Enemy",
     level: 2,
@@ -115,7 +116,7 @@ export const enemies = [
   },
   {
     name: "Caterpillar",
-    image: "../assets/caterpillar.png",
+    image: "../assets/characters/caterpillar.png",
     class: "Normal",
     type: "Enemy",
     level: 3,
@@ -127,7 +128,7 @@ export const enemies = [
   },
   {
     name: "Monster 1",
-    image: "../assets/monster_enemy1.png",
+    image: "../assets/characters/monster_enemy1.png",
     class: "Normal",
     type: "Enemy",
     level: 3,
@@ -139,7 +140,7 @@ export const enemies = [
   },
   {
     name: "Monster 2",
-    image: "../assets/monster_enemy2.png",
+    image: "../assets/characters/monster_enemy2.png",
     class: "Normal",
     type: "Enemy",
     level: 3,
@@ -151,7 +152,7 @@ export const enemies = [
   },
   {
     name: "Monster 3",
-    image: "../assets/monster_enemy3.png",
+    image: "../assets/characters/monster_enemy3.png",
     class: "Normal",
     type: "Enemy",
     level: 4,
@@ -163,7 +164,7 @@ export const enemies = [
   },
   {
     name: "Monster 4",
-    image: "../assets/monster_enemy4.png",
+    image: "../assets/characters/monster_enemy4.png",
     class: "Normal",
     type: "Enemy",
     level: 5,
@@ -175,7 +176,7 @@ export const enemies = [
   },
   {
     name: "Orc",
-    image: "../assets/orc1.png",
+    image: "../assets/characters/orc1.png",
     class: "Normal",
     type: "Enemy",
     level: 4,
@@ -187,7 +188,7 @@ export const enemies = [
   },
   {
     name: "Skeleton 1",
-    image: "../assets/skeleton1.png",
+    image: "../assets/characters/skeleton1.png",
     class: "Normal",
     type: "Enemy",
     level: 2,
@@ -199,7 +200,7 @@ export const enemies = [
   },
   {
     name: "Skeleton 2",
-    image: "../assets/skeleton2.png",
+    image: "../assets/characters/skeleton2.png",
     class: "Normal",
     type: "Enemy",
     level: 2,
@@ -211,7 +212,7 @@ export const enemies = [
   },
   {
     name: "Skeleton 3",
-    image: "../assets/skeleton3.png",
+    image: "../assets/characters/skeleton3.png",
     class: "Normal",
     type: "Enemy",
     level: 2,
@@ -223,7 +224,7 @@ export const enemies = [
   },
   {
     name: "Spider 1",
-    image: "../assets/spider1.png",
+    image: "../assets/characters/spider1.png",
     class: "Normal",
     type: "Enemy",
     level: 4,
@@ -235,7 +236,7 @@ export const enemies = [
   },
   {
     name: "Spider 2",
-    image: "../assets/spider2.png",
+    image: "../assets/characters/spider2.png",
     class: "Normal",
     type: "Enemy",
     level: 6,
@@ -247,7 +248,7 @@ export const enemies = [
   },
   {
     name: "Undead 1",
-    image: "../assets/undead1.png",
+    image: "../assets/characters/undead1.png",
     class: "Normal",
     type: "Enemy",
     level: 7,
@@ -259,7 +260,7 @@ export const enemies = [
   },
   {
     name: "Undead 2",
-    image: "../assets/undead2.png",
+    image: "../assets/characters/undead2.png",
     class: "Normal",
     type: "Enemy",
     level: 6,
@@ -271,7 +272,7 @@ export const enemies = [
   },
   {
     name: "Undead 3",
-    image: "../assets/undead3.png",
+    image: "../assets/characters/undead3.png",
     class: "Normal",
     type: "Enemy",
     level: 7,
@@ -283,7 +284,7 @@ export const enemies = [
   },
   {
     name: "Witch 1",
-    image: "../assets/witch1.png",
+    image: "../assets/characters/witch1.png",
     class: "Normal",
     type: "Enemy",
     level: 4,
@@ -295,7 +296,7 @@ export const enemies = [
   },
   {
     name: "Witch 2",
-    image: "../assets/witch2.png",
+    image: "../assets/characters/witch2.png",
     class: "Normal",
     type: "Enemy",
     level: 5,
@@ -307,7 +308,7 @@ export const enemies = [
   },
   {
     name: "Zombie",
-    image: "../assets/zombie1.png",
+    image: "../assets/characters/zombie1.png",
     class: "Normal",
     type: "Enemy",
     level: 8,
@@ -443,36 +444,36 @@ export const start = {
 
 export const maps = [
   {
-    id: "d1f452c1-69ac-4481-a8c7-1c9307e1cedf",
     name: "Level 1",
     length: 6,
     difficulty: 1,
     type: "Map",
-    image: "../assets/map1.jpg",
+    image: "../assets/maps/map1.jpg",
+    positions: [],
   },
   {
-    id: "4ace8d09-1ac8-4ee0-9cc5-c0e0acfe2ebd",
     name: "Level 2",
     length: 61,
     difficulty: 1,
     type: "Map",
-    image: "../assets/map2.jpg",
+    image: "../assets/maps/map2.jpg",
+    positions: [],
   },
   {
-    id: "6da34636-1c05-4dda-b42a-5d6178f0be66",
     name: "Level 3",
     length: 181,
     difficulty: 2,
     type: "Map",
-    image: "../assets/map3.jpg",
+    image: "../assets/maps/map3.jpg",
+    positions: [],
   },
   {
-    id: "83117dfa-1ff3-4649-8cb1-6f8c7d8ecbf6",
     name: "Level 4",
     length: 501,
     difficulty: 3,
     type: "Map",
-    image: "../assets/map4.jpg",
+    image: "../assets/maps/map4.jpg",
+    positions: [],
   },
 ];
 

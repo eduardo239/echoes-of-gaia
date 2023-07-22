@@ -2,15 +2,18 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { ITEM } from "../../constants";
 import CardTable from "../table/CardTable";
+import { useContext } from "react";
+import { PlayerContext } from "../../hook/PlayerContext";
 
 const ModalInventory = ({
-  list,
   modalType,
   modalInventory,
   handleModalInventoryClose,
   setUseItem = null,
   setIsUsingItem = false,
 }) => {
+  const { inventory } = useContext(PlayerContext);
+
   const clickUseItem = (item) => {
     setUseItem(item);
     handleModalInventoryClose(true);
@@ -18,7 +21,7 @@ const ModalInventory = ({
   };
 
   const get_items_list = () => {
-    return list.map((item) => (
+    return inventory.map((item) => (
       <div key={item.id} className="app-card">
         <img src={item.image} alt={item.name} />
 
@@ -45,7 +48,7 @@ const ModalInventory = ({
       </Modal.Header>
       <Modal.Body className="dark">
         <div className="d-flex justify-content-center flex-wrap gap-1">
-          {list && list.length > 0 && get_items_list()}
+          {inventory && inventory.length > 0 && get_items_list()}
         </div>
       </Modal.Body>
       <Modal.Footer className="dark">

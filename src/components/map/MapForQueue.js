@@ -14,7 +14,6 @@ const MapForQueue = ({ list, firstInTheQueue }) => {
             : "list-item-enemy"
         }
       >
-        {/* FIXME: primeiro da lista */}
         {index} - {character && character.name}
       </ListGroup.Item>
     ));

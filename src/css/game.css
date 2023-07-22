@@ -6,11 +6,12 @@
 
 /* card */
 .app-card {
-  max-width: 14rem;
+  max-width: 12rem;
   width: 100%;
-  padding: 1rem;
+  padding: .4rem;
   background-color: var(--dark-background);
   border: 1px solid var(--dark-background-alternative);
+  position: relative;
 }
 
 .app-card img {
@@ -20,6 +21,9 @@
 
 .app-card-body {
   padding: .5rem 0;
+}
+.app-card-table tr td {
+  font-size: .7rem;
 }
 
 .app-card-footer code {
@@ -74,4 +78,67 @@
 }
 .position-boss {
   border-left: 3px solid #ff455e;
+}
+
+
+
+
+/* game-container */
+.game-container {
+  min-height: 100vh;
+  background-color: #112928;
+}
+/* dice */
+.dice-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: #4680ff;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.dice {
+  font-size: 3rem;
+}
+
+pre {
+  margin-bottom: 0;
+}
+
+
+.absolute-top-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.absolute-top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+
+.hero-strength {
+  background-color: #ac375a;
+  color: #fdfdfd;
+}
+.hero-intelligence {
+  background-color: #30698a;
+  color: #fdfdfd;
+}
+
+.hero-strength, .hero-intelligence {
+  border-radius: 50%;
+  width: 27px;
+  height: 27px;
+  padding: 8px;
+
+  text-align: center;
+  font-size: .8rem;
+  font-weight: 700;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
