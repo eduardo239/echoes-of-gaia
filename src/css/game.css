@@ -106,6 +106,9 @@ pre {
 }
 
 
+.relative {
+  position: relative;
+}
 .absolute-top-left {
   position: absolute;
   top: 0;
@@ -142,3 +145,22 @@ pre {
   justify-content: center;
   align-items: center;
 }
+
+.hero-selecting-enemy:hover {
+  cursor: pointer;
+  background-color: #212422;
+  transition: transform 0.3s ease;
+  }
+
+
+  .map-container {
+    max-height: 20rem;
+    overflow-y: auto;
+  }
+
+  .bg{
+    background-image: url("../../public/assets/wallpapers/nikesniper_rpg_game_website_4k_wallpaper_3212fb46-35f8-4742-97e8-ad5a38faf138.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+  }

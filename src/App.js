@@ -15,7 +15,7 @@ function App() {
   return (
     <Container fluid data-bs-theme="dark">
       <Row>
-        <Col className="game-container">
+        <Col className="game-container bg">
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route path="/select-character" element={<SelectCharacter />} />

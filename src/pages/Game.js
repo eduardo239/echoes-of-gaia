@@ -118,7 +118,9 @@ const Game = () => {
           />
         </Col>
         <Col sm>
-          <MapForList list={map.positions} position={position} />
+          <div className="map-container">
+            <MapForList list={map?.positions} position={position} />
+          </div>
         </Col>
       </Row>
       <Row>
@@ -137,11 +139,6 @@ const Game = () => {
           <pre>
             <code>Her Lst: {heroList && heroList.length} | </code>
           </pre>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <p>Cards</p>
         </Col>
       </Row>
     </>
