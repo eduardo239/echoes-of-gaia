@@ -1,7 +1,8 @@
 import React, { createContext, useEffect, useState } from "react";
-import { heroes, maps } from "../server";
+import { heroes, maps, magics } from "../server";
 import { Hero } from "../classes/Hero";
 import { Map_ } from "../classes/Map_";
+import { Magic } from "../classes/Magic";
 
 const PlayerContext = createContext();
 
@@ -25,6 +26,18 @@ function PlayerContextProvider({ children }) {
   //
   const [allHeroes, setAllHeroes] = useState([]);
   const [allMaps, setAllMaps] = useState([]);
+  const [allMagics, setAllMagics] = useState([]);
+
+  const loadAllMagics = () => {
+    const _newArray = [];
+
+    magics.forEach((magic) => [
+      _newArray.push(
+        new Magic(magic.name, magic.value, magic.mp, magic.type, magic.image)
+      ),
+    ]);
+    setAllMagics(_newArray);
+  };
 
   const loadAllHeroes = () => {
     const _newArray = [];
@@ -63,6 +76,7 @@ function PlayerContextProvider({ children }) {
   useEffect(() => {
     loadAllHeroes();
     loadAllMaps();
+    loadAllMagics();
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -93,6 +107,7 @@ function PlayerContextProvider({ children }) {
 
         allHeroes,
         allMaps,
+        allMagics,
       }}
     >
       {children}

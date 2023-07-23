@@ -4,6 +4,15 @@ export const player = {
   nextLevel: 10,
   exp: 0,
   name: "Player 1",
+  maps: {
+    completed: [],
+  },
+  enemies: {
+    defeated: [],
+  },
+  bosses: {
+    defeated: [],
+  },
 };
 
 export const heroes = [
@@ -26,7 +35,7 @@ export const heroes = [
     class: "Warrior",
     type: "Hero",
     strength: 1,
-    intelligence: 800,
+    intelligence: 1000,
     hp: 1,
     maxHp: 120,
     mp: 220,
@@ -396,7 +405,7 @@ export const bosses = [
     name: "Red Dragon",
     class: "Dragon",
     type: "Boss",
-    image: "../assets/dragon1.png",
+    image: "../assets/characters/dragon1.png",
     level: 20,
     strength: 40,
     intelligence: 70,
@@ -408,7 +417,7 @@ export const bosses = [
     name: "Giant",
     class: "Giant",
     type: "Boss",
-    image: "../assets/giant1.png",
+    image: "../assets/characters/giant1.png",
     level: 18,
     strength: 30,
     intelligence: 22,
@@ -420,7 +429,7 @@ export const bosses = [
     name: "Giant Wolf",
     class: "Giant",
     type: "Boss",
-    image: "../assets/giant_wolf1.png",
+    image: "../assets/characters/giant_wolf1.png",
     level: 15,
     strength: 24,
     intelligence: 12,
@@ -477,58 +486,75 @@ export const maps = [
 export const weapons = [
   {
     name: "Day Axe",
-    image: "../assets/axe1.png",
+    image: "../assets/weapons/axe1.png",
     value: 16,
     price: 400,
     type: "Axe",
   },
   {
     name: "Night Axe",
-    image: "../assets/axe2.png",
+    image: "../assets/weapons/axe2.png",
     value: 18,
     price: 400,
     type: "Axe",
   },
   {
     name: "Dagger",
-    image: "../assets/dagger1.png",
+    image: "../assets/weapons/dagger1.png",
     value: 18,
     price: 400,
     type: "Dagger",
   },
   {
     name: "Sword",
-    image: "../assets/sword1.png",
+    image: "../assets/weapons/sword1.png",
     value: 21,
     price: 400,
     type: "Sword",
   },
   {
     name: "Sword",
-    image: "../assets/sword2.png",
+    image: "../assets/weapons/sword2.png",
     value: 23,
     price: 400,
     type: "Sword",
   },
   {
     name: "Sword",
-    image: "../assets/sword3.png",
+    image: "../assets/weapons/sword3.png",
     value: 25,
     price: 400,
     type: "Sword",
   },
   {
     name: "Staff",
-    image: "../assets/staff1.png",
+    image: "../assets/weapons/staff1.png",
     value: 30,
     price: 400,
     type: "Staff",
   },
   {
     name: "Pistol",
-    image: "../assets/pistol1.png",
+    image: "../assets/weapons/pistol1.png",
     value: 40,
     price: 400,
     type: "Staff",
+  },
+];
+
+export const magics = [
+  {
+    name: "Fire",
+    image: "../assets/weapons/pistol1.png",
+    value: 35,
+    mp: 15,
+    type: "Fire",
+  },
+  {
+    name: "Ice",
+    image: "../assets/weapons/axe1.png",
+    value: 40,
+    mp: 10,
+    type: "Ice",
   },
 ];

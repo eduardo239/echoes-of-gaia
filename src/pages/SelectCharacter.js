@@ -5,15 +5,23 @@ import { PlayerContext } from "../hook/PlayerContext";
 import MapForCharacters from "../components/map/MapForCharacters";
 import Button from "react-bootstrap/Button";
 import TextTitle from "../components/TextTitle";
+import { chooseRandomItem } from "../helper";
 
 const SelectCharacter = () => {
   const navigate = useNavigate();
-  const { heroList, setHeroList, allHeroes } = useContext(PlayerContext);
+  const { heroList, setHeroList, allHeroes, allMagics } =
+    useContext(PlayerContext);
 
   const selectCharacter = (character) => {
     const alreadyChosen = heroList.some((x) => x.id === character.id);
     if (!alreadyChosen) {
+      const randomMagic = chooseRandomItem(allMagics);
+      character.setMagic(randomMagic);
+      //
       setHeroList([...heroList, character]);
+      console.log(allMagics);
+      console.log(randomMagic);
+      console.log(character);
     }
   };
   const removeCharacter = (character) => {

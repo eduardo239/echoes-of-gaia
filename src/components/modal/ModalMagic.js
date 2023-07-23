@@ -29,19 +29,19 @@ const ModalMagic = ({
   const getItemList = () => {
     return magicList.map((item) => (
       <div key={item.id} className="app-card">
-        {/* <img src={item.image} alt={item.name} /> */}
+        <img src={item.image} alt={item.name} />
+
         <CardTable modalType={modalType} item={item} />
-        {modalType === MAGIC && (
-          <div className="d-grid gap-2">
-            <Button
-              size="lg"
-              variant="danger"
-              onClick={() => clickUseMagic(item)}
-            >
-              {item.name} - MP: {item.mp}
-            </Button>
-          </div>
-        )}
+
+        <div className="d-grid gap-2">
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => clickUseMagic(item)}
+          >
+            Use
+          </Button>
+        </div>
       </div>
     ));
   };

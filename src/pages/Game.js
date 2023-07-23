@@ -263,8 +263,7 @@ const Game = () => {
     }
   };
 
-  console.log(useMagic);
-  console.log(isMagicalAttack);
+  console.log(heroList);
   return (
     <>
       <Row>
@@ -385,7 +384,6 @@ const Game = () => {
 
           <ModalMagic
             character={firstInTheQueue}
-            modalType={MAGIC}
             modalMagic={modalMagic}
             handleModalMagicClose={handleModalMagicClose}
             setUseMagic={setUseMagic}

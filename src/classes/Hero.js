@@ -34,6 +34,14 @@ export class Hero {
       weapon
     );
     this.status.isAlive = true;
-    this.magic = [new Magic("fire", 12, 25, FIRE)];
+    this.magic = [];
+  }
+
+  getMagic() {
+    return this.magic;
+  }
+
+  setMagic(magic) {
+    this.magic = magic;
   }
 }
