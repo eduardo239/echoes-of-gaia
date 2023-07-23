@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from "../hook/PlayerContext";
@@ -39,14 +39,14 @@ const SelectMap = () => {
     <>
       <TextTitle title="Select Map" />
 
-      <div className="d-flex justify-content-center gap-1 m-3">
+      <div className="d-flex justify-content-center gap-1 mt-3 p-3 bg-light bottom-separator">
         <Button onClick={() => navigate("/select-character")}>Back</Button>
         <Button onClick={() => navigate("/start-game")} variant="danger">
           Start Game
         </Button>
       </div>
 
-      <div className="d-flex  justify-content-center flex-wrap gap-1">
+      <div className="d-flex justify-content-center flex-wrap gap-1 mb-3 p-3 bg-light">
         {allMaps && allMaps.length > 0 && (
           <MapForMaps
             list={allMaps}

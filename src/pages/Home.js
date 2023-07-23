@@ -9,7 +9,7 @@ const Home = () => {
     <div>
       <TextTitle title="Echoes Of Gaia" />
 
-      <div className="d-flex justify-content-center gap-1 m-3">
+      <div className="d-flex justify-content-center gap-1 mt-3 p-3 bg-light bottom-separator">
         <Button onClick={() => navigate("/create-player")}>Start</Button>
       </div>
     </div>

@@ -22,26 +22,23 @@ const CreatePlayer = () => {
     <>
       <TextTitle title="Create Player" />
 
-      <div className="d-flex justify-content-center gap-1 m-3">
+      <div className="d-flex justify-content-center gap-1 mt-3 p-3 bg-light bottom-separator">
         <Button onClick={() => navigate("/")}>Back</Button>
         <Button onClick={() => navigate("/select-character")}>Next</Button>
       </div>
 
-      <div className="d-flex justify-content-center flex-wrap gap-1 ">
+      <div className="d-flex justify-content-center flex-wrap gap-1 mb-3 p-3 bg-light">
         <div className="d-flex flex-column gap-3">
-          <div className="d-flex justify-content-center">
-            <PlayerList player={player} />
-          </div>
-          <Form>
+          <Form data-bs-theme="light">
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Username </Form.Label>
+              <Form.Label className="text-secondary">Username </Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter username"
                 onChange={(e) => setUsername(e.target.value)}
                 value={username}
               />
-              <Form.Text className="text-muted">
+              <Form.Text className="text-muted ">
                 Player: {player?.name}
               </Form.Text>
             </Form.Group>
@@ -50,10 +47,16 @@ const CreatePlayer = () => {
             <Form.Check type="checkbox" label="Check me out" />
           </Form.Group> */}
 
-            <Button variant="primary" type="submit" onClick={savePlayer}>
-              Save
-            </Button>
+            <div className="d-grid">
+              <Button variant="primary" type="submit" onClick={savePlayer}>
+                Save
+              </Button>
+            </div>
           </Form>
+
+          <div className="d-flex justify-content-center">
+            <PlayerList player={player} />
+          </div>
         </div>
       </div>
     </>

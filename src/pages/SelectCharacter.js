@@ -30,12 +30,12 @@ const SelectCharacter = () => {
     <>
       <TextTitle title="Select Characters" />
 
-      <div className="d-flex justify-content-center gap-1 m-3">
+      <div className="d-flex justify-content-center gap-1 mt-3 p-3 bg-light bottom-separator">
         <Button onClick={() => navigate("/create-player")}>Back</Button>
         <Button onClick={() => navigate("/select-map")}>Next</Button>
       </div>
 
-      <div className="d-flex justify-content-center flex-wrap gap-1">
+      <div className="d-flex justify-content-center flex-wrap gap-1 mb-3 p-3 bg-light">
         {allHeroes && allHeroes.length > 0 && (
           <MapForCharacters
             list={allHeroes}

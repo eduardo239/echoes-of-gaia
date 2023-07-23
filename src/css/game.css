@@ -1,7 +1,7 @@
 /* theme */
 .dark {
-  background-color: var(--dark-background);
-  color: var(--light-color);
+  background-color: var(--color-dark);
+  color: var(--color-light);
 }
 
 /* card */
@@ -9,8 +9,8 @@
   max-width: 12rem;
   width: 100%;
   padding: .4rem;
-  background-color: var(--dark-background);
-  border: 1px solid var(--dark-background-alternative);
+  background-color: var(--color-dark);
+  border: 1px solid var(--color-dark-alternative);
   position: relative;
 }
 
@@ -61,8 +61,8 @@
   border-radius: 0;
 }
 .modal-header, .modal-footer {
-  border-top: 1px solid var(--dark-background-alternative);
-  border-bottom: 1px solid var(--dark-background-alternative);
+  border-top: 1px solid var(--color-dark-alternative);
+  border-bottom: 1px solid var(--color-dark-alternative);
 }
 
 /* queue */
@@ -74,27 +74,25 @@
 
 /* map */
 .position-empty {
-  border-left: 3px solid #f0f0f0;
+  border-left: 3px solid var(--color-light);
 }
 .position-item {
-  border-left: 3px solid #4680ff;
+  border-left: 3px solid var(--color-item);
 }
 .position-enemy {
-  border-left: 3px solid #5133fd;
+  border-left: 3px solid var(--color-enemy);
 }
 .position-boss {
-  border-left: 3px solid #ff455e;
+  border-left: 3px solid var(--color-boss);
 }
-
-
-
 
 /* game-container */
 .game-container {
-  min-height: 100vh;
   background-color: #112928;
 }
-
+.bottom-separator {
+  border-bottom: 1px solid var(--color-light-alternate);
+}
 
 /* dice */
 .dice-container {

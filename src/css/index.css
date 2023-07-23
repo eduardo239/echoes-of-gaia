@@ -1,11 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 :root {
-  --dark-background: #131316;
-  --dark-background-alternative: #19232e;
-  --light-color: #fefefe;
+  --color-dark: #131316;
+  --color-dark-alternative: #19232e;
+  --color-light: #fefefe;
+  --color-light-alternate: #ebebeb;
 
-  --alert: #dc143c;
-  --success: #04ff57;
+  --color-item: #ffdd6c;
+  --color-weapon: #46ffd7;
+  --color-enemy: #5133fd;
+  --color-boss: #ff455e;
 }
 
 
@@ -52,7 +55,7 @@ table{
 
 th, td {
   font-size: .8rem;
-  border: 1px solid var(--dark-background-alternative);
+  border: 1px solid var(--color-dark-alternative);
   padding: 5px;
 }
 
