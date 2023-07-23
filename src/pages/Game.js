@@ -15,6 +15,7 @@ import {
   MANA,
   POISON,
   REBORN,
+  WINNER,
 } from "../constants";
 import { removeAnObjectFromTheList, updateTheList } from "./func";
 import GameMenu from "../components/GameMenu";
@@ -26,6 +27,7 @@ import ModalShop from "../components/modal/ModalShop";
 import ModalInventory from "../components/modal/ModalInventory";
 import ModalGift from "../components/modal/ModalGift";
 import ModalMagic from "../components/modal/ModalMagic";
+import ModalWinner from "../components/modal/ModalWinner";
 
 const Game = () => {
   const {
@@ -83,10 +85,12 @@ const Game = () => {
       const result = physicalDamage(character, target);
       // check if its alive
       checkIfItsAlive(result);
+      setIsPhysicalAttack(false);
     } else if (isMagicalAttack) {
       const result = magicalDamage(character, target);
       // check if its alive
       checkIfItsAlive(result);
+      setIsMagicalAttack(false);
     }
     // reorderTheQueue(battleQueue);
   };
@@ -155,9 +159,12 @@ const Game = () => {
     list.push(first);
     setBattleQueue(list);
   };
+  console.log(player);
   const battleWon = () => {
     console.log("battle won");
     console.log("generate random exp");
+
+    player.setAddExp();
     console.log("generate random gold");
     console.log("generate random gift");
     resetBattle();
@@ -205,6 +212,9 @@ const Game = () => {
     if (isFighting) reorderTheQueue(battleQueue);
   };
   const switchOverItems = (item, hero) => {
+    setIsPhysicalAttack(false);
+    setIsMagicalAttack(false);
+
     const itemId = item.id;
     const newInventoryList = inventory.filter((x) => x.id !== itemId);
 
@@ -284,8 +294,9 @@ const Game = () => {
                 isEnemyFighting={isEnemyFighting}
                 isUsingItem={isUsingItem}
                 isFighting={isFighting}
+                isPhysicalAttack={isPhysicalAttack}
                 //
-                selectedCharacter={selectedTarget}
+                // selectedCharacter={selectedTarget}
                 selectedTargetToUseItem={selectedTargetToUseItem}
                 //
                 setIsMagicalAttack={setIsMagicalAttack}
@@ -396,6 +407,14 @@ const Game = () => {
             setIsMagicalAttack={setIsMagicalAttack}
             //
             isMagicalAttack={isMagicalAttack}
+          />
+
+          <ModalWinner
+            player={player}
+            list={heroList}
+            modalType={WINNER}
+            modalWinner={modalWinner}
+            handleModalWinnerClose={handleModalWinnerClose}
           />
         </Col>
       </Row>

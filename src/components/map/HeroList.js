@@ -3,14 +3,17 @@ import CardTable from "../table/CardTable";
 import { HERO } from "../../constants";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
+import { ReactComponent as IconSword } from "../../assets/icons/mingcute_sword-line.svg";
+import { ReactComponent as IconMagic } from "../../assets/icons/mingcute_react-line.svg";
 
 const HeroList = ({
   firstInTheQueue,
   isEnemyFighting,
   isUsingItem,
   isFighting,
-  selectedCharacter,
-  selectCharacter,
+  isPhysicalAttack,
+  // selectedCharacter,
+  // selectCharacter,
   selectedTargetToUseItem,
   setIsMagicalAttack,
   setIsPhysicalAttack,
@@ -40,15 +43,16 @@ const HeroList = ({
           } ${firstInTheQueue?.id === hero.id ? "hero-active" : ""}`}
           onClick={isUsingItem ? () => selectedTargetToUseItem(hero) : null}
         >
-          <div className="absolute-top-left hero-strength">
-            <span>{hero.status.strength}</span>
-          </div>
+          <div className="card-image">
+            <img src={hero.image} alt={hero.name} />
+            <div className="absolute-bottom-left hero-strength">
+              <IconSword /> <span>{hero.status.strength}</span>
+            </div>
 
-          <div className="absolute-top-right hero-intelligence">
-            <span>{hero.status.intelligence}</span>
+            <div className="absolute-bottom-right hero-intelligence">
+              <IconMagic /> <span>{hero.status.intelligence}</span>
+            </div>
           </div>
-
-          <img src={hero.image} alt={hero.name} />
 
           <CardTable modalType={HERO} item={hero} />
 
@@ -61,6 +65,11 @@ const HeroList = ({
                   isEnemyFighting ||
                   firstInTheQueue.id !== hero.id ||
                   !isFighting
+                }
+                variant={
+                  firstInTheQueue?.id === hero.id && isPhysicalAttack
+                    ? "danger"
+                    : "primary"
                 }
               >
                 Attack

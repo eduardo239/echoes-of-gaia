@@ -1,3 +1,16 @@
+console.log("server");
+
+// console.log("exp");
+// for (let i = 1; i < 11; i++) {
+//   console.log((Math.floor(4 * Math.sqrt(i)) / 5) * 10);
+// }
+
+// const factor = 0.1;
+// console.log("next level");
+// for (let y = 1; y < 11; y++) {
+//   console.log(Math.floor(factor * y * 100));
+// }
+
 export const player = {
   gold: 1000,
   level: 1,

@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import TextTitle from "../components/TextTitle";
 import { Player } from "../classes/Player";
 import PlayerList from "../components/map/PlayerList";
+import ButtonContainer from "../components/ButtonContainer";
 
 const CreatePlayer = () => {
   const navigate = useNavigate();
@@ -22,10 +23,10 @@ const CreatePlayer = () => {
     <>
       <TextTitle title="Create Player" />
 
-      <div className="d-flex justify-content-center gap-1 mt-3 p-3 bg-light bottom-separator">
+      <ButtonContainer>
         <Button onClick={() => navigate("/")}>Back</Button>
         <Button onClick={() => navigate("/select-character")}>Next</Button>
-      </div>
+      </ButtonContainer>
 
       <div className="d-flex justify-content-center flex-wrap gap-1 mb-3 p-3 bg-light">
         <div className="d-flex flex-column gap-3">

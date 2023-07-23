@@ -8,6 +8,7 @@ import { Item } from "../classes/Item";
 import MapForMaps from "../components/map/MapForMaps";
 import { SELECT_MAP } from "../constants";
 import TextTitle from "../components/TextTitle";
+import ButtonContainer from "../components/ButtonContainer";
 
 const SelectMap = () => {
   const navigate = useNavigate();
@@ -39,12 +40,12 @@ const SelectMap = () => {
     <>
       <TextTitle title="Select Map" />
 
-      <div className="d-flex justify-content-center gap-1 mt-3 p-3 bg-light bottom-separator">
+      <ButtonContainer>
         <Button onClick={() => navigate("/select-character")}>Back</Button>
         <Button onClick={() => navigate("/start-game")} variant="danger">
           Start Game
         </Button>
-      </div>
+      </ButtonContainer>
 
       <div className="d-flex justify-content-center flex-wrap gap-1 mb-3 p-3 bg-light">
         {allMaps && allMaps.length > 0 && (

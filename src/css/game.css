@@ -18,6 +18,9 @@
   width: 100%;
   display: inline-block;
 }
+.card-image {
+  position: relative;
+}
 
 .app-card-body {
   padding: .5rem 0;
@@ -30,7 +33,7 @@
   font-size: .7rem;
 }
 .hero-active {
-  border: 3px solid #bbf157;
+  border: 1px solid #bbf157;
 }
 .hero-picking {
   border-color: #ffe551;
@@ -67,9 +70,9 @@
 
 /* queue */
 .list-item-hero {
-  border-left: 3px solid var(--success);
+  border-left: 3px solid var(--color-success);
 }.list-item-enemy {
-  border-left: 3px solid var(--alert);
+  border-left: 3px solid var(--color-enemy);
 }
 
 /* map */
@@ -90,8 +93,8 @@
 .game-container {
   background-color: #112928;
 }
-.bottom-separator {
-  border-bottom: 1px solid var(--color-light-alternate);
+.border-bottom-light {
+  border: 1px solid var(--color-light-alternate);
 }
 
 /* dice */
@@ -99,7 +102,8 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  background-color: #e0c467;
+  background-color: var(--color-light);
+  font-family: 'Courier New', Courier, monospace;
   border-radius: 5px;
 
 }
@@ -114,43 +118,43 @@
 .relative {
   position: relative;
 }
-.absolute-top-left {
+
+.absolute-bottom-left {
   position: absolute;
-  top: 5px;
+  bottom: 5px;
   left: 5px;
 }
-
-.absolute-top-right {
+.absolute-bottom-right {
   position: absolute;
-  top: 5px;
+  bottom: 5px;
   right: 5px;
 }
 
 
 .hero-strength {
-  background-color: #0075F2;
-  color: #eaf9f9;
+  background-color: var(--color-danger);
+  color: var(--color-light);
 }
 .hero-intelligence {
-  background-color: #C1666B;
-  color: #eaf9f9;
+  background-color: var(--color-info);
+  color: var(--color-light);
 }
 
 .hero-strength, .hero-intelligence {
+  width: auto;
+  padding: 2px 4px;
   border-radius: 10%;
-  width: 27px;
-  height: 27px;
-  padding: 8px;
-
-  text-align: center;
-  font-size: .8rem;
-  font-weight: 700;
 
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
+.hero-strength > span, .hero-intelligence span {
+  text-align: center;
+  font-size: .8rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
 .hero-selecting-enemy:hover {
   cursor: pointer;
   background-color: #212422;

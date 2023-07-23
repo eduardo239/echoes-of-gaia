@@ -20,10 +20,6 @@ const ModalInventory = ({
     setIsUsingItem(true);
   };
 
-  // const getItemListByType = () => {
-  //   return inventoryByType.map((items) => console.log(items));
-  // };
-
   const getItemList = () => {
     return inventory.map((item) => (
       <div key={item.id} className="app-card">

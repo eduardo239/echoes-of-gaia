@@ -165,8 +165,11 @@ const GameMenu = ({
             (!isFighting || firstInTheQueue.type === HERO)
           }
           onClick={() => nextTurn()}
+          variant={
+            isFighting && firstInTheQueue.type === ENEMY ? "danger" : "primary"
+          }
         >
-          Next Turn !
+          Enemy Turn!
         </Button>
       </ButtonGroup>
     </div>

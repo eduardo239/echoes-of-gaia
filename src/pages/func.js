@@ -1,6 +1,5 @@
 export const removeAnObjectFromTheList = (character, list) => {
   const new_queue = list.filter((x) => x.id !== character.id);
-  console.log(new_queue);
   return new_queue;
 };
 

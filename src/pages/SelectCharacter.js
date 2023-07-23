@@ -6,6 +6,7 @@ import MapForCharacters from "../components/map/MapForCharacters";
 import Button from "react-bootstrap/Button";
 import TextTitle from "../components/TextTitle";
 import { chooseRandomItem } from "../helper";
+import ButtonContainer from "../components/ButtonContainer";
 
 const SelectCharacter = () => {
   const navigate = useNavigate();
@@ -30,10 +31,10 @@ const SelectCharacter = () => {
     <>
       <TextTitle title="Select Characters" />
 
-      <div className="d-flex justify-content-center gap-1 mt-3 p-3 bg-light bottom-separator">
+      <ButtonContainer>
         <Button onClick={() => navigate("/create-player")}>Back</Button>
         <Button onClick={() => navigate("/select-map")}>Next</Button>
-      </div>
+      </ButtonContainer>
 
       <div className="d-flex justify-content-center flex-wrap gap-1 mb-3 p-3 bg-light">
         {allHeroes && allHeroes.length > 0 && (

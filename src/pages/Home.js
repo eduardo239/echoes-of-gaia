@@ -1,6 +1,7 @@
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import TextTitle from "../components/TextTitle";
+import ButtonContainer from "../components/ButtonContainer";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -9,9 +10,9 @@ const Home = () => {
     <div>
       <TextTitle title="Echoes Of Gaia" />
 
-      <div className="d-flex justify-content-center gap-1 mt-3 p-3 bg-light bottom-separator">
+      <ButtonContainer>
         <Button onClick={() => navigate("/create-player")}>Start</Button>
-      </div>
+      </ButtonContainer>
     </div>
   );
 };

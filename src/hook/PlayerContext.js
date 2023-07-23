@@ -49,7 +49,6 @@ function PlayerContextProvider({ children }) {
           hero.name,
           hero.image,
           hero.type,
-          hero.level,
           hero.class,
           hero.strength,
           hero.intelligence,

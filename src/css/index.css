@@ -5,6 +5,10 @@
   --color-light: #fefefe;
   --color-light-alternate: #ebebeb;
 
+  --color-success: #4ba352;
+  --color-danger: #db1720;
+  --color-info: #1755db;
+
   --color-item: #ffdd6c;
   --color-weapon: #46ffd7;
   --color-enemy: #5133fd;
@@ -62,3 +66,4 @@ th, td {
 .list-group {
   border-radius: 0;
 }
+
