@@ -16,7 +16,6 @@ const HeroList = ({
   setIsPhysicalAttack,
   handleModalMagicShow,
 }) => {
-  console.log(firstInTheQueue);
   const { heroList } = useContext(PlayerContext);
 
   const physicalAttack = () => {

@@ -3,6 +3,7 @@ import {
   GIFT,
   HERO,
   ITEM,
+  MAGIC,
   PLAYER,
   SELECT_HERO,
   SELECT_MAP,
@@ -17,6 +18,7 @@ const CardTable = ({ modalType, item }) => {
             <th colSpan={2}>{item.name ? item.name : ""}</th>
           </tr>
         </thead>
+
         <tbody className="app-card-table">
           {(modalType === HERO || modalType === SELECT_HERO) && (
             <>
@@ -50,14 +52,14 @@ const CardTable = ({ modalType, item }) => {
                 </td>
               </tr>
 
-              <tr>
+              {/* <tr>
                 <td>Strength</td>
                 <td>{item.status.strength}</td>
               </tr>
               <tr>
                 <td>Intelligence</td>
                 <td>{item.status.intelligence}</td>
-              </tr>
+              </tr>*/}
               <tr>
                 <td>Class</td>
                 <td>{item.class}</td>
@@ -75,22 +77,22 @@ const CardTable = ({ modalType, item }) => {
                 <td>Max Health</td>
                 <td>{item.status.maxHp}</td>
               </tr>
-              <tr>
+              {/* <tr>
                 <td>Strength</td>
                 <td>{item.status.strength}</td>
               </tr>
               <tr>
                 <td>Intelligence</td>
                 <td>{item.status.intelligence}</td>
-              </tr>
+              </tr> */}
               <tr>
                 <td>Class</td>
                 <td>{item.class}</td>
               </tr>
-              <tr>
+              {/* <tr>
                 <td>Is Alive?</td>
                 <td>{item?.status?.isAlive ? "Yes" : "No"}</td>
-              </tr>
+              </tr> */}
             </>
           )}
 
@@ -134,13 +136,22 @@ const CardTable = ({ modalType, item }) => {
                 <td>Name</td>
                 <td>{item.name}</td>
               </tr>
+            </>
+          )}
+
+          {modalType === MAGIC && (
+            <>
               <tr>
-                <td>Name</td>
-                <td>{item.name}</td>
+                <td>Value</td>
+                <td>{item.value}</td>
               </tr>
               <tr>
-                <td>Name</td>
-                <td>{item.name}</td>
+                <td>Mana</td>
+                <td>{item.mp}</td>
+              </tr>
+              <tr>
+                <td>Type</td>
+                <td>{item.type}</td>
               </tr>
             </>
           )}

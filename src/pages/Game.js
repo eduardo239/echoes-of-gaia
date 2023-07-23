@@ -1,4 +1,3 @@
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useContext, useState } from "react";
@@ -100,11 +99,18 @@ const Game = () => {
     return target;
   };
   const magicalDamage = (character, target) => {
-    const damage = 120;
-    console.log("magical damage " + damage + " to : " + target.name);
-    // cause damage
-    target.status.hp -= damage;
-    return target;
+    if (character.status.mp >= useMagic.mp) {
+      const damage = useMagic.value * (character.status.intelligence * 0.25);
+      console.log(useMagic.name + " damage " + damage + " to : " + target.name);
+      // cause damage
+      target.status.hp -= damage;
+      character.status.mp -= useMagic.mp;
+
+      return target;
+    } else {
+      console.log("mp insufficient");
+      return target;
+    }
   };
   const checkIfItsAlive = (character) => {
     console.log("check if its alive");
@@ -114,9 +120,8 @@ const Game = () => {
       console.log("character is dead");
       // remove from queue
       new_queue = removeAnObjectFromTheList(character, new_queue);
-      console.log(new_queue);
+
       reorderTheQueue(new_queue);
-      // FIXME: update queue
       setBattleQueue(new_queue);
       // validar inimigo
       if (character.type === ENEMY) {
@@ -130,7 +135,6 @@ const Game = () => {
       } else if (character.type === HERO) {
         console.log("hero is dead");
         const h_list = removeAnObjectFromTheList(character, heroList);
-        // setHeroList(h_list);
         character.status.isAlive = false;
 
         const is_the_list_empty = h_list.length === 0;
@@ -196,13 +200,9 @@ const Game = () => {
     console.log("use item");
     const _item = useItem;
 
-    if (isFighting) {
-      switchOverItems(_item, hero);
-      reorderTheQueue(battleQueue);
-    } else {
-      switchOverItems(_item, hero);
-    }
+    switchOverItems(_item, hero);
     setIsUsingItem(false);
+    reorderTheQueue(battleQueue);
   };
   const switchOverItems = (item, hero) => {
     const itemId = item.id;
@@ -245,25 +245,29 @@ const Game = () => {
       case POISON:
         hero.status.strength += item.value;
         setInventory(newInventoryList);
+
         break;
       case REBORN:
         if (hero.status.hp < 1) {
           hero.status.hp = item.value;
           hero.status.isAlive = true;
           setInventory(newInventoryList);
-          const _newOrderBattle = [...battleQueue, hero];
-          if (isFighting) setBattleQueue(_newOrderBattle);
-          if (isFighting) reorderTheQueue(_newOrderBattle);
+          // FIX reviver durante a batalha e voltar para fila
+
+          console.log("bug");
+          if (isFighting) {
+            reorderTheQueue([...battleQueue, hero]);
+          }
         } else {
           console.log("Invalid Character");
         }
         break;
       default:
+        console.log("item not founded");
         break;
     }
   };
 
-  console.log(heroList);
   return (
     <>
       <Row>
@@ -291,7 +295,9 @@ const Game = () => {
                 handleModalMagicShow={handleModalMagicShow}
               />
             </div>
-            <div className="d-flex align-items-center p-3">VS</div>
+            <div className="d-flex align-items-center p-3">
+              <h1>VS</h1>
+            </div>
             <div className="d-flex align-items-start ">
               <EnemyList
                 firstInTheQueue={firstInTheQueue}
@@ -383,11 +389,14 @@ const Game = () => {
           />
 
           <ModalMagic
-            character={firstInTheQueue}
+            modalType={MAGIC}
+            firstInTheQueue={battleQueue ? battleQueue[0] : []}
             modalMagic={modalMagic}
             handleModalMagicClose={handleModalMagicClose}
             setUseMagic={setUseMagic}
             setIsMagicalAttack={setIsMagicalAttack}
+            //
+            isMagicalAttack={isMagicalAttack}
           />
         </Col>
       </Row>

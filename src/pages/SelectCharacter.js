@@ -16,12 +16,9 @@ const SelectCharacter = () => {
     const alreadyChosen = heroList.some((x) => x.id === character.id);
     if (!alreadyChosen) {
       const randomMagic = chooseRandomItem(allMagics);
-      character.setMagic(randomMagic);
-      //
+      character.setMagic([randomMagic]);
+
       setHeroList([...heroList, character]);
-      console.log(allMagics);
-      console.log(randomMagic);
-      console.log(character);
     }
   };
   const removeCharacter = (character) => {

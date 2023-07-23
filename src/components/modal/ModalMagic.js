@@ -1,19 +1,21 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { HERO, MAGIC } from "../../constants";
+import { HERO } from "../../constants";
 import CardTable from "../table/CardTable";
 import { useEffect, useState } from "react";
 
 const ModalMagic = ({
   list = [],
-  character,
+  firstInTheQueue,
   modalType,
   modalMagic,
   handleModalMagicClose,
   setUseMagic = null,
   setIsMagicalAttack = false,
+  isMagicalAttack,
 }) => {
   const [magicList, setMagicList] = useState([]);
+
   const clickUseMagic = (item) => {
     setUseMagic(item);
     handleModalMagicClose(true);
@@ -21,10 +23,10 @@ const ModalMagic = ({
   };
 
   useEffect(() => {
-    return () => {
-      if (!!character && character.type === HERO) setMagicList(character.magic);
-    };
-  }, [character]);
+    if (!!firstInTheQueue && firstInTheQueue.type === HERO)
+      setMagicList(firstInTheQueue.magic);
+    return () => {};
+  }, [firstInTheQueue, isMagicalAttack]);
 
   const getItemList = () => {
     return magicList.map((item) => (
@@ -35,9 +37,9 @@ const ModalMagic = ({
 
         <div className="d-grid gap-2">
           <Button
-            variant="primary"
             size="sm"
             onClick={() => clickUseMagic(item)}
+            disabled={item.mp > firstInTheQueue?.status?.mp}
           >
             Use
           </Button>
