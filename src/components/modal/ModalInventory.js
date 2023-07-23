@@ -12,7 +12,7 @@ const ModalInventory = ({
   setUseItem = null,
   setIsUsingItem = false,
 }) => {
-  const { inventory } = useContext(PlayerContext);
+  const { inventory, inventoryByType } = useContext(PlayerContext);
 
   const clickUseItem = (item) => {
     setUseItem(item);
@@ -20,7 +20,11 @@ const ModalInventory = ({
     setIsUsingItem(true);
   };
 
-  const get_items_list = () => {
+  // const getItemListByType = () => {
+  //   return inventoryByType.map((items) => console.log(items));
+  // };
+
+  const getItemList = () => {
     return inventory.map((item) => (
       <div key={item.id} className="app-card">
         <img src={item.image} alt={item.name} />
@@ -48,7 +52,8 @@ const ModalInventory = ({
       </Modal.Header>
       <Modal.Body className="dark">
         <div className="d-flex justify-content-center flex-wrap gap-1">
-          {inventory && inventory.length > 0 && get_items_list()}
+          {/* {inventoryByType && inventoryByType.length > 0 && getItemListByType()} */}
+          {inventory && inventory.length > 0 && getItemList()}
         </div>
       </Modal.Body>
       <Modal.Footer className="dark">

@@ -202,7 +202,7 @@ const Game = () => {
 
     switchOverItems(_item, hero);
     setIsUsingItem(false);
-    reorderTheQueue(battleQueue);
+    if (isFighting) reorderTheQueue(battleQueue);
   };
   const switchOverItems = (item, hero) => {
     const itemId = item.id;
@@ -267,7 +267,6 @@ const Game = () => {
         break;
     }
   };
-
   return (
     <>
       <Row>

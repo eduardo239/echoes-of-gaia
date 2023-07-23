@@ -30,10 +30,10 @@
   font-size: .7rem;
 }
 .hero-active {
-  border: 1px dashed #bbf157;
+  border: 3px solid #bbf157;
 }
 .hero-picking {
-  border-color: #bfffd4;
+  border-color: #ffe551;
 }
 .hero-hp-danger, .hero-mp-danger{
   color: #d11212;

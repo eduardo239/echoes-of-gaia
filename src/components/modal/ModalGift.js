@@ -4,15 +4,22 @@ import { GIFT } from "../../constants";
 import CardTable from "../table/CardTable";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
+import { addItemByType } from "../../pages/func";
 
 const ModalGift = ({ modalType, modalGift, handleModalGiftClose }) => {
-  const { giftItemList, setGiftItemList, inventory, setInventory } =
-    useContext(PlayerContext);
+  const {
+    giftItemList,
+    setGiftItemList,
+    inventory,
+    setInventory,
+    setInventoryByType,
+  } = useContext(PlayerContext);
 
   const handleGetItem = (item) => {
     setInventory([...inventory, item]);
     handleModalGiftClose(true);
     setGiftItemList([]);
+    setInventoryByType(addItemByType([...inventory, item]));
   };
 
   const get_items_list = () => {

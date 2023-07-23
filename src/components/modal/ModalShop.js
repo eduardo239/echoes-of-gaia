@@ -5,9 +5,10 @@ import { ITEM } from "../../constants";
 import CardTable from "../table/CardTable";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
+import { addItemByType } from "../../pages/func";
 
 const ModalShop = ({ modalType, modalShop, handleModalShopClose }) => {
-  const { player, inventory, setInventory, shopItems } =
+  const { player, inventory, setInventory, setInventoryByType, shopItems } =
     useContext(PlayerContext);
 
   const buyItem = (item) => {
@@ -18,6 +19,7 @@ const ModalShop = ({ modalType, modalShop, handleModalShopClose }) => {
       newItem.id = uuidv4();
       setInventory([...inventory, newItem]);
       player.gold -= item.price;
+      setInventoryByType(addItemByType([...inventory, newItem]));
     }
   };
 

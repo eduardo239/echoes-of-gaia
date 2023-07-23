@@ -13,6 +13,7 @@ function PlayerContextProvider({ children }) {
   const [map, setMap] = useState(null);
   const [mapSettings, setMapSettings] = useState(null);
   const [inventory, setInventory] = useState([]);
+  const [inventoryByType, setInventoryByType] = useState([]);
   const [shopItems, setShopItems] = useState([]);
   const [battleQueue, setBattleQueue] = useState([]);
   const [giftItemList, setGiftItemList] = useState([]);
@@ -88,6 +89,8 @@ function PlayerContextProvider({ children }) {
         setPlayer,
         inventory,
         setInventory,
+        inventoryByType,
+        setInventoryByType,
         battleQueue,
         setBattleQueue,
         heroList,
