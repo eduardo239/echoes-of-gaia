@@ -6,6 +6,7 @@ import CardTable from "../table/CardTable";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
 import { addItemByType } from "../../pages/func";
+import { ReactComponent as IconWallet } from "../../assets/icons-b/mingcute_wallet-2-line.svg";
 
 const ModalShop = ({ modalType, modalShop, handleModalShopClose }) => {
   const { player, inventory, setInventory, setInventoryByType, shopItems } =
@@ -26,7 +27,12 @@ const ModalShop = ({ modalType, modalShop, handleModalShopClose }) => {
   const getItemList = () => {
     return shopItems.map((item) => (
       <div key={item.id} className="app-card">
-        <img src={item.image} alt={item.name} />
+        <div className="card-image">
+          <img src={item.image} alt={item.name} />
+          <div className="absolute-top-right gold-label">
+            <IconWallet /> <span>{item.price}</span>
+          </div>
+        </div>
 
         <CardTable modalType={modalType} item={item} />
         {modalType === ITEM && (
@@ -41,7 +47,7 @@ const ModalShop = ({ modalType, modalShop, handleModalShopClose }) => {
   };
 
   return (
-    <Modal size="xl" show={modalShop} onHide={handleModalShopClose}>
+    <Modal size="lg" show={modalShop} onHide={handleModalShopClose}>
       <Modal.Header closeButton className="dark">
         <Modal.Title>Shop Items - Gold ${123}</Modal.Title>
       </Modal.Header>

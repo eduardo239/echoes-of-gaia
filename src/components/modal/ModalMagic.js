@@ -49,7 +49,7 @@ const ModalMagic = ({
   };
 
   return (
-    <Modal size="xl" show={modalMagic} onHide={handleModalMagicClose}>
+    <Modal size="lg" show={modalMagic} onHide={handleModalMagicClose}>
       <Modal.Header closeButton className="dark">
         <Modal.Title>Inventory</Modal.Title>
       </Modal.Header>

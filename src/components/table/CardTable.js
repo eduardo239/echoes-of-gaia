@@ -7,6 +7,7 @@ import {
   PLAYER,
   SELECT_HERO,
   SELECT_MAP,
+  WINNER,
 } from "../../constants";
 
 const CardTable = ({ modalType, item }) => {
@@ -51,15 +52,6 @@ const CardTable = ({ modalType, item }) => {
                   </span>
                 </td>
               </tr>
-
-              {/* <tr>
-                <td>Strength</td>
-                <td>{item.status.strength}</td>
-              </tr>
-              <tr>
-                <td>Intelligence</td>
-                <td>{item.status.intelligence}</td>
-              </tr>*/}
               <tr>
                 <td>Class</td>
                 <td>{item.class}</td>
@@ -77,34 +69,18 @@ const CardTable = ({ modalType, item }) => {
                 <td>Max Health</td>
                 <td>{item.status.maxHp}</td>
               </tr>
-              {/* <tr>
-                <td>Strength</td>
-                <td>{item.status.strength}</td>
-              </tr>
-              <tr>
-                <td>Intelligence</td>
-                <td>{item.status.intelligence}</td>
-              </tr> */}
               <tr>
                 <td>Class</td>
                 <td>{item.class}</td>
               </tr>
-              {/* <tr>
-                <td>Is Alive?</td>
-                <td>{item?.status?.isAlive ? "Yes" : "No"}</td>
-              </tr> */}
             </>
           )}
 
-          {(modalType === ITEM || modalType === GIFT) && (
+          {modalType === ITEM && (
             <>
               <tr>
                 <td>Value</td>
                 <td>{item.value}</td>
-              </tr>
-              <tr>
-                <td>Price</td>
-                <td>{item.price}</td>
               </tr>
               <tr>
                 <td>Class</td>
@@ -149,6 +125,15 @@ const CardTable = ({ modalType, item }) => {
                 <td>Mana</td>
                 <td>{item.mp}</td>
               </tr>
+              <tr>
+                <td>Type</td>
+                <td>{item.type}</td>
+              </tr>
+            </>
+          )}
+
+          {modalType === WINNER && (
+            <>
               <tr>
                 <td>Type</td>
                 <td>{item.type}</td>

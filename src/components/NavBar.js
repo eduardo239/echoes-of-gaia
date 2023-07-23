@@ -20,6 +20,7 @@ const GameNavbar = ({ player }) => {
           <div>Level: {player.level}</div>
           <div>Experience: {player.exp}</div>
           <div>Next Level: {player.nextLevel}</div>
+          <div>Gold: ${player.gold}</div>
           <div>
             <Link to="/">Home</Link>
           </div>

@@ -130,6 +130,19 @@
   right: 5px;
 }
 
+.absolute-top-right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+
+.gold-label {
+  padding: 2px 5px;
+  background-color: var(--color-item);
+  transform: rotatez(11deg);
+  color: var(--color-dark);
+}
 
 .hero-strength {
   background-color: var(--color-danger);

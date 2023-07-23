@@ -9,11 +9,13 @@ export class Player {
     this.exp = 0;
     this.nextLevel = this.getNextLevel();
     this.image = image;
+    this.expEarned = 0;
   }
 
   setAddExp() {
     const expEarned = (Math.floor(4 * Math.sqrt(this.level)) / 5) * 10;
     const expTotal = expEarned + this.exp;
+    this.expEarned = expEarned;
 
     console.log("exp Earned " + expEarned);
     if (expTotal > this.nextLevel) {
@@ -36,11 +38,16 @@ export class Player {
     const factor = 0.3;
     return Math.floor(factor * this.level * 100);
   }
-  setExp(exp) {
-    this.exp = exp;
+  getLevel() {
+    return this.level;
   }
-  setGold(gold) {
-    this.gold = gold;
+
+  setAddGold(gold) {
+    this.gold += gold;
+  }
+
+  getExpEarned() {
+    return this.expEarned;
   }
 }
 

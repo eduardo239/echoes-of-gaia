@@ -12,7 +12,7 @@ const ModalInventory = ({
   setUseItem = null,
   setIsUsingItem = false,
 }) => {
-  const { inventory, inventoryByType } = useContext(PlayerContext);
+  const { inventory } = useContext(PlayerContext);
 
   const clickUseItem = (item) => {
     setUseItem(item);
@@ -42,7 +42,7 @@ const ModalInventory = ({
   };
 
   return (
-    <Modal size="xl" show={modalInventory} onHide={handleModalInventoryClose}>
+    <Modal size="lg" show={modalInventory} onHide={handleModalInventoryClose}>
       <Modal.Header closeButton className="dark">
         <Modal.Title>Inventory</Modal.Title>
       </Modal.Header>

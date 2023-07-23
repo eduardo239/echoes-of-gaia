@@ -77,7 +77,7 @@ const Game = () => {
   const [useMagic, setUseMagic] = useState(null);
   //
   const firstInTheQueue = isFighting && battleQueue[0] ? battleQueue[0] : null;
-
+  //
   const selectedTarget = (target) => {
     console.log("selected target");
     const character = battleQueue[0];
@@ -159,14 +159,10 @@ const Game = () => {
     list.push(first);
     setBattleQueue(list);
   };
-  console.log(player);
   const battleWon = () => {
     console.log("battle won");
-    console.log("generate random exp");
 
     player.setAddExp();
-    console.log("generate random gold");
-    console.log("generate random gift");
     resetBattle();
     handleModalWinnerShow();
   };
@@ -327,7 +323,7 @@ const Game = () => {
         <Col sm>
           <MapForQueue list={battleQueue} firstInTheQueue={firstInTheQueue} />
         </Col>
-        <Col md>
+        <Col md className="bg-dark">
           <GameMenu
             firstInTheQueue={firstInTheQueue}
             //

@@ -22,10 +22,11 @@ export const PLAYER = "Player";
 export const MAP = "Map";
 export const MAGIC = "Magic";
 export const WINNER = "Winner";
+export const EXPERIENCE = "Experience";
+export const GOLD = "Gold";
 //
 export const FIRE = "Fire";
 export const ICE = "Ice";
-
 // https://www.thegamer.com/rpg-iconic-character-classes/#archer
 export const SOLDIER = "Soldier";
 export const KNIGHT = "Knight";

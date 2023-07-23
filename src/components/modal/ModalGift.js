@@ -44,7 +44,7 @@ const ModalGift = ({ modalType, modalGift, handleModalGiftClose }) => {
   };
 
   return (
-    <Modal size="xl" show={modalGift} onHide={handleModalGiftClose}>
+    <Modal size="lg" show={modalGift} onHide={handleModalGiftClose}>
       <Modal.Header closeButton className="dark">
         <Modal.Title>Inventory</Modal.Title>
       </Modal.Header>

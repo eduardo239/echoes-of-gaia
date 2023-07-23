@@ -592,3 +592,30 @@ export const magics = [
     type: "Electric",
   },
 ];
+
+export const gifts = [
+  {
+    name: "Random Item",
+    image: "../assets/others/treasure1.png",
+    type: "Item",
+    class: "Gift",
+    value: 20,
+    price: 50,
+  },
+  {
+    name: "Experience Points",
+    image: "../assets/others/gold_bag2.png",
+    type: "Experience",
+    class: "Gift",
+    value: 20,
+    price: 50,
+  },
+  {
+    name: "Gold",
+    image: "../assets/others/treasure.png",
+    type: "Gold",
+    class: "Gift",
+    value: 20,
+    price: 50,
+  },
+];
