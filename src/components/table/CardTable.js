@@ -1,5 +1,6 @@
 import {
   ENEMY,
+  GAME_OVER,
   GIFT,
   HERO,
   ITEM,
@@ -137,6 +138,23 @@ const CardTable = ({ modalType, item }) => {
               <tr>
                 <td>Type</td>
                 <td>{item.type}</td>
+              </tr>
+            </>
+          )}
+
+          {modalType === GAME_OVER && (
+            <>
+              <tr>
+                <td>Level</td>
+                <td>{item.level}</td>
+              </tr>
+              <tr>
+                <td>Experience</td>
+                <td>{item.exp}</td>
+              </tr>
+              <tr>
+                <td>Gold</td>
+                <td>{item.gold}</td>
               </tr>
             </>
           )}

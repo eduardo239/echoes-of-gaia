@@ -28,6 +28,8 @@ function PlayerContextProvider({ children }) {
   const [allHeroes, setAllHeroes] = useState([]);
   const [allMaps, setAllMaps] = useState([]);
   const [allMagics, setAllMagics] = useState([]);
+  //
+  const [isGameWasRestarted, setIsGameWasRestarted] = useState(false);
 
   const loadAllMagics = () => {
     const _newArray = [];
@@ -79,7 +81,7 @@ function PlayerContextProvider({ children }) {
     loadAllMagics();
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isGameWasRestarted]);
 
   return (
     <PlayerContext.Provider
@@ -110,6 +112,8 @@ function PlayerContextProvider({ children }) {
         allHeroes,
         allMaps,
         allMagics,
+
+        setIsGameWasRestarted,
       }}
     >
       {children}

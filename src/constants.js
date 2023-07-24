@@ -11,19 +11,19 @@ export const MANA = "Mana";
 export const REBORN = "Reborn";
 
 export const EMPTY = "Empty";
-
 export const GAME_BATTLE_DELAY = 300;
 
 export const SELECT_HERO = "Select Hero";
 export const SELECT_MAP = "Select Map";
 export const PLAYER = "Player";
-
 //
 export const MAP = "Map";
 export const MAGIC = "Magic";
 export const WINNER = "Winner";
 export const EXPERIENCE = "Experience";
 export const GOLD = "Gold";
+//
+export const GAME_OVER = "Game Over";
 //
 export const FIRE = "Fire";
 export const ICE = "Ice";

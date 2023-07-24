@@ -8,6 +8,7 @@ import {
   CURE,
   ELIXIR,
   ENEMY,
+  GAME_OVER,
   GIFT,
   HERO,
   ITEM,
@@ -28,6 +29,7 @@ import ModalInventory from "../components/modal/ModalInventory";
 import ModalGift from "../components/modal/ModalGift";
 import ModalMagic from "../components/modal/ModalMagic";
 import ModalWinner from "../components/modal/ModalWinner";
+import ModalGameOver from "../components/modal/ModalGameOver";
 
 const Game = () => {
   const {
@@ -41,6 +43,9 @@ const Game = () => {
     setEnemyList,
     battleQueue,
     setBattleQueue,
+    setMap,
+    setGiftItemList,
+    setPlayer,
   } = useContext(PlayerContext);
 
   // Modal
@@ -63,6 +68,10 @@ const Game = () => {
   const [modalWinner, setModalWinner] = useState(false);
   const handleModalWinnerClose = () => setModalWinner(false);
   const handleModalWinnerShow = () => setModalWinner(true);
+  //
+  const [modalGameOver, setModalGameOver] = useState(false);
+  const handleModalGameOverClose = () => setModalGameOver(false);
+  const handleModalGameOverShow = () => setModalGameOver(true);
   // Game - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   const [dice, setDice] = useState(0);
   const [position, setPosition] = useState(0);
@@ -168,7 +177,7 @@ const Game = () => {
   };
   const gameOver = () => {
     console.log("game over");
-    // reset();
+    handleModalGameOverShow();
   };
   const nextTurn = () => {
     console.log("next turn");
@@ -191,13 +200,24 @@ const Game = () => {
     // reorder_the_queue(battleQueue);
   };
   const resetBattle = () => {
+    console.log("reset battle");
     setBattleQueue([]);
     setEnemyList([]);
+    setGiftItemList([]);
     setIsPhysicalAttack(false);
     setIsMagicalAttack(false);
     setIsUsingItem(false);
     setIsFighting(false);
     setUseItem(null);
+  };
+  const resetGame = () => {
+    console.log("reset game");
+    resetBattle();
+    //
+    setPlayer(null);
+    setHeroList([]);
+    setMap(null);
+    setInventory([]);
   };
   const selectedTargetToUseItem = (hero) => {
     console.log("use item");
@@ -273,6 +293,9 @@ const Game = () => {
         break;
     }
   };
+
+  console.log(player);
+  console.log(heroList);
   return (
     <>
       <Row>
@@ -411,6 +434,14 @@ const Game = () => {
             modalType={WINNER}
             modalWinner={modalWinner}
             handleModalWinnerClose={handleModalWinnerClose}
+          />
+
+          <ModalGameOver
+            player={player}
+            resetGame={resetGame}
+            modalType={GAME_OVER}
+            modalGameOver={modalGameOver}
+            handleModalGameOverClose={handleModalGameOverClose}
           />
         </Col>
       </Row>

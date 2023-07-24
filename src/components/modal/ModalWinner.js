@@ -1,8 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { EXPERIENCE, GOLD, ITEM, WINNER } from "../../constants";
 import CardTable from "../table/CardTable";
+import { EXPERIENCE, GOLD, ITEM, WINNER } from "../../constants";
 import { useContext, useEffect, useState } from "react";
 import { gifts, items } from "../../server";
 import { chooseRandomItem } from "../../helper";
