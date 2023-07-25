@@ -1,4 +1,4 @@
-console.log("server");
+console.log("server started");
 
 // console.log("exp");
 // for (let i = 1; i < 11; i++) {
@@ -464,11 +464,12 @@ export const start = {
 export const maps = [
   {
     name: "Level 1",
-    length: 6,
+    length: 21,
     difficulty: 1,
     type: "Map",
     image: "../assets/maps/map1.jpg",
     positions: [],
+    isAvailable: true,
   },
   {
     name: "Level 2",
@@ -477,6 +478,7 @@ export const maps = [
     type: "Map",
     image: "../assets/maps/map2.jpg",
     positions: [],
+    isAvailable: false,
   },
   {
     name: "Level 3",
@@ -485,14 +487,25 @@ export const maps = [
     type: "Map",
     image: "../assets/maps/map3.jpg",
     positions: [],
+    isAvailable: false,
   },
   {
     name: "Level 4",
-    length: 501,
+    length: 301,
     difficulty: 3,
     type: "Map",
     image: "../assets/maps/map4.jpg",
     positions: [],
+    isAvailable: false,
+  },
+  {
+    name: "Level 5",
+    length: 1001,
+    difficulty: 5,
+    type: "Map",
+    image: "../assets/maps/map1.jpg",
+    positions: [],
+    isAvailable: false,
   },
 ];
 

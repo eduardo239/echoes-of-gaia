@@ -4,7 +4,7 @@ import { ITEM } from "../../constants";
 import CardTable from "../table/CardTable";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
-import { addItemByType } from "../../pages/func";
+import { addItemByType } from "../../helper";
 import { useEffect } from "react";
 
 const ModalInventory = ({
@@ -27,7 +27,7 @@ const ModalInventory = ({
       const invByType = addItemByType(inventory);
       const keysArray = Object.keys(invByType);
       console.log(keysArray.length);
-      console.log(invByType);
+      // TODO: separate itens by type
     }
   };
 

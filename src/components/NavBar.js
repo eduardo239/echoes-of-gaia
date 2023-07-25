@@ -7,6 +7,7 @@ const GameNavbar = ({ player }) => {
 
   const restart = () => {
     console.log("restart");
+    navigate("/");
   };
 
   return (

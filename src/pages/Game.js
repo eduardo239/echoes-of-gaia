@@ -5,6 +5,7 @@ import { PlayerContext } from "../hook/PlayerContext";
 import GameNavbar from "../components/NavBar";
 import HeroList from "../components/map/HeroList";
 import {
+  BOSS,
   CURE,
   ELIXIR,
   ENEMY,
@@ -18,7 +19,7 @@ import {
   REBORN,
   WINNER,
 } from "../constants";
-import { removeAnObjectFromTheList, updateTheList } from "./func";
+import { removeAnObjectFromTheList, updateTheList } from "../helper";
 import GameMenu from "../components/GameMenu";
 import MapForQueue from "../components/map/MapForQueue";
 import MapForList from "../components/map/MapForList";
@@ -104,7 +105,6 @@ const Game = () => {
     // reorderTheQueue(battleQueue);
   };
   const physicalDamage = (character, target) => {
-    console.log(character);
     const damage = character.status.strength;
     console.log("physical damage " + damage + " to : " + target.name);
     // cause damage
@@ -130,13 +130,10 @@ const Game = () => {
     let newQueue = battleQueue;
     // validar hp
     if (character.status.hp < 1) {
-      console.log("character is dead");
-      // remove from queue
       newQueue = removeAnObjectFromTheList(character, battleQueue);
       console.log("reordered if is dead");
       reorderTheQueue(newQueue);
-      // setBattleQueue(new_queue);
-      // validar inimigo
+      // validate if its alive
       if (character.type === ENEMY) {
         console.log("enemy is dead");
         const _enemyList = removeAnObjectFromTheList(character, enemyList);
@@ -147,12 +144,16 @@ const Game = () => {
         // validar hero
       } else if (character.type === HERO) {
         console.log("hero is dead");
-        const _heroList = removeAnObjectFromTheList(character, heroList);
         character.status.isAlive = false;
 
-        const isTheListEmpty = _heroList.length === 0;
-        if (isTheListEmpty) gameOver();
-        // else updateTheList(character, setHeroList);
+        const isThereAHero = battleQueue.some((x) => x.type === HERO);
+
+        if (!isThereAHero) gameOver();
+      } else if (character.type === BOSS) {
+        console.log("defeated boss");
+        // completed map, add more exp, more gifts, more gold
+        // revive dead characters
+        // back to map selections
       }
     } else {
       console.log("character is alive");
@@ -187,18 +188,13 @@ const Game = () => {
   };
   const startEnemyTurn = () => {
     console.log("start enemy turn");
-    // enemy
-    console.log(battleQueue);
     const enemy_attacking = battleQueue[0];
-    console.log(enemy_attacking);
     // get random hero
     const random_hero = chooseRandomItem(heroList);
     // cause damage
     physicalDamage(enemy_attacking, random_hero);
     // check if its alive
     checkIfItsAlive(random_hero);
-    // update list
-    // reorder_the_queue(battleQueue);
   };
   const resetBattle = () => {
     console.log("reset battle");
@@ -226,7 +222,6 @@ const Game = () => {
 
     switchOverItems(_item, hero);
     setIsUsingItem(false);
-    // if (isFighting) reorderTheQueue(battleQueue);
   };
   const switchOverItems = (item, hero) => {
     setIsPhysicalAttack(false);
@@ -238,7 +233,7 @@ const Game = () => {
     switch (item.class) {
       case CURE:
         if (hero.status.hp < 1) {
-          console.log("Invalid Character");
+          console.log("invalid character");
         } else {
           if (hero.status.hp + item.value > hero.status.maxHp) {
             hero.status.hp = hero.status.maxHp;
@@ -279,10 +274,9 @@ const Game = () => {
           hero.status.hp = item.value;
           hero.status.isAlive = true;
           setInventory(newInventoryList);
-          // FIXME: reviver durante a batalha e voltar para fila
-          console.log("bug");
+
           if (isFighting) {
-            console.log("reordered reborn");
+            console.log("reordered with the reborn");
             reorderTheQueue([...battleQueue, hero]);
           }
         } else {
@@ -290,7 +284,7 @@ const Game = () => {
         }
         break;
       default:
-        console.log("item not founded");
+        console.log("[switchOverItems] item not founded");
         break;
     }
   };

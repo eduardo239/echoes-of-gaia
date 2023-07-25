@@ -4,7 +4,7 @@ import { GIFT } from "../../constants";
 import CardTable from "../table/CardTable";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
-import { addItemByType } from "../../pages/func";
+import { addItemByType } from "../../helper";
 
 const ModalGift = ({ modalType, modalGift, handleModalGiftClose }) => {
   const {

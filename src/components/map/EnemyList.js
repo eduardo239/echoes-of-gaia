@@ -19,7 +19,7 @@ const EnemyList = ({
         key={item.id}
         className={`app-card ${
           isPhysicalAttack || isMagicalAttack ? "hero-selecting-enemy" : ""
-        }`}
+        } ${item.status.hp > 0 ? "" : "dead-character"}`}
         onClick={
           isPhysicalAttack && item.status.isAlive
             ? () => selectedTargetToAttack(item)

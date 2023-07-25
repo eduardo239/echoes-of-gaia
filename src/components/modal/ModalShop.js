@@ -5,7 +5,7 @@ import { ITEM } from "../../constants";
 import CardTable from "../table/CardTable";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
-import { addItemByType } from "../../pages/func";
+import { addItemByType } from "../../helper";
 import { ReactComponent as IconWallet } from "../../assets/icons-b/mingcute_wallet-2-line.svg";
 
 const ModalShop = ({ modalType, modalShop, handleModalShopClose }) => {

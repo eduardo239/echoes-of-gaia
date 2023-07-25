@@ -17,7 +17,7 @@ export class Player {
     const expTotal = expEarned + this.exp;
     this.expEarned = expEarned;
 
-    console.log("exp Earned " + expEarned);
+    console.log("exp earned " + expEarned);
     if (expTotal > this.nextLevel) {
       console.log("level up");
       this.setLevelUp(expTotal);

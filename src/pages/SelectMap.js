@@ -53,7 +53,7 @@ const SelectMap = () => {
             list={allMaps}
             selectMap={selectMap}
             modalType={SELECT_MAP}
-            selectedCharacter={[map]}
+            selectedMap={[map]}
           />
         )}
       </div>

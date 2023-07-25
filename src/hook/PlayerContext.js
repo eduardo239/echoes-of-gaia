@@ -67,11 +67,20 @@ function PlayerContextProvider({ children }) {
 
   const loadAllMaps = () => {
     const newMapList = [];
-    maps.forEach((map) => {
-      newMapList.push(
-        new Map_(map.name, map.length, map.difficulty, map.image)
-      );
+    maps.forEach((map, index) => {
+      if (index === 0) {
+        console.log("0");
+        newMapList.push(
+          new Map_(map.name, map.length, map.difficulty, map.image, true)
+        );
+      } else {
+        console.log("index");
+        newMapList.push(
+          new Map_(map.name, map.length, map.difficulty, map.image, false)
+        );
+      }
     });
+
     setAllMaps(newMapList);
   };
 

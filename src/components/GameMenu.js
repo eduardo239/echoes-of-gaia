@@ -41,19 +41,13 @@ const GameMenu = ({
     shopItems,
     giftItemList,
     setGiftItemList,
-    toastMessage,
-    setToastMessage,
+    // toastMessage,
+    // setToastMessage,
   } = useContext(PlayerContext);
 
   // gerar um item aleatório
   const getRandomItems = () => {
-    // setShow(true);
-    // setToastMessage({
-    //   ...toastMessage,
-    //   title: "Fight!",
-    //   message: "New item founded",
-    // });
-    //
+    console.log("get random items");
     const itemList = shopItems;
     const giftItem1 = chooseRandomItem(itemList);
     const giftItem2 = chooseRandomItem(itemList);
@@ -68,6 +62,7 @@ const GameMenu = ({
   };
   // validar o tipo de local em que o personagem chegou
   const checkPosition = (position) => {
+    console.log("check position");
     const positionType = map.positions[position][0].type;
     const positionData = map.positions[position];
     // validar os personagens que estão vivos, na heroList
@@ -75,43 +70,27 @@ const GameMenu = ({
     //
     switch (positionType) {
       case ENEMY:
-        // inicia um batalha, gera uma lista
-        // setShow(true);
-        setToastMessage({
-          ...toastMessage,
-          title: "Fight!",
-          message: "Enemy Founded",
-        });
+        console.log("enemy founded");
+
         const randomlyQueue = randomlyCombineArrays(positionData, _heroList);
-        //
         setEnemyList(positionData);
         setBattleQueue(randomlyQueue);
-        // status da batalha
         setIsFighting(true);
-        // desabilitar botão shop
         break;
       case ITEM:
-        // abrir o modal, jogador escolhe um de dois itens
-        // setShow(true);
-        setToastMessage({
-          ...toastMessage,
-          title: "Gift!",
-          message: "Item Founded",
-        });
+        console.log("item founded");
 
         getRandomItems();
         break;
       case BOSS:
-        // setMessage("Boss Time !!");
+        console.log("boss founded");
         const randomlyBossQueue = randomlyCombineArrays(
           positionData,
           _heroList
         );
 
-        // gerar a ordem de batalha
         setEnemyList(positionData);
         setBattleQueue(randomlyBossQueue);
-        // status da batalha
         setIsFighting(true);
         break;
       default:
@@ -121,6 +100,7 @@ const GameMenu = ({
 
   // personagem se move no mapa
   const moveTo = (position) => {
+    console.log("move to " + position);
     // validar se o mapa chegou ao fim
     const isLastLocation = position >= map.length - 1;
     if (isLastLocation) {
@@ -135,6 +115,7 @@ const GameMenu = ({
   // usuário joga o dado
   const rollTheDice = () => {
     const result = randomNumber(1, 6);
+    console.log("roll the dice " + result);
     setDice(result);
     moveTo(position + result);
   };
