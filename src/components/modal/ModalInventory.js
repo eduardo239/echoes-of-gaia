@@ -4,6 +4,8 @@ import { ITEM } from "../../constants";
 import CardTable from "../table/CardTable";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
+import { addItemByType } from "../../pages/func";
+import { useEffect } from "react";
 
 const ModalInventory = ({
   modalType,
@@ -12,13 +14,30 @@ const ModalInventory = ({
   setUseItem = null,
   setIsUsingItem = false,
 }) => {
-  const { inventory } = useContext(PlayerContext);
+  const { inventory, setInventoryByType } = useContext(PlayerContext);
 
   const clickUseItem = (item) => {
     setUseItem(item);
     handleModalInventoryClose(true);
     setIsUsingItem(true);
   };
+
+  const loadItemsByType = () => {
+    if (inventory) {
+      const invByType = addItemByType(inventory);
+      const keysArray = Object.keys(invByType);
+      console.log(keysArray.length);
+      console.log(invByType);
+    }
+  };
+
+  useEffect(() => {
+    loadItemsByType();
+    return () => {
+      setInventoryByType([]);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modalInventory]);
 
   const getItemList = () => {
     return inventory.map((item) => (
@@ -48,7 +67,6 @@ const ModalInventory = ({
       </Modal.Header>
       <Modal.Body className="dark">
         <div className="d-flex justify-content-center flex-wrap gap-1">
-          {/* {inventoryByType && inventoryByType.length > 0 && getItemListByType()} */}
           {inventory && inventory.length > 0 && getItemList()}
         </div>
       </Modal.Body>

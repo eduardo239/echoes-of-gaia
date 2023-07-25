@@ -12,19 +12,12 @@ export const updateTheList = (newObject, setState) => {
 };
 
 export const addItemByType = (list) => {
-  // Create an object to hold the arrays for each type
-  const itemsByType = [];
-
-  // Iterate over the items using forEach
+  const itemsByType = {};
   list.forEach((item) => {
     const { name } = item;
-
-    // If the type array doesn't exist, create an empty array for it
     if (!itemsByType[name]) {
       itemsByType[name] = [];
     }
-
-    // Push the item into the corresponding type array
     itemsByType[name].push(item);
   });
   return itemsByType;

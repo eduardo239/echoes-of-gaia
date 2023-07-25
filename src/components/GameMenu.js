@@ -103,13 +103,16 @@ const GameMenu = ({
         break;
       case BOSS:
         // setMessage("Boss Time !!");
-        // const _queue1 = randomlyCombineArrays(positionData, _heroList);
+        const randomlyBossQueue = randomlyCombineArrays(
+          positionData,
+          _heroList
+        );
 
         // gerar a ordem de batalha
-        // setEnemyList(positionData);
-        // setBattleQueue(_queue1);
+        setEnemyList(positionData);
+        setBattleQueue(randomlyBossQueue);
         // status da batalha
-        // setIsFighting(true);
+        setIsFighting(true);
         break;
       default:
         break;
@@ -166,7 +169,10 @@ const GameMenu = ({
           }
           onClick={() => nextTurn()}
           variant={
-            isFighting && firstInTheQueue.type === ENEMY ? "danger" : "primary"
+            isFighting &&
+            (firstInTheQueue.type === ENEMY || firstInTheQueue.type === BOSS)
+              ? "danger"
+              : "primary"
           }
         >
           Enemy Turn!

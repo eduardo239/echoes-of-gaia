@@ -127,39 +127,40 @@ const Game = () => {
   };
   const checkIfItsAlive = (character) => {
     console.log("check if its alive");
-    let new_queue = battleQueue;
+    let newQueue = battleQueue;
     // validar hp
     if (character.status.hp < 1) {
       console.log("character is dead");
       // remove from queue
-      new_queue = removeAnObjectFromTheList(character, new_queue);
-
-      reorderTheQueue(new_queue);
-      setBattleQueue(new_queue);
+      newQueue = removeAnObjectFromTheList(character, battleQueue);
+      console.log("reordered if is dead");
+      reorderTheQueue(newQueue);
+      // setBattleQueue(new_queue);
       // validar inimigo
       if (character.type === ENEMY) {
         console.log("enemy is dead");
-        const e_list = removeAnObjectFromTheList(character, enemyList);
-        setEnemyList(e_list);
+        const _enemyList = removeAnObjectFromTheList(character, enemyList);
+        setEnemyList(_enemyList);
 
-        const is_the_list_empty = e_list.length === 0;
-        if (is_the_list_empty) battleWon();
+        const isTheListEmpty = _enemyList.length === 0;
+        if (isTheListEmpty) battleWon();
         // validar hero
       } else if (character.type === HERO) {
         console.log("hero is dead");
-        const h_list = removeAnObjectFromTheList(character, heroList);
+        const _heroList = removeAnObjectFromTheList(character, heroList);
         character.status.isAlive = false;
 
-        const is_the_list_empty = h_list.length === 0;
-        if (is_the_list_empty) gameOver();
-        else updateTheList(character, setHeroList);
+        const isTheListEmpty = _heroList.length === 0;
+        if (isTheListEmpty) gameOver();
+        // else updateTheList(character, setHeroList);
       }
     } else {
       console.log("character is alive");
       updateTheList(character, setBattleQueue);
       updateTheList(character, setEnemyList);
       updateTheList(character, setHeroList);
-      reorderTheQueue(new_queue);
+      console.log("reordered if is alive");
+      reorderTheQueue(newQueue);
     }
   };
   const reorderTheQueue = (list) => {
@@ -225,7 +226,7 @@ const Game = () => {
 
     switchOverItems(_item, hero);
     setIsUsingItem(false);
-    if (isFighting) reorderTheQueue(battleQueue);
+    // if (isFighting) reorderTheQueue(battleQueue);
   };
   const switchOverItems = (item, hero) => {
     setIsPhysicalAttack(false);
@@ -278,10 +279,10 @@ const Game = () => {
           hero.status.hp = item.value;
           hero.status.isAlive = true;
           setInventory(newInventoryList);
-          // FIX reviver durante a batalha e voltar para fila
-
+          // FIXME: reviver durante a batalha e voltar para fila
           console.log("bug");
           if (isFighting) {
+            console.log("reordered reborn");
             reorderTheQueue([...battleQueue, hero]);
           }
         } else {
@@ -294,8 +295,6 @@ const Game = () => {
     }
   };
 
-  console.log(player);
-  console.log(heroList);
   return (
     <>
       <Row>

@@ -53,8 +53,6 @@ const ModalWinner = ({
         break;
 
       case ITEM:
-        console.log("item");
-        // choose random item, add new id
         const randomItem = chooseRandomItem(items);
 
         const newItem = new Item(
@@ -72,7 +70,6 @@ const ModalWinner = ({
         break;
 
       case GOLD:
-        console.log("gold");
         player.setAddGold(item.value);
 
         setMessage("Gold obtained: " + item.value);
