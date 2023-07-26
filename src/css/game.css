@@ -186,3 +186,7 @@
     background-size: cover;
     background-attachment: fixed;
   }
+
+.w-123 {
+  width: 123px;
+}

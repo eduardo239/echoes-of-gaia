@@ -18,9 +18,10 @@ const MapForMaps = ({ list, selectMap, modalType, selectedMap }) => {
           <Button
             disabled={!item.isAvailable}
             size="sm"
+            variant={!item.isAvailable ? "dark" : "primary"}
             onClick={() => selectMap(item)}
           >
-            Select
+            {item.isAvailable ? "Select" : "Unavailable"}
           </Button>
         </div>
       </div>

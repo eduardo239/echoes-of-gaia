@@ -32,8 +32,12 @@ const SelectCharacter = () => {
       <TextTitle title="Select Characters" />
 
       <ButtonContainer>
-        <Button onClick={() => navigate("/create-player")}>Back</Button>
-        <Button onClick={() => navigate("/select-map")}>Next</Button>
+        <Button className="w-123" onClick={() => navigate("/create-player")}>
+          Back
+        </Button>
+        <Button className="w-123" onClick={() => navigate("/select-map")}>
+          Next
+        </Button>
       </ButtonContainer>
 
       <div className="d-flex justify-content-center flex-wrap gap-1 mb-3 p-3 bg-light">

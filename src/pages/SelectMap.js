@@ -41,8 +41,14 @@ const SelectMap = () => {
       <TextTitle title="Select Map" />
 
       <ButtonContainer>
-        <Button onClick={() => navigate("/select-character")}>Back</Button>
-        <Button onClick={() => navigate("/start-game")} variant="danger">
+        <Button className="w-123" onClick={() => navigate("/select-character")}>
+          Back
+        </Button>
+        <Button
+          className="w-123"
+          onClick={() => navigate("/start-game")}
+          variant="danger"
+        >
           Start Game
         </Button>
       </ButtonContainer>

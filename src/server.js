@@ -422,7 +422,7 @@ export const bosses = [
     level: 20,
     strength: 40,
     intelligence: 70,
-    hp: 3760,
+    hp: 30,
     maxHp: 3760,
     weapon: "None",
   },
@@ -434,7 +434,7 @@ export const bosses = [
     level: 18,
     strength: 30,
     intelligence: 22,
-    hp: 8000,
+    hp: 80,
     maxHp: 8000,
     weapon: "None",
   },
@@ -446,7 +446,7 @@ export const bosses = [
     level: 15,
     strength: 24,
     intelligence: 12,
-    hp: 900,
+    hp: 10,
     maxHp: 900,
     weapon: "None",
   },
@@ -464,12 +464,13 @@ export const start = {
 export const maps = [
   {
     name: "Level 1",
-    length: 21,
+    length: 11,
     difficulty: 1,
     type: "Map",
     image: "../assets/maps/map1.jpg",
     positions: [],
     isAvailable: true,
+    isCompleted: false,
   },
   {
     name: "Level 2",
@@ -479,6 +480,7 @@ export const maps = [
     image: "../assets/maps/map2.jpg",
     positions: [],
     isAvailable: false,
+    isCompleted: false,
   },
   {
     name: "Level 3",
@@ -488,6 +490,7 @@ export const maps = [
     image: "../assets/maps/map3.jpg",
     positions: [],
     isAvailable: false,
+    isCompleted: false,
   },
   {
     name: "Level 4",
@@ -497,15 +500,7 @@ export const maps = [
     image: "../assets/maps/map4.jpg",
     positions: [],
     isAvailable: false,
-  },
-  {
-    name: "Level 5",
-    length: 1001,
-    difficulty: 5,
-    type: "Map",
-    image: "../assets/maps/map1.jpg",
-    positions: [],
-    isAvailable: false,
+    isCompleted: false,
   },
 ];
 

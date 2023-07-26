@@ -47,6 +47,7 @@ const Game = () => {
     setMap,
     setGiftItemList,
     setPlayer,
+    allMaps,
   } = useContext(PlayerContext);
 
   // Modal
@@ -152,6 +153,7 @@ const Game = () => {
       } else if (character.type === BOSS) {
         console.log("defeated boss");
         // completed map, add more exp, more gifts, more gold
+        completedMap();
         // revive dead characters
         // back to map selections
       }
@@ -179,8 +181,24 @@ const Game = () => {
   };
   const gameOver = () => {
     console.log("game over");
+
     handleModalGameOverShow();
   };
+
+  const completedMap = () => {
+    console.log(map);
+    console.log(allMaps);
+    console.log(player);
+
+    for (let i = 0; i < allMaps.length - 1; i++) {
+      if (allMaps[i].id === map.id) {
+        map.isCompleted = true;
+        allMaps[i + 1].isAvailable = true;
+      }
+    }
+    console.log(allMaps);
+  };
+
   const nextTurn = () => {
     console.log("next turn");
 

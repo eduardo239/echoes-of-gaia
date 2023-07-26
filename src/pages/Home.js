@@ -11,7 +11,9 @@ const Home = () => {
       <TextTitle title="Echoes Of Gaia" />
 
       <ButtonContainer>
-        <Button onClick={() => navigate("/create-player")}>Start</Button>
+        <Button className="w-123" onClick={() => navigate("/create-player")}>
+          Start
+        </Button>
       </ButtonContainer>
     </div>
   );
