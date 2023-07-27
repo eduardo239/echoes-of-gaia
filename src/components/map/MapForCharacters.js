@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import CardTable from "../table/CardTable";
-import { BOSS, ENEMY, HERO, SELECT_HERO } from "../../constants";
+import { BOSS, ENEMY, HERO, SELECT_HERO } from "../../helper/constants";
 
 const MapForCharacters = ({
   list = [],

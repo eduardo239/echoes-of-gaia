@@ -1,7 +1,19 @@
 import { Enemy } from "../classes/Enemy";
 import { Item } from "../classes/Item";
-import { ENEMY, ITEM, EMPTY } from "../constants";
-import { bosses, enemies, items, empty, start } from "../server";
+import {
+  ENEMY,
+  ITEM,
+  EMPTY,
+  HEALING_BIG_POTION,
+  HEALING_POTION,
+  MANA_POTION,
+  MANA_BIG_POTION,
+  POISON_BIG_POTION,
+  POISON_POTION,
+  REBORN_RARE_POTION,
+  REBORN_POTION,
+} from "../helper/constants";
+import { bosses, enemies, items, empty, start } from "../helper/server";
 import { v4 as uuidv4 } from "uuid";
 
 export const removeAnObjectFromTheList = (character, list) => {
@@ -18,7 +30,7 @@ export const updateTheList = (newObject, setState) => {
 };
 
 export const addItemByType = (list) => {
-  const itemsByType = {};
+  const itemsByType = [];
   list.forEach((item) => {
     const { name } = item;
     if (!itemsByType[name]) {

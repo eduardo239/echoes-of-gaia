@@ -1,19 +1,23 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import CardTable from "../table/CardTable";
-import { EXPERIENCE, GOLD, ITEM, WINNER } from "../../constants";
+import { EXPERIENCE, GOLD, ITEM, WINNER } from "../../helper/constants";
 import { useContext, useEffect, useState } from "react";
-import { gifts, items } from "../../server";
+import { gifts, items } from "../../helper/server";
 import { chooseRandomItem } from "../../helper";
 import { PlayerContext } from "../../hook/PlayerContext";
 import { Item } from "../../classes/Item";
+import { useNavigate } from "react-router-dom";
 
 const ModalWinner = ({
   list,
   modalType,
   modalWinner,
   handleModalWinnerClose,
+  isCompletedMap,
+  setIsCompletedMap,
 }) => {
+  const navigate = useNavigate();
   const { player, inventory, setInventory } = useContext(PlayerContext);
 
   const [winnerGiftList, setWinnerGiftList] = useState([]);
@@ -50,6 +54,8 @@ const ModalWinner = ({
         }
 
         setItemObtained(true);
+        if (isCompletedMap) navigate("/select-map");
+        setIsCompletedMap(false);
         break;
 
       case ITEM:
@@ -67,6 +73,8 @@ const ModalWinner = ({
         setInventory([...inventory, newItem]);
         setMessage("Winner obtained: " + newItem.name);
         setItemObtained(true);
+        if (isCompletedMap) navigate("/select-map");
+        setIsCompletedMap(false);
         break;
 
       case GOLD:
@@ -74,6 +82,8 @@ const ModalWinner = ({
 
         setMessage("Gold obtained: " + item.value);
         setItemObtained(true);
+        if (isCompletedMap) navigate("/select-map");
+        setIsCompletedMap(false);
         break;
 
       default:

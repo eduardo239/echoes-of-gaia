@@ -3,7 +3,7 @@ import { PlayerContext } from "../../hook/PlayerContext";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import CardTable from "../table/CardTable";
-import { GAME_OVER } from "../../constants";
+import { GAME_OVER } from "../../helper/constants";
 import { useNavigate } from "react-router-dom";
 
 const ModalGameOver = ({

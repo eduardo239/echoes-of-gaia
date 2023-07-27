@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import CardTable from "../table/CardTable";
-import { HERO } from "../../constants";
+import { HERO } from "../../helper/constants";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
 import { ReactComponent as IconSword } from "../../assets/icons/mingcute_sword-line.svg";

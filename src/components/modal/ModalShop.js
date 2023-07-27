@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { ITEM } from "../../constants";
+import { ITEM } from "../../helper/constants";
 import CardTable from "../table/CardTable";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";

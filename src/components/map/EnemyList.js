@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
 import CardTable from "../table/CardTable";
-import { ENEMY } from "../../constants";
+import { ENEMY } from "../../helper/constants";
 
 const EnemyList = ({
   firstInTheQueue,

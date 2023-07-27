@@ -1,7 +1,6 @@
 import {
   ENEMY,
   GAME_OVER,
-  GIFT,
   HERO,
   ITEM,
   MAGIC,
@@ -9,7 +8,7 @@ import {
   SELECT_HERO,
   SELECT_MAP,
   WINNER,
-} from "../../constants";
+} from "../../helper/constants";
 
 const CardTable = ({ modalType, item }) => {
   return (

@@ -12,9 +12,10 @@ export class Player {
     this.expEarned = 0;
   }
 
-  setAddExp() {
+  setAddExp(isCompletedMap) {
     const expEarned = (Math.floor(4 * Math.sqrt(this.level)) / 5) * 10;
-    const expTotal = expEarned + this.exp;
+    let expTotal = expEarned + this.exp;
+    if (isCompletedMap) expTotal += 1000;
     this.expEarned = expEarned;
 
     console.log("exp earned " + expEarned);

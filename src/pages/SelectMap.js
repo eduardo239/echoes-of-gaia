@@ -2,11 +2,11 @@ import { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from "../hook/PlayerContext";
-import { items } from "../server";
+import { items } from "../helper/server";
 import { generateRandomMap } from "../helper";
 import { Item } from "../classes/Item";
 import MapForMaps from "../components/map/MapForMaps";
-import { SELECT_MAP } from "../constants";
+import { SELECT_MAP } from "../helper/constants";
 import TextTitle from "../components/TextTitle";
 import ButtonContainer from "../components/ButtonContainer";
 

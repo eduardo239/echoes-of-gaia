@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import { heroes, maps, magics } from "../server";
+import { heroes, maps, magics } from "../helper/server";
 import { Hero } from "../classes/Hero";
 import { Map_ } from "../classes/Map_";
 import { Magic } from "../classes/Magic";

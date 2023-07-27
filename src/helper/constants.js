@@ -55,3 +55,13 @@ export const PISTOL = "Pistol";
 export const SHOTGUN = "Shotgun";
 export const CROSSBOW = "Crossbow";
 export const LONG_BOW = "Long Bow";
+
+//
+export const HEALING_BIG_POTION = "Healing Big Potion";
+export const HEALING_POTION = "Healing Potion";
+export const MANA_BIG_POTION = "Mana Big Potion";
+export const MANA_POTION = "Mana Potion";
+export const POISON_BIG_POTION = "Poison Big Potion";
+export const POISON_POTION = "Poison Potion";
+export const REBORN_RARE_POTION = "Reborn Rare Potion";
+export const REBORN_POTION = "Reborn Potion";

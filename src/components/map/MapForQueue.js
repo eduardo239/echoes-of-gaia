@@ -1,5 +1,5 @@
 import ListGroup from "react-bootstrap/ListGroup";
-import { HERO } from "../../constants";
+import { HERO } from "../../helper/constants";
 
 const MapForQueue = ({ list, firstInTheQueue }) => {
   const map_for_items = () => {

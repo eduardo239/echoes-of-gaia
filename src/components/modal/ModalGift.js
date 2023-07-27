@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { GIFT } from "../../constants";
+import { GIFT } from "../../helper/constants";
 import CardTable from "../table/CardTable";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";

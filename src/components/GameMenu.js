@@ -6,7 +6,7 @@ import {
   randomNumber,
   randomlyCombineArrays,
 } from "../helper";
-import { BOSS, ENEMY, HERO, ITEM } from "../constants";
+import { BOSS, ENEMY, HERO, ITEM } from "../helper/constants";
 import { useContext } from "react";
 import { PlayerContext } from "../hook/PlayerContext";
 

@@ -464,7 +464,7 @@ export const start = {
 export const maps = [
   {
     name: "Level 1",
-    length: 11,
+    length: 7,
     difficulty: 1,
     type: "Map",
     image: "../assets/maps/map1.jpg",
@@ -474,7 +474,7 @@ export const maps = [
   },
   {
     name: "Level 2",
-    length: 61,
+    length: 7,
     difficulty: 1,
     type: "Map",
     image: "../assets/maps/map2.jpg",
@@ -484,7 +484,7 @@ export const maps = [
   },
   {
     name: "Level 3",
-    length: 181,
+    length: 7,
     difficulty: 2,
     type: "Map",
     image: "../assets/maps/map3.jpg",
@@ -494,7 +494,7 @@ export const maps = [
   },
   {
     name: "Level 4",
-    length: 301,
+    length: 7,
     difficulty: 3,
     type: "Map",
     image: "../assets/maps/map4.jpg",

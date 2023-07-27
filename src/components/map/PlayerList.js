@@ -1,4 +1,4 @@
-import { PLAYER } from "../../constants";
+import { PLAYER } from "../../helper/constants";
 import CardTable from "../table/CardTable";
 
 const PlayerList = ({ player }) => {

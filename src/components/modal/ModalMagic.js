@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { HERO } from "../../constants";
+import { HERO } from "../../helper/constants";
 import CardTable from "../table/CardTable";
 import { useEffect, useState } from "react";
 

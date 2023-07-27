@@ -1,5 +1,5 @@
 import ListGroup from "react-bootstrap/ListGroup";
-import { BOSS, EMPTY, ENEMY, ITEM } from "../../constants";
+import { BOSS, EMPTY, ENEMY, ITEM } from "../../helper/constants";
 
 const MapForPositions = ({ list, position }) => {
   const map_for_items = () => {

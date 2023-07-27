@@ -2,7 +2,6 @@ import Button from "react-bootstrap/Button";
 import CardTable from "../table/CardTable";
 
 const MapForMaps = ({ list, selectMap, modalType, selectedMap }) => {
-  console.log(list);
   const mapForItems = () => {
     return list.map((item) => (
       <div
@@ -16,12 +15,22 @@ const MapForMaps = ({ list, selectMap, modalType, selectedMap }) => {
 
         <div className="d-grid gap-2">
           <Button
-            disabled={!item.isAvailable}
+            disabled={!item.isAvailable || item.isCompleted}
             size="sm"
-            variant={!item.isAvailable ? "dark" : "primary"}
+            variant={
+              !item.isAvailable
+                ? "dark"
+                : item.isAvailable && item.isCompleted
+                ? "dark"
+                : "primary"
+            }
             onClick={() => selectMap(item)}
           >
-            {item.isAvailable ? "Select" : "Unavailable"}
+            {item.isAvailable && !item.isCompleted
+              ? "Select"
+              : item.isCompleted && item.isCompleted
+              ? "Completed"
+              : "Unavailable"}
           </Button>
         </div>
       </div>

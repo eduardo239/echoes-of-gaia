@@ -18,7 +18,7 @@ import {
   POISON,
   REBORN,
   WINNER,
-} from "../constants";
+} from "../helper/constants";
 import { removeAnObjectFromTheList, updateTheList } from "../helper";
 import GameMenu from "../components/GameMenu";
 import MapForQueue from "../components/map/MapForQueue";
@@ -83,6 +83,7 @@ const Game = () => {
   const [isUsingItem, setIsUsingItem] = useState(false);
   const [isPhysicalAttack, setIsPhysicalAttack] = useState(false);
   const [isMagicalAttack, setIsMagicalAttack] = useState(false);
+  const [isCompletedMap, setIsCompletedMap] = useState(false);
   //
   const [useItem, setUseItem] = useState(null);
   const [useMagic, setUseMagic] = useState(null);
@@ -174,21 +175,22 @@ const Game = () => {
   };
   const battleWon = () => {
     console.log("battle won");
+    // adicionar exp
+    player.setAddExp(isCompletedMap);
 
-    player.setAddExp();
+    // isCompletedMap
+    // TODO: adicionar mais exp e gold, restaurar hp e mp
     resetBattle();
     handleModalWinnerShow();
   };
   const gameOver = () => {
     console.log("game over");
-
     handleModalGameOverShow();
   };
 
   const completedMap = () => {
-    console.log(map);
-    console.log(allMaps);
-    console.log(player);
+    console.log("completed map");
+    setIsCompletedMap(true);
 
     for (let i = 0; i < allMaps.length - 1; i++) {
       if (allMaps[i].id === map.id) {
@@ -196,7 +198,9 @@ const Game = () => {
         allMaps[i + 1].isAvailable = true;
       }
     }
-    console.log(allMaps);
+    // TODO:
+    resetBattle();
+    handleModalWinnerShow();
   };
 
   const nextTurn = () => {
@@ -445,6 +449,8 @@ const Game = () => {
             modalType={WINNER}
             modalWinner={modalWinner}
             handleModalWinnerClose={handleModalWinnerClose}
+            isCompletedMap={isCompletedMap}
+            setIsCompletedMap={setIsCompletedMap}
           />
 
           <ModalGameOver

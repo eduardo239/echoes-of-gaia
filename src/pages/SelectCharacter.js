@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { SELECT_HERO } from "../constants";
+import { SELECT_HERO } from "../helper/constants";
 import { PlayerContext } from "../hook/PlayerContext";
 import MapForCharacters from "../components/map/MapForCharacters";
 import Button from "react-bootstrap/Button";

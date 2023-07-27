@@ -1,11 +1,12 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { ITEM } from "../../constants";
+import { ITEM } from "../../helper/constants";
 import CardTable from "../table/CardTable";
 import { useContext } from "react";
 import { PlayerContext } from "../../hook/PlayerContext";
 import { addItemByType } from "../../helper";
 import { useEffect } from "react";
+import { ReactComponent as IconWallet } from "../../assets/icons-b/mingcute_wallet-2-line.svg";
 
 const ModalInventory = ({
   modalType,
@@ -14,7 +15,8 @@ const ModalInventory = ({
   setUseItem = null,
   setIsUsingItem = false,
 }) => {
-  const { inventory, setInventoryByType } = useContext(PlayerContext);
+  const { inventory, inventoryByType, setInventoryByType } =
+    useContext(PlayerContext);
 
   const clickUseItem = (item) => {
     setUseItem(item);
@@ -24,12 +26,20 @@ const ModalInventory = ({
 
   const loadItemsByType = () => {
     if (inventory) {
-      const invByType = addItemByType(inventory);
-      const keysArray = Object.keys(invByType);
-      console.log(keysArray.length);
-      // TODO: separate itens by type
+      const itemsByType = addItemByType(inventory);
+
+      const _itemsByType = [];
+      for (const key in itemsByType) {
+        if (Object.hasOwnProperty.call(itemsByType, key)) {
+          const element = itemsByType[key];
+          _itemsByType.push(element);
+        }
+      }
+      setInventoryByType(_itemsByType);
     }
   };
+
+  console.log(inventoryByType);
 
   useEffect(() => {
     loadItemsByType();
@@ -40,17 +50,23 @@ const ModalInventory = ({
   }, [modalInventory]);
 
   const getItemList = () => {
-    return inventory.map((item) => (
-      <div key={item.id} className="app-card">
-        <img src={item.image} alt={item.name} />
+    return inventoryByType.map((item, index) => (
+      <div key={index} className="app-card">
+        <div className="card-image">
+          <img src={item[0].image} alt={item[0].name} />
 
-        <CardTable modalType={modalType} item={item} />
+          <div className="absolute-top-right gold-label">
+            <IconWallet /> Quantity: <span>{item.length}</span>
+          </div>
+        </div>
+
+        <CardTable modalType={modalType} item={item[0]} />
         {modalType === ITEM && (
           <div className="d-grid gap-2">
             <Button
               variant="primary"
               size="sm"
-              onClick={() => clickUseItem(item)}
+              onClick={() => clickUseItem(item[0])}
             >
               Use
             </Button>
@@ -59,6 +75,26 @@ const ModalInventory = ({
       </div>
     ));
   };
+  // const getItemList = () => {
+  //   return inventory.map((item) => (
+  //     <div key={item.id} className="app-card">
+  //       <img src={item.image} alt={item.name} />
+
+  //       <CardTable modalType={modalType} item={item} />
+  //       {modalType === ITEM && (
+  //         <div className="d-grid gap-2">
+  //           <Button
+  //             variant="primary"
+  //             size="sm"
+  //             onClick={() => clickUseItem(item)}
+  //           >
+  //             Use
+  //           </Button>
+  //         </div>
+  //       )}
+  //     </div>
+  //   ));
+  // };
 
   return (
     <Modal size="lg" show={modalInventory} onHide={handleModalInventoryClose}>
