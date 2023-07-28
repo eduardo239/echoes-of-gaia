@@ -1,22 +1,27 @@
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { PlayerContext } from "../hook/PlayerContext";
 import GameNavbar from "../components/NavBar";
 import HeroList from "../components/map/HeroList";
 import {
   BOSS,
   CURE,
+  DANGER,
   ELIXIR,
   ENEMY,
   GAME_OVER,
   GIFT,
   HERO,
+  INFO,
   ITEM,
   MAGIC,
   MANA,
   POISON,
+  PRIMARY,
   REBORN,
+  SUCCESS,
+  WARNING,
   WINNER,
 } from "../helper/constants";
 import { removeAnObjectFromTheList, updateTheList } from "../helper";
@@ -31,8 +36,11 @@ import ModalGift from "../components/modal/ModalGift";
 import ModalMagic from "../components/modal/ModalMagic";
 import ModalWinner from "../components/modal/ModalWinner";
 import ModalGameOver from "../components/modal/ModalGameOver";
+import ToastMessage from "../components/modal/ToastMessage";
 
 const Game = () => {
+  const refToast = useRef(null);
+
   const {
     map,
     player,
@@ -89,6 +97,10 @@ const Game = () => {
   const [useMagic, setUseMagic] = useState(null);
   //
   const firstInTheQueue = isFighting && battleQueue[0] ? battleQueue[0] : null;
+  //
+  const toastDefault = { message: "", show: false, type: INFO };
+  const [toast, setToast] = useState(toastDefault);
+
   //
   const selectedTarget = (target) => {
     console.log("selected target");
@@ -198,7 +210,6 @@ const Game = () => {
         allMaps[i + 1].isAvailable = true;
       }
     }
-    // TODO:
     resetBattle();
     handleModalWinnerShow();
   };
@@ -292,6 +303,7 @@ const Game = () => {
 
         break;
       case REBORN:
+        // TODO: desabilitar os personagens vivos
         if (hero.status.hp < 1) {
           hero.status.hp = item.value;
           hero.status.isAlive = true;
@@ -311,6 +323,13 @@ const Game = () => {
     }
   };
 
+  const toggleToast = () => {
+    if (!toast.show) {
+      // box.style.animationName === 'moveAndFadeIn'
+    }
+    const div = refToast.current;
+    div.classList.toggle("fade");
+  };
   return (
     <>
       <Row>
@@ -459,6 +478,13 @@ const Game = () => {
             modalType={GAME_OVER}
             modalGameOver={modalGameOver}
             handleModalGameOverClose={handleModalGameOverClose}
+          />
+
+          <button onClick={() => toggleToast()}>toggle</button>
+          <ToastMessage
+            refToast={refToast}
+            message="Toast Message"
+            type={SUCCESS}
           />
         </Col>
       </Row>

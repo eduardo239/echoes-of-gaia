@@ -5,9 +5,13 @@
   --color-light: #fefefe;
   --color-light-alternate: #ebebeb;
 
-  --color-success: #4ba352;
-  --color-danger: #db1720;
-  --color-info: #1755db;
+  --color-dark-background: rgb(31, 41, 55);
+
+  --color-success: rgb(49, 196, 141);
+  --color-danger: rgb(249, 128, 128);
+  --color-info: rgb(209, 213, 219);
+  --color-warning: rgb(250, 202, 21);
+  --color-primary: rgb(118, 169, 250);
 
   --color-item: #ffdd6c;
   --color-weapon: #46ffd7;

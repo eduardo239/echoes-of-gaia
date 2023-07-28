@@ -65,3 +65,9 @@ export const POISON_BIG_POTION = "Poison Big Potion";
 export const POISON_POTION = "Poison Potion";
 export const REBORN_RARE_POTION = "Reborn Rare Potion";
 export const REBORN_POTION = "Reborn Potion";
+
+export const SUCCESS = "success";
+export const PRIMARY = "primary";
+export const DANGER = "danger";
+export const WARNING = "warning";
+export const INFO = "info";

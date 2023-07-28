@@ -190,3 +190,55 @@
 .w-123 {
   width: 123px;
 }
+
+/* toast */
+.toast-container {
+  position: absolute;
+  left: 50%;
+  bottom: 1%;
+  transform: translateX(-50%);
+
+  padding: 0.5rem 1rem;
+  width: 60%;
+  box-shadow: 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 4px;
+  background-color: var(--color-dark-background);
+
+  opacity: 1;
+  transition: opacity 0.5 ease;
+}
+
+.fade {
+  opacity: 0;
+}
+
+.toast-container span {
+  font-size: .75rem;
+  text-align: center;
+  line-height: 1;
+}
+
+.toast-success {
+  color: var(--color-success);
+  border: 1px solid var(--color-success);
+}
+
+.toast-danger {
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+
+.toast-warning {
+  color: var(--color-warning);
+  border: 1px solid var(--color-warning);
+}
+
+.toast-info {
+  color: var(--color-info);
+  border: 1px solid var(--color-info);
+}
+
+.toast-primary {
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
