@@ -149,31 +149,28 @@
   color: var(--color-light);
 }
 .hero-intelligence {
-  background-color: var(--color-info);
+  background-color: var(--color-primary);
   color: var(--color-light);
 }
 
 .hero-strength, .hero-intelligence {
-  width: auto;
-  padding: 2px 4px;
-  border-radius: 10%;
-
+  margin: 0;
+  padding: 2px 6px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  gap: 1px;
 }
 .hero-strength > span, .hero-intelligence span {
   text-align: center;
-  font-size: .8rem;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: .75rem;
+  font-weight: 400;
 }
 .hero-selecting-enemy:hover {
   cursor: pointer;
   background-color: #212422;
   transition: transform 0.3s ease;
   }
-
 
   .map-container {
     max-height: 20rem;
@@ -192,11 +189,12 @@
 }
 
 /* toast */
-.toast-container {
+.app-toast-container {
   position: absolute;
   left: 50%;
   bottom: 1%;
   transform: translateX(-50%);
+  z-index: 2000;
 
   padding: 0.5rem 1rem;
   width: 60%;
@@ -205,40 +203,42 @@
   background-color: var(--color-dark-background);
 
   opacity: 1;
-  transition: opacity 0.5 ease;
+  display: block;
+  transition: opacity 1s ease;
 }
 
-.fade {
+.app-modal-fade {
   opacity: 0;
+  display: none;
 }
 
-.toast-container span {
+.app-toast-container span {
   font-size: .75rem;
   text-align: center;
   line-height: 1;
 }
 
-.toast-success {
+.app-toast-success {
   color: var(--color-success);
   border: 1px solid var(--color-success);
 }
 
-.toast-danger {
+.app-toast-danger {
   color: var(--color-danger);
   border: 1px solid var(--color-danger);
 }
 
-.toast-warning {
+.app-toast-warning {
   color: var(--color-warning);
   border: 1px solid var(--color-warning);
 }
 
-.toast-info {
+.app-toast-info {
   color: var(--color-info);
   border: 1px solid var(--color-info);
 }
 
-.toast-primary {
+.app-toast-primary {
   color: var(--color-primary);
   border: 1px solid var(--color-primary);
 }

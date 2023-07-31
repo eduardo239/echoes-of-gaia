@@ -41,8 +41,6 @@ const GameMenu = ({
     shopItems,
     giftItemList,
     setGiftItemList,
-    // toastMessage,
-    // setToastMessage,
   } = useContext(PlayerContext);
 
   // gerar um item aleatório

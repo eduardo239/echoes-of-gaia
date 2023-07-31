@@ -6,25 +6,26 @@ import {
   WARNING,
 } from "../../helper/constants";
 
-const ToastMessage = ({ message = "", type = SUCCESS, refToast }) => {
+const ToastMessage = ({ toast, refAppToast }) => {
   return (
     <div
-      ref={refToast}
-      className={`toast-container moveAndFadeOut ${
-        type === SUCCESS
-          ? "toast-" + SUCCESS
-          : type === PRIMARY
-          ? "toast-" + PRIMARY
-          : type === DANGER
-          ? "toast-" + DANGER
-          : type === WARNING
-          ? "toast-" + WARNING
-          : type === INFO
-          ? "toast-" + INFO
-          : "toast-" + INFO
+      ref={refAppToast}
+      style={{ display: toast.show ? "block" : "none" }}
+      className={`app-toast-container moveAndFadeOut ${
+        toast.type === SUCCESS
+          ? "app-toast-" + SUCCESS
+          : toast.type === PRIMARY
+          ? "app-toast-" + PRIMARY
+          : toast.type === DANGER
+          ? "app-toast-" + DANGER
+          : toast.type === WARNING
+          ? "app-toast-" + WARNING
+          : toast.type === INFO
+          ? "app-toast-" + INFO
+          : "app-toast-" + INFO
       }`}
     >
-      <span>{message}</span>
+      <span>{toast.message}</span>
     </div>
   );
 };

@@ -12,6 +12,7 @@ export const REBORN = "Reborn";
 
 export const EMPTY = "Empty";
 export const GAME_BATTLE_DELAY = 300;
+export const TOAST_MESSAGE_DELAY = 3000;
 
 export const SELECT_HERO = "Select Hero";
 export const SELECT_MAP = "Select Map";

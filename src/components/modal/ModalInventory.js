@@ -39,8 +39,6 @@ const ModalInventory = ({
     }
   };
 
-  console.log(inventoryByType);
-
   useEffect(() => {
     loadItemsByType();
     return () => {
